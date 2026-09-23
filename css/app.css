@@ -205,6 +205,7 @@ body {
     position: relative;
     overflow: hidden;
     flex: 1;
+    min-height: 0;  /* allow flex child to shrink — prerequisite for inner scroll */
   }
   .device-shell::before,
   .device-shell::after { display: none !important; }
@@ -215,6 +216,13 @@ body {
     border-radius: 0 !important;
     overflow: hidden;
     background: var(--white);
+    height: 100%; /* explicit height so children can calculate their size */
+  }
+
+  /* On mobile, screen-content uses native full momentum scroll */
+  .screen-content {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 
   /* Status bar: minimal on real device */
@@ -243,6 +251,8 @@ body {
   flex-direction: column;
   background: var(--white);
   overflow: hidden;
+  /* Explicit height so flex children receive a finite constraint */
+  height: 100%;
 }
 .screen.active {
   display: flex;          /* active screen is fully interactive */
@@ -345,14 +355,21 @@ body {
    ═══════════════════════════════════════════════════════════ */
 .screen-content {
   flex: 1;
-  overflow-y: auto;
+  /* min-height:0 is CRITICAL — without it, a flex child never shrinks
+     below its content size, so overflow-y never activates and content
+     is permanently clipped by the parent's overflow:hidden             */
+  min-height: 0;
+  overflow-y: scroll;            /* scroll (not auto) for reliable mobile behaviour */
   overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;   /* smooth momentum scroll on iOS */
+  overscroll-behavior-y: contain;      /* prevent pull-to-refresh bleeding */
+  touch-action: pan-y;                 /* tell browser: vertical scroll only */
   padding: var(--sp4);
   display: flex;
   flex-direction: column;
   gap: var(--sp4);
+  /* Ensure scrollbar doesn't cause layout shift */
+  scrollbar-width: none;          /* Firefox */
 }
 .screen-content.no-pad { padding: 0; }
 
@@ -452,9 +469,11 @@ body {
 .danger-fullscreen {
   background: var(--red-600);
   flex: 1;
+  min-height: 0;
   padding: var(--sp6);
   display: flex; flex-direction: column; gap: var(--sp4);
-  overflow-y: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .danger-icon   { font-size: 48px; text-align: center; }
 .danger-title  { font-size: 20px; font-weight: 800; color: var(--white); text-align: center; line-height: 1.2; }
@@ -874,7 +893,7 @@ body {
 /* ═══════════════════════════════════════════════════════════
    ACTIVATION / ONBOARDING
    ═══════════════════════════════════════════════════════════ */
-.onboarding-screen { flex: 1; display: flex; flex-direction: column; padding: var(--sp6) var(--sp4); overflow-y: auto; }
+.onboarding-screen { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: var(--sp6) var(--sp4); overflow-y: scroll; -webkit-overflow-scrolling: touch; }
 .onb-logo { font-size: 28px; font-weight: 800; color: var(--accent); margin-bottom: 0; }
 .onb-logo span { color: var(--gray-400); }
 .onb-step  { font-size: 11px; color: var(--gray-400); margin-bottom: var(--sp6); }
@@ -946,6 +965,12 @@ body {
 .text-white { color: var(--white); }
 
 /* Scrollbar */
+/* Hide scrollbars on the prototype (content still scrollable via touch/mouse) */
+.screen-content::-webkit-scrollbar,
+.onboarding-screen::-webkit-scrollbar,
+.danger-fullscreen::-webkit-scrollbar { display: none; }
+
+/* Thin scrollbar on desktop if visible */
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 2px; }
