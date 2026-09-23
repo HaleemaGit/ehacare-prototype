@@ -9,120 +9,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<style>
-#pin-gate {
-  position: fixed; inset: 0; z-index: 9999;
-  background: linear-gradient(160deg, #0F172A 0%, #1E3A8A 100%);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  font-family: -apple-system, 'Inter', sans-serif;
-}
-#pin-gate.hidden { display: none; }
-.gate-logo { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 6px; }
-.gate-logo span { color: #0073F3; }
-.gate-sub  { font-size: 13px; color: rgba(255,255,255,.5); margin-bottom: 48px; }
-.gate-title{ font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-.gate-hint { font-size: 12px; color: rgba(255,255,255,.45); margin-bottom: 32px; }
-.pin-dots  { display: flex; gap: 14px; margin-bottom: 32px; }
-.pin-dot   { width: 18px; height: 18px; border-radius: 9px;
-             border: 2px solid rgba(255,255,255,.3); background: transparent;
-             transition: all .15s; }
-.pin-dot.filled { background: #0073F3; border-color: #0073F3; }
-.pin-dot.error  { background: #DC2626; border-color: #DC2626; animation: shake .3s; }
-.pin-pad   { display: grid; grid-template-columns: repeat(3,72px); gap: 12px; }
-.pin-key   { width: 72px; height: 72px; border-radius: 36px;
-             background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1);
-             color: #fff; font-size: 22px; font-weight: 600; cursor: pointer;
-             font-family: inherit; transition: all .12s; }
-.pin-key:hover  { background: rgba(255,255,255,.15); }
-.pin-key:active { transform: scale(.93); background: rgba(255,255,255,.2); }
-.pin-key.del    { font-size: 18px; }
-.gate-error { color: #FCA5A5; font-size: 12px; margin-top: 16px; min-height: 18px; }
-@keyframes shake {
-  0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
-}
-</style>
 </head>
 <body>
 
-<!-- ACCESS GATE — stakeholders enter PIN to view prototype -->
-<div id="pin-gate">
-  <div class="gate-logo">EHA<span>Care</span></div>
-  <div class="gate-sub">Platform Prototype · v2.0 · Confidential</div>
-  <div class="gate-title">Enter Access PIN</div>
-  <div class="gate-hint">Contact your EHA Clinics representative for the PIN</div>
-  <div class="pin-dots" id="pinDots">
-    <div class="pin-dot" id="d0"></div>
-    <div class="pin-dot" id="d1"></div>
-    <div class="pin-dot" id="d2"></div>
-    <div class="pin-dot" id="d3"></div>
-  </div>
-  <div class="pin-pad">
-    <button class="pin-key" onclick="gate.tap('1')">1</button>
-    <button class="pin-key" onclick="gate.tap('2')">2</button>
-    <button class="pin-key" onclick="gate.tap('3')">3</button>
-    <button class="pin-key" onclick="gate.tap('4')">4</button>
-    <button class="pin-key" onclick="gate.tap('5')">5</button>
-    <button class="pin-key" onclick="gate.tap('6')">6</button>
-    <button class="pin-key" onclick="gate.tap('7')">7</button>
-    <button class="pin-key" onclick="gate.tap('8')">8</button>
-    <button class="pin-key" onclick="gate.tap('9')">9</button>
-    <button class="pin-key" onclick="gate.clear()">⌫</button>
-    <button class="pin-key" onclick="gate.tap('0')">0</button>
-    <button class="pin-key del" onclick="gate.clear()">✕</button>
-  </div>
-  <div class="gate-error" id="gateError"></div>
-</div>
-<script>
-(function() {
-  // PIN is hashed — change the hash below to change the PIN
-  // Current PIN: 2026  (SHA-256 of "2026" truncated)
-  const HASH = 'b68cd7b0c86c6f01fb7e7b';
-  function h(s) {
-    // Simple obfuscation — not cryptographic, just prevents casual inspection
-    let r = 0;
-    for (let i=0; i<s.length; i++) r = ((r << 5) - r) + s.charCodeAt(i);
-    return Math.abs(r).toString(16).padStart(22,'0').slice(0,22);
-  }
-  // Check session
-  if (sessionStorage.getItem('eha_access') === '1') {
-    document.getElementById('pin-gate').classList.add('hidden');
-    return;
-  }
-  let entry = '';
-  window.gate = {
-    tap(d) {
-      if (entry.length >= 4) return;
-      entry += d;
-      document.getElementById('d'+(entry.length-1)).classList.add('filled');
-      if (entry.length === 4) {
-        setTimeout(() => {
-          if (h(entry) === HASH) {
-            sessionStorage.setItem('eha_access', '1');
-            document.getElementById('pin-gate').classList.add('hidden');
-          } else {
-            document.getElementById('gateError').textContent = 'Incorrect PIN. Please try again.';
-            document.querySelectorAll('.pin-dot').forEach(d => {
-              d.classList.remove('filled'); d.classList.add('error');
-            });
-            setTimeout(() => {
-              document.querySelectorAll('.pin-dot').forEach(d => d.classList.remove('error'));
-              document.getElementById('gateError').textContent = '';
-              entry = '';
-            }, 700);
-          }
-        }, 100);
-      }
-    },
-    clear() {
-      if (entry.length > 0) {
-        document.getElementById('d'+(entry.length-1)).classList.remove('filled');
-        entry = entry.slice(0,-1);
-      }
-    }
-  };
-})();
-</script>
 
 <!-- ══════════════════════════════════════════════════════════
   DEVICE TYPE SWITCHER (sits outside device chrome)
@@ -219,7 +108,7 @@
     <!-- ── Platform Tools ── -->
     <div class="landing-section-label" style="margin-top:16px">Platform Tools</div>
     <div class="landing-rows">
-      <div class="landing-row" onclick="App.goTo('sup-team')" style="--lr-accent:#374151">
+      <div class="landing-row" onclick="App.launchModule('supervisor','sup-team')" style="--lr-accent:#374151">
         <div class="lr-icon" style="background:#F9FAFB;color:#374151">👥</div>
         <div class="lr-body">
           <div class="lr-title">Supervisor — Team Management</div>
