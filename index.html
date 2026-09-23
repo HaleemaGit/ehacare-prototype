@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EHACare Platform — Interactive Prototype</title>
-<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/app.css?v=5">
 <meta name="theme-color" content="#0073F3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -190,7 +190,7 @@
       <div class="flex items-center gap-3 mb-2"><span style="font-size:28px">🤖</span><div><div class="font-bold text-lg">AI-Guided Encounter</div><div class="text-xs text-gray">AI asks questions, suggests diagnosis, auto-triggers referrals</div></div></div>
       <div class="chip info">Recommended</div>
     </div>
-    <div class="card" onclick="App.goTo('eha-home')" style="cursor:pointer">
+    <div class="card" onclick="App.goTo('eha-patient')" style="cursor:pointer">
       <div class="flex items-center gap-3"><span style="font-size:28px">📝</span><div><div class="font-bold">Manual Encounter</div><div class="text-xs text-gray">Standard clinical documentation — vitals, diagnosis, prescriptions</div></div></div>
     </div>
   </div>
@@ -215,12 +215,12 @@
     </div>
     <div class="section-header">Select Chief Complaint</div>
     <div style="display:flex;flex-wrap:wrap;gap:8px">
-      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Cough</div>
-      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Fever</div>
-      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Chest Pain</div>
-      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Headache</div>
-      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Diarrhoea</div>
-      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Shortness of Breath</div>
+      <div class="chip info" onclick="App.goTo('eha-encounters')" style="cursor:pointer;padding:8px 14px;font-size:12px">Cough</div>
+      <div class="chip info" onclick="App.goTo('eha-encounters')" style="cursor:pointer;padding:8px 14px;font-size:12px">Fever</div>
+      <div class="chip info" onclick="App.goTo('eha-encounters')" style="cursor:pointer;padding:8px 14px;font-size:12px">Chest Pain</div>
+      <div class="chip info" onclick="App.goTo('eha-encounters')" style="cursor:pointer;padding:8px 14px;font-size:12px">Headache</div>
+      <div class="chip info" onclick="App.goTo('eha-encounters')" style="cursor:pointer;padding:8px 14px;font-size:12px">Diarrhoea</div>
+      <div class="chip info" onclick="App.goTo('eha-encounters')" style="cursor:pointer;padding:8px 14px;font-size:12px">Shortness of Breath</div>
     </div>
     <div class="card" style="background:var(--blue-50);border:1px solid var(--accent);margin-top:8px">
       <div style="font-size:10px;color:var(--accent);font-weight:700;margin-bottom:4px;text-transform:uppercase">AI Recommendation Ready</div>
@@ -229,7 +229,7 @@
     </div>
     <img src="assets/reach-ai-guided.png" alt="Guided workflow reference" style="width:100%;border-radius:12px;opacity:0.85;margin-top:8px">
     <div class="btn-row" style="margin-top:8px">
-      <button class="btn btn-secondary" onclick="App.goTo('eha-home')">← Home</button>
+      <button class="btn btn-secondary" onclick="App.goTo('landing')">← Modules</button>
       <button class="btn btn-primary" onclick="App.goTo('eha-encounters')">✓ Submit Encounter</button>
     </div>
   </div>
@@ -1871,7 +1871,7 @@
 ══════════════════════════════════════════════════════════ -->
 <div class="screen" id="eha-encounters">
   <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
-  <div class="top-bar"><button class="back-btn" data-goto="eha-home">‹</button><span class="top-bar-title">Encounters</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="eha-patient">‹</button><span class="top-bar-title">Encounters</span></div>
   <div class="screen-content" style="padding:0;gap:0">
     <div style="padding:12px 16px;background:var(--gray-50);border-bottom:1px solid var(--gray-100)">
       <div style="display:flex;gap:8px">
@@ -2096,7 +2096,7 @@
 </div><!-- /device-shell -->
 </div><!-- /device-wrapper -->
 
-<script src="js/app.js"></script>
-<script src="js/edge-states.js"></script>
+<script src="js/app.js?v=5"></script>
+<script src="js/edge-states.js?v=5"></script>
 </body>
 </html>

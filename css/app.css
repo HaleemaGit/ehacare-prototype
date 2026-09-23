@@ -233,25 +233,19 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SCREEN STACK  — opacity transitions (no transform = no blink)
+   SCREEN STACK  — display:none (bulletproof: zero click-through
+   on every browser, every device, every OS)
    ═══════════════════════════════════════════════════════════ */
 .screen {
   position: absolute;
   inset: 0;
-  display: flex;
+  display: none;          /* hidden screens are completely inert */
   flex-direction: column;
   background: var(--white);
   overflow: hidden;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity .2s ease, visibility .2s ease;
-  will-change: opacity;
 }
 .screen.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+  display: flex;          /* active screen is fully interactive */
   z-index: 1;
 }
 

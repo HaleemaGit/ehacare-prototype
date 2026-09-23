@@ -85,21 +85,27 @@
     'sup-add-member':  'sup-add-member',
   };
 
-  /* ── Core: navigate to a screen ── */
+  /* ── Core: navigate to a screen ──
+     Uses display:none / display:flex so hidden screens are
+     COMPLETELY inert — zero click-through on any browser.
+  */
   function goTo(screenId, addHistory) {
     if (screenId === currentScreen) return;
 
     var next = document.getElementById(screenId);
-    if (!next) { console.warn('Screen not found:', screenId); return; }
+    if (!next) { console.warn('EHACare: screen not found:', screenId); return; }
 
     var prev = document.getElementById(currentScreen);
 
     if (addHistory !== false) navHistory.push(currentScreen);
 
-    /* Hide previous */
-    if (prev) prev.classList.remove('active');
+    /* Hide previous: display:none removes it from all interaction */
+    if (prev) {
+      prev.classList.remove('active');
+      /* display:none is set by CSS .screen (no .active = display:none) */
+    }
 
-    /* Show next */
+    /* Show next: display:flex via .active class */
     next.classList.add('active');
 
     /* Scroll content to top */
@@ -108,7 +114,7 @@
 
     currentScreen = screenId;
 
-    /* Clear module context when returning to the selector */
+    /* Clear module when returning to module selector */
     if (screenId === 'landing') activeModule = null;
 
     renderNav();
@@ -191,6 +197,30 @@
       if (target) goTo(target, false);
       else goBack();
     });
+
+    /* Global 🏠 safety interceptor — any tap on Home icon → landing.
+       Belt + suspenders: even if renderNav() somehow rendered the wrong
+       target, this interceptor overrides it. */
+    document.addEventListener('click', function(e) {
+      var navIcon = e.target.closest('.nav-icon');
+      if (navIcon && navIcon.textContent === '🏠') {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        goTo('landing', true);
+        return;
+      }
+      var navItem = e.target.closest('.nav-item');
+      if (navItem) {
+        /* Check if this button's label is "Modules" or icon is 🏠 */
+        var label = navItem.querySelector('.nav-label');
+        if (label && (label.textContent === 'Modules' || label.textContent === 'Home')) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          goTo('landing', true);
+          return;
+        }
+      }
+    }, true); /* capture phase — fires before onClick */
 
     renderNav();
   }
