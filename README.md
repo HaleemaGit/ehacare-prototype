@@ -1,31 +1,55 @@
-# EHACare Platform — Stakeholder Demo Prototype
+# EHACare Platform — Interactive Stakeholder Demo
 
-**Interactive prototype** for the EHACare Platform commercial expansion.
+## 🔗 Live Demo
+**[https://haleemagit.github.io/ehacare-prototype/](https://haleemagit.github.io/ehacare-prototype/)**
 
-🔗 **[Open the Live Demo →](https://HaleemaGit.github.io/ehacare-prototype/)**
-
----
-
-## What This Covers
-
-| Module | Description |
-|--------|-------------|
-| 🏥 EHACare Clinics | Manual & Guided clinical encounters |
-| 🌿 Lafiya Project | Community survey · GPS · 5 core metrics |
-| 🛡 WARIF | GBV case management · Referrals |
-| 🚑 MSF Field Ops | START triage · MCI · Nutrition assessment |
-| 🩺 MAMAI ANC | Antenatal care · Danger sign detection |
-| 👥 Supervisor | Team management · Member activation |
-
-## Device Support
-Toggle between **Phone** and **Tablet** views using the switcher above the device frame.
-
-## Navigation
-- Tap any module card on the landing screen to begin
-- All navigation icons and buttons are functional
-- Forms accept real typed input
-- Edge states (offline, GPS error, sync failure) are included
+Works on any device · No login required · No app to install · Just open in browser
 
 ---
 
-*EHA Clinics Digital Health Team · September 2026 · Confidential*
+## What to Explore
+
+| Module | What it demos |
+|--------|---------------|
+| 🏥 **EHACare Clinics** | AI-guided & manual clinical encounters |
+| 🌿 **Lafiya Project** | Community survey with GPS, 5 health metrics, map analytics |
+| 🛡 **WARIF** | GBV case intake, safety alerts, case management, referrals |
+| 🚑 **MSF Field Ops** | START triage, mass casualty board, nutrition assessment |
+| 🩺 **MAMAI ANC** | 8-contact ANC programme, danger sign alerts, patient journey |
+| 👥 **Supervisor** | Create team members, view activity, manage access |
+| 📵 **Edge States** | Offline mode, sync failures, GPS errors |
+| ✉️ **Activation** | New member activation (code → PIN → profile) |
+
+---
+
+## How to Use
+
+1. **Open the URL** above in any browser (Chrome, Safari, Firefox)
+2. **Select a module** from the landing screen
+3. **Tap through** — every button, icon, and nav tab is interactive
+4. **Toggle devices** using `📱 Phone` / `📟 Tablet` above the frame
+5. **Type in forms** — all fields accept real input
+6. **Try edge cases** — select "Edge States Demo" from landing
+
+---
+
+## Demo Flows (for structured walkthroughs)
+
+### Lafiya Community Survey
+Landing → 🌿 Lafiya → Home → Surveys Tab → Start Survey → GPS → Population → FP → Mortality → Review → Submit ✓
+
+### WARIF GBV Case
+Landing → 🛡 WARIF → + New Case → Safety Assessment → Case Created → Add Services → Create Referral → Back to Case
+
+### MSF Emergency Triage
+Landing → 🚑 MSF → MCI Active → Triage Patient → Q1 Can Walk? → Q2 Breathing? → Q3 Rate → RED Classification → Next Patient
+
+### MAMAI ANC
+Landing → 🩺 MAMAI → Patients → ANC-2026-KAT-1247 → Journey → Contact 4 → Danger Alert → Create Referral ✓
+
+### New Member Onboarding
+Landing → ✉️ Activation → Enter Code → Set PIN → Confirm Profile → Welcome to MAMAI
+
+---
+
+*EHA Clinics Digital Health Team · September 2026 · Confidential Stakeholder Review*
