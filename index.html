@@ -1,0 +1,2101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>EHACare Platform — Interactive Prototype</title>
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/edge-states.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+  DEVICE TYPE SWITCHER (sits outside device chrome)
+══════════════════════════════════════════════════════════ -->
+<div id="device-wrapper">
+<div class="device-type-switcher">
+  <button class="dts-btn active" id="btn-phone" onclick="setDeviceType('phone')">
+    <span class="dts-icon">📱</span> Phone
+  </button>
+  <button class="dts-btn" id="btn-tablet" onclick="setDeviceType('tablet')">
+    <span class="dts-icon">📟</span> Tablet
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DEVICE SHELL
+══════════════════════════════════════════════════════════ -->
+<div class="device-shell" id="device-shell">
+<div class="device-screen">
+
+<!-- Android bottom gesture bar -->
+<div class="android-gesture-bar" id="android-gesture-bar" style="display:none"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+  SCREEN 0 — MODULE SELECTOR LANDING (redesigned)
+══════════════════════════════════════════════════════════ -->
+<div class="screen active" id="landing">
+  <div class="status-bar light">
+    <span class="status-time">9:41</span>
+    <span class="status-icons">●●●  WiFi  🔋</span>
+  </div>
+
+  <!-- Clean EHACare-conformant header -->
+  <div class="landing-hd">
+    <div class="landing-hd-left">
+      <div class="landing-hd-logo">EHA<span>Care</span></div>
+      <div class="landing-hd-sub">EHACare Platform · v2.0</div>
+    </div>
+    <div class="landing-hd-avatar">HM</div>
+  </div>
+
+  <div class="screen-content" style="padding:12px 16px 80px;gap:0">
+
+    <!-- ── Clinical Modules ── -->
+    <div class="landing-section-label">Clinical Modules</div>
+    <div class="landing-rows">
+      <div class="landing-row" onclick="App.launchModule('eha','eha-home')">
+        <div class="lr-icon" style="background:#EFF6FF;color:#0073F3">🏥</div>
+        <div class="lr-body">
+          <div class="lr-title">EHACare Clinics</div>
+          <div class="lr-sub">Manual &amp; Guided clinical encounters</div>
+        </div>
+        <span class="lr-chevron">›</span>
+      </div>
+    </div>
+
+    <!-- ── Partner Programmes ── -->
+    <div class="landing-section-label" style="margin-top:16px">Partner Programmes</div>
+    <div class="landing-rows">
+      <div class="landing-row" onclick="App.launchModule('lafiya','laf-home')" style="--lr-accent:#16A34A">
+        <div class="lr-icon" style="background:#F0FDF4;color:#16A34A">🌿</div>
+        <div class="lr-body">
+          <div class="lr-title">Lafiya Project</div>
+          <div class="lr-sub">Community survey · GPS · 5 metrics</div>
+        </div>
+        <span class="lr-chevron">›</span>
+      </div>
+      <div class="landing-row" onclick="App.launchModule('warif','war-home')" style="--lr-accent:#7C3AED">
+        <div class="lr-icon" style="background:#F5F3FF;color:#7C3AED">🛡</div>
+        <div class="lr-body">
+          <div class="lr-title">WARIF</div>
+          <div class="lr-sub">GBV case management · Referrals</div>
+        </div>
+        <span class="lr-chevron">›</span>
+      </div>
+      <div class="landing-row" onclick="App.launchModule('msf','msf-home')" style="--lr-accent:#DC2626">
+        <div class="lr-icon" style="background:#FEF2F2;color:#DC2626">🚑</div>
+        <div class="lr-body">
+          <div class="lr-title">MSF Field Ops</div>
+          <div class="lr-sub">START triage · MCI · Nutrition</div>
+        </div>
+        <span class="lr-chevron">›</span>
+      </div>
+      <div class="landing-row" onclick="App.launchModule('mamai','anc-home')" style="--lr-accent:#0D9488">
+        <div class="lr-icon" style="background:#F0FDFA;color:#0D9488">🩺</div>
+        <div class="lr-body">
+          <div class="lr-title">MAMAI ANC</div>
+          <div class="lr-sub">Antenatal care · Danger sign alerts</div>
+        </div>
+        <span class="lr-chevron">›</span>
+      </div>
+    </div>
+
+    <!-- ── Platform Tools ── -->
+    <div class="landing-section-label" style="margin-top:16px">Platform Tools</div>
+    <div class="landing-rows">
+      <div class="landing-row" onclick="App.goTo('sup-team')" style="--lr-accent:#374151">
+        <div class="lr-icon" style="background:#F9FAFB;color:#374151">👥</div>
+        <div class="lr-body">
+          <div class="lr-title">Supervisor — Team Management</div>
+          <div class="lr-sub">Create members · View activity · Manage access</div>
+        </div>
+        <span class="lr-chevron">›</span>
+      </div>
+      <div class="landing-row" onclick="App.goTo('activation-code')" style="--lr-accent:#0073F3">
+        <div class="lr-icon" style="background:#EFF6FF;color:#0073F3">✉️</div>
+        <div class="lr-body">
+          <div class="lr-title">New Member Activation</div>
+          <div class="lr-sub">Enter invite code · Set PIN · Complete profile</div>
+        </div>
+        <span class="lr-chevron">›</span>
+      </div>
+      <div class="landing-row" onclick="App.goTo('edge-offline')" style="--lr-accent:#6B7280">
+        <div class="lr-icon" style="background:#F9FAFB;color:#6B7280">⚙️</div>
+        <div class="lr-body">
+          <div class="lr-title">Edge States Demo</div>
+          <div class="lr-sub">Offline · Sync · GPS error · Session expired</div>
+        </div>
+        <span class="lr-chevron">›</span>
+      </div>
+    </div>
+
+    <div class="landing-footer">
+      Authenticated as <strong>Haleema Mustapha</strong> · EHA Clinics · Sep 2026
+    </div>
+  </div>
+
+  <!-- Persistent bottom nav -->
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  EHA CLINICS — Screen E1: Home
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="eha-home">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="home-header">
+    <div class="home-greeting">Good morning</div>
+    <div class="home-name">Dr. Khaleed Ibrahim</div>
+    <div class="home-badge">🏥 EHA Clinics Abuja · Synced ✓</div>
+  </div>
+  <div class="screen-content">
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">My Patients</div><div class="kpi-value">142</div><div class="kpi-sub">↑3 this week</div></div>
+      <div class="kpi-card"><div class="kpi-label">Encounters Today</div><div class="kpi-value">7</div><div class="kpi-sub">2 drafts pending</div></div>
+    </div>
+    <div class="section-header">Quick Actions</div>
+    <button class="quick-action" onclick="App.goTo('eha-encounter-type')">
+      <div class="qa-icon">⚡</div>
+      <div><div class="qa-label">New Encounter</div><div class="qa-sub">Manual or AI-guided</div></div>
+    </button>
+    <div class="section-header">Recent Patients</div>
+    <div class="card" style="padding:0">
+      <div class="list-item" onclick="App.goTo('eha-patient')">
+        <div class="li-icon">👤</div>
+        <div class="li-body"><div class="li-title">Fatima Al-Hassan</div><div class="li-sub">F · 34 yrs · Last seen today</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item" onclick="App.goTo('eha-patient')">
+        <div class="li-icon">👤</div>
+        <div class="li-body"><div class="li-title">Emmanuel Okonkwo</div><div class="li-sub">M · 52 yrs · Yesterday</div></div>
+        <div class="li-right">›</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- E2: Encounter Type -->
+<div class="screen" id="eha-encounter-type">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn">‹</button>
+    <span class="top-bar-title">New Encounter</span>
+  </div>
+  <div class="screen-content">
+    <p class="text-sm text-gray">Select how you would like to conduct this encounter.</p>
+    <div class="card" onclick="App.goTo('eha-guided')" style="cursor:pointer;margin-top:8px">
+      <div class="flex items-center gap-3 mb-2"><span style="font-size:28px">🤖</span><div><div class="font-bold text-lg">AI-Guided Encounter</div><div class="text-xs text-gray">AI asks questions, suggests diagnosis, auto-triggers referrals</div></div></div>
+      <div class="chip info">Recommended</div>
+    </div>
+    <div class="card" onclick="App.goTo('eha-home')" style="cursor:pointer">
+      <div class="flex items-center gap-3"><span style="font-size:28px">📝</span><div><div class="font-bold">Manual Encounter</div><div class="text-xs text-gray">Standard clinical documentation — vitals, diagnosis, prescriptions</div></div></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- E3: Guided Encounter -->
+<div class="screen" id="eha-guided">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn">‹</button>
+    <span class="top-bar-title">AI Guided Encounter</span>
+  </div>
+  <div class="screen-content">
+    <div class="card accent-bg">
+      <div class="text-xs text-gray mb-2">Patient · Fatima Al-Hassan · F · 34 yrs</div>
+      <div class="alert-banner info" style="margin-bottom:0">
+        <span class="alert-icon">🤖</span>
+        <div><div class="alert-title" style="color:var(--blue-600)">AI Clinical Assistant</div><div class="alert-body">What is the patient's chief complaint today?</div></div>
+      </div>
+    </div>
+    <div class="section-header">Select Chief Complaint</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Cough</div>
+      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Fever</div>
+      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Chest Pain</div>
+      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Headache</div>
+      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Diarrhoea</div>
+      <div class="chip info" onclick="App.goTo('eha-home')" style="cursor:pointer;padding:8px 14px;font-size:12px">Shortness of Breath</div>
+    </div>
+    <div class="card" style="background:var(--blue-50);border:1px solid var(--accent);margin-top:8px">
+      <div style="font-size:10px;color:var(--accent);font-weight:700;margin-bottom:4px;text-transform:uppercase">AI Recommendation Ready</div>
+      <div class="font-bold" style="font-size:14px">Malaria (P. falciparum) · 87% confidence</div>
+      <div class="text-xs text-gray" style="margin-top:4px;line-height:1.5">Artemether-Lumefantrine · Blood film confirm · Return if worsening</div>
+    </div>
+    <img src="assets/reach-ai-guided.png" alt="Guided workflow reference" style="width:100%;border-radius:12px;opacity:0.85;margin-top:8px">
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-secondary" onclick="App.goTo('eha-home')">← Home</button>
+      <button class="btn btn-primary" onclick="App.goTo('eha-encounters')">✓ Submit Encounter</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- E4: Patient -->
+<div class="screen" id="eha-patient">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn">‹</button>
+    <span class="top-bar-title">Fatima Al-Hassan</span>
+  </div>
+  <div class="screen-content">
+    <div class="card">
+      <div class="flex between items-center mb-2">
+        <div><div class="font-bold" style="font-size:16px">Fatima Al-Hassan</div><div class="text-xs text-gray">F · 34 yrs · O+ blood group</div></div>
+        <div class="chip success">Active</div>
+      </div>
+      <div class="sep" style="margin:8px calc(-1*16px)"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <div><div class="text-xs text-gray">Phone</div><div class="text-sm font-semi">+234 803 xxx xxxx</div></div>
+        <div><div class="text-xs text-gray">LGA</div><div class="text-sm font-semi">Garki, Abuja</div></div>
+      </div>
+    </div>
+    <div class="section-header">Encounters (3)</div>
+    <div class="card" style="padding:0">
+      <div class="list-item" onclick="App.goTo('eha-guided')"><div class="li-icon">🤖</div><div class="li-body"><div class="li-title">Guided · Fever &amp; Headache</div><div class="li-sub">Today · Diagnosis: Malaria (P.falciparum)</div></div><div class="li-right">›</div></div>
+      <div class="list-item"><div class="li-icon">📝</div><div class="li-body"><div class="li-title">Manual · Follow-up</div><div class="li-sub">Aug 12 · BP: 120/80 · Rx issued</div></div><div class="li-right">›</div></div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('eha-encounter-type')">+ New Encounter</button>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  LAFIYA MODULE — L1: Home
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="laf-home">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="home-header">
+    <div class="home-greeting">Good morning</div>
+    <div class="home-name">Amina Mohammed 🌿</div>
+    <div class="home-badge">📍 Dala Ward · Kano LGA · Synced ✓</div>
+  </div>
+  <div class="screen-content">
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Settlements Surveyed</div><div class="kpi-value">12</div><div class="kpi-sub">of 18 this month</div></div>
+      <div class="kpi-card"><div class="kpi-label">Surveys Complete</div><div class="kpi-value">47</div><div class="kpi-sub">94% completion rate</div></div>
+    </div>
+    <div class="progress-label"><span>Settlement Coverage</span><strong>67%</strong></div>
+    <div class="progress-track"><div class="progress-fill" style="width:67%"></div></div>
+    <button class="quick-action" onclick="App.goTo('laf-setup')">
+      <div class="qa-icon">+</div>
+      <div><div class="qa-label">Start New Community Survey</div><div class="qa-sub">GPS · Ward · Settlement</div></div>
+    </button>
+    <div class="section-header">Pending Settlements (6)</div>
+    <div class="card" style="padding:0">
+      <div class="list-item" onclick="App.goTo('laf-setup')"><div class="li-icon">📍</div><div class="li-body"><div class="li-title">Sabuwar Kasuwa</div><div class="li-sub">Not yet surveyed this month</div></div><span class="chip info">Start ›</span></div>
+      <div class="list-item" onclick="App.goTo('laf-setup')"><div class="li-icon">📍</div><div class="li-body"><div class="li-title">Dan Agundi</div><div class="li-sub">Last: Aug 15 (35 days ago)</div></div><span class="chip warning">Overdue</span></div>
+      <div class="list-item" onclick="App.goTo('laf-setup')"><div class="li-icon">📍</div><div class="li-body"><div class="li-title">Kurmi Market</div><div class="li-sub">Not yet surveyed this month</div></div><span class="chip info">Start ›</span></div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- L2: Survey Setup + GPS -->
+<div class="screen" id="laf-setup">
+  <div class="status-bar"><span class="status-time">9:43</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn" data-goto="laf-home">‹</button>
+    <span class="top-bar-title">Community Survey</span>
+    <span class="step-badge">Step 1 of 5</span>
+  </div>
+  <div class="step-bar"><div class="step-fill" style="width:20%"></div></div>
+  <div class="screen-content">
+    <div class="section-header">Survey Location</div>
+    <div class="form-group">
+      <label class="form-label">State <span>*</span></label>
+      <input class="form-input filled" value="Kano" readonly>
+    </div>
+    <div class="form-group">
+      <label class="form-label">LGA <span>*</span></label>
+      <input class="form-input select-arrow filled" value="Dala">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Ward <span>*</span></label>
+      <input class="form-input select-arrow filled" value="Dala Ward">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Settlement <span>*</span></label>
+      <input class="form-input select-arrow" placeholder="Select settlement…">
+    </div>
+    <div class="gps-block">
+      <span class="gps-icon">📍</span>
+      <div class="gps-coords">
+        <strong>Lat: 11.9834 &nbsp; Lon: 8.5175</strong><br>
+        <span class="gps-accuracy good">Accuracy: ±8 m &nbsp; ✓ Good signal</span>
+      </div>
+    </div>
+    <div class="form-hint">Survey date: <strong>Sep 22, 2026</strong> (today)</div>
+    <button class="btn btn-primary" onclick="App.goTo('laf-population')" style="margin-top:8px">Next: Population Data →</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- L3: Population Data -->
+<div class="screen" id="laf-population">
+  <div class="status-bar"><span class="status-time">9:46</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn" data-goto="laf-setup">‹</button>
+    <span class="top-bar-title">Population Data</span>
+    <span class="step-badge">Step 2 of 5</span>
+  </div>
+  <div class="step-bar"><div class="step-fill" style="width:40%"></div></div>
+  <div class="screen-content">
+    <div class="section-header">Sabuwar Kasuwa Settlement</div>
+    <div class="form-group">
+      <label class="form-label">Number of Households <span>*</span></label>
+      <input class="form-input filled" value="124" type="number">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Persons per Household (avg)</label>
+      <input class="form-input filled" value="5.2" type="number">
+      <span class="form-hint">LGA average: 5.2</span>
+    </div>
+    <div class="computed-field">
+      <div class="cf-label">Estimated Total Population (auto-calculated)</div>
+      <div class="cf-value">645</div>
+      <div class="cf-sub">124 households × 5.2 persons</div>
+    </div>
+    <div class="section-header" style="margin-top:4px">Women of Reproductive Age (15–49 yrs)</div>
+    <div class="form-group">
+      <label class="form-label">Total WRA <span>*</span></label>
+      <input class="form-input filled" value="162" type="number">
+      <span class="form-hint success">✓ 25.1% of population — within expected range (20–27%)</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">WRA Breakdown (optional)</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <input class="form-input" placeholder="15–24" value="58" type="number">
+        <input class="form-input" placeholder="25–34" value="72" type="number">
+        <input class="form-input" placeholder="35–49" value="32" type="number">
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-secondary" onclick="App.goTo('laf-setup')">← Back</button>
+      <button class="btn btn-primary" onclick="App.goTo('laf-fp')">Next: FP Data →</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- L4: FP Screening -->
+<div class="screen" id="laf-fp">
+  <div class="status-bar"><span class="status-time">9:50</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn" data-goto="laf-population">‹</button>
+    <span class="top-bar-title">Family Planning</span>
+    <span class="step-badge">Step 3 of 5</span>
+  </div>
+  <div class="step-bar"><div class="step-fill" style="width:60%"></div></div>
+  <div class="screen-content">
+    <div class="section-header">FP Status (based on WRA interviews)</div>
+    <div class="form-group">
+      <label class="form-label">WRA currently using any FP method <span>*</span></label>
+      <input class="form-input filled" value="89" type="number">
+      <span class="form-hint">of 162 WRA &nbsp;→&nbsp; <strong style="color:var(--accent)">54.9%</strong> FP prevalence</span>
+    </div>
+    <div class="section-header" style="margin-top:4px">Unmet Need</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group">
+        <label class="form-label">Want to space births</label>
+        <input class="form-input filled" value="28" type="number">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Want to limit births</label>
+        <input class="form-input filled" value="14" type="number">
+      </div>
+    </div>
+    <div class="computed-field">
+      <div class="cf-label">Total Unmet FP Need</div>
+      <div class="cf-value" style="color:var(--red-600)">42 (25.9% of WRA)</div>
+      <div class="cf-sub">Spacing: 28 &nbsp;·&nbsp; Limiting: 14</div>
+    </div>
+    <div class="form-group" style="margin-top:4px">
+      <label class="form-label">Barriers to FP (select all that apply)</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+        <div class="chip info" style="cursor:pointer;padding:6px 12px">Partner opposition</div>
+        <div class="chip info" style="cursor:pointer;padding:6px 12px">Religious</div>
+        <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Side effects</div>
+        <div class="chip neutral" style="cursor:pointer;padding:6px 12px">No access</div>
+        <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Cost</div>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-secondary" onclick="App.goTo('laf-population')">← Back</button>
+      <button class="btn btn-primary" onclick="App.goTo('laf-mortality')">Next: Mortality →</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- L5: Mortality Data -->
+<div class="screen" id="laf-mortality">
+  <div class="status-bar"><span class="status-time">9:54</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn" data-goto="laf-fp">‹</button>
+    <span class="top-bar-title">Mortality Data</span>
+    <span class="step-badge">Step 4 of 5</span>
+  </div>
+  <div class="step-bar"><div class="step-fill" style="width:80%"></div></div>
+  <div class="screen-content">
+    <div class="section-header">Maternal Deaths (past 12 months)</div>
+    <p class="text-sm text-gray">Women who died during pregnancy, childbirth, or within 42 days of delivery.</p>
+    <div class="radio-group" style="margin:8px 0">
+      <div class="radio-option selected"><div class="radio-dot"></div><span class="radio-label">Yes — deaths occurred</span></div>
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">No</span></div>
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Don't know</span></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Number of maternal deaths <span>*</span></label>
+      <input class="form-input filled" value="2" type="number">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Cause of death (select all)</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+        <div class="chip danger" style="cursor:pointer;padding:6px 12px">☑ Hemorrhage</div>
+        <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Eclampsia</div>
+        <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Sepsis</div>
+        <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Obstructed labour</div>
+        <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Unknown</div>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <div class="section-header" style="margin-top:4px">Infant Deaths (under 1 yr, past 12 months)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Total infant deaths</label><input class="form-input filled" value="5" type="number"></div>
+      <div class="form-group"><label class="form-label">Neonatal (0–28 days)</label><input class="form-input filled" value="3" type="number"></div>
+    </div>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-secondary" onclick="App.goTo('laf-fp')">← Back</button>
+      <button class="btn btn-primary" onclick="App.goTo('laf-review')">Next: Review →</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- L6: Review & Submit -->
+<div class="screen" id="laf-review">
+  <div class="status-bar"><span class="status-time">9:58</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn" data-goto="laf-mortality">‹</button>
+    <span class="top-bar-title">Survey Review</span>
+    <span class="step-badge">Step 5 of 5</span>
+  </div>
+  <div class="step-bar"><div class="step-fill" style="width:100%"></div></div>
+  <div class="screen-content">
+    <div class="alert-banner info"><span class="alert-icon">📍</span><div><div class="alert-title" style="color:var(--blue-600)">Sabuwar Kasuwa · Dala Ward · Kano</div><div class="alert-body">GPS: 11.9834, 8.5175 · ±8m · Sep 22, 2026 · Amina Mohammed</div></div></div>
+    <div class="card">
+      <div class="section-header" style="margin-bottom:8px">Population</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+        <div><span class="text-gray">Households</span><div class="font-bold">124</div></div>
+        <div><span class="text-gray">Total Population</span><div class="font-bold">645</div></div>
+        <div><span class="text-gray">WRA (15–49)</span><div class="font-bold">162 (25.1%)</div></div>
+        <div><span class="text-gray">Currently using FP</span><div class="font-bold">89 (54.9%)</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-header" style="margin-bottom:8px">Unmet FP Need</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+        <div><span class="text-gray">Total unmet need</span><div class="font-bold text-danger">42 (25.9%)</div></div>
+        <div><span class="text-gray">Spacing / Limiting</span><div class="font-bold">28 / 14</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-header" style="margin-bottom:8px">Mortality</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+        <div><span class="text-gray">Maternal deaths</span><div class="font-bold text-danger">2</div></div>
+        <div><span class="text-gray">Infant deaths</span><div class="font-bold text-danger">5 (3 neonatal)</div></div>
+      </div>
+    </div>
+    <div class="form-hint" style="text-align:center">Survey will save locally and sync when online.</div>
+    <button class="btn btn-primary" onclick="App.goTo('laf-success')">✓ Submit Survey</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- L7: Success -->
+<div class="screen" id="laf-success">
+  <div class="status-bar"><span class="status-time">10:01</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="screen-content" style="justify-content:center">
+    <div class="success-screen">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Survey Submitted!</div>
+      <div class="success-body">Sabuwar Kasuwa survey saved and synced to the Lafiya dashboard.<br><br>You have <strong>5 settlements</strong> remaining this month.</div>
+      <button class="btn btn-primary" onclick="App.goTo('laf-home')" style="width:240px">Start Next Survey</button>
+      <button class="btn btn-ghost" onclick="App.goTo('laf-home')">Back to Home</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  WARIF MODULE — W1: Home
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="war-home">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="home-header" style="background:var(--purple-600)">
+    <div class="home-greeting">Case Management</div>
+    <div class="home-name">Lagos Shelter 🔵</div>
+    <div class="home-badge">September 2026 · 89 active cases</div>
+  </div>
+  <div class="screen-content">
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">New Cases</div><div class="kpi-value">18</div><div class="kpi-sub">This month</div></div>
+      <div class="kpi-card"><div class="kpi-label">Follow-Up Due</div><div class="kpi-value" style="color:var(--amber-600)">12</div><div class="kpi-sub">Action needed</div></div>
+    </div>
+    <button class="quick-action" onclick="App.goTo('war-intake')">
+      <div class="qa-icon">+</div>
+      <div><div class="qa-label">New Case Intake</div><div class="qa-sub">Start survivor intake process</div></div>
+    </button>
+    <div class="section-header">⚠ Follow-Up Overdue</div>
+    <div class="card" style="padding:0">
+      <div class="case-row overdue" onclick="App.goTo('war-detail')"><span class="cr-id">WRF-2026-04498</span><span class="chip warning" style="font-size:10px">IPV · 14 days</span></div>
+      <div class="case-row overdue" onclick="App.goTo('war-detail')" style="border-top:1px solid var(--gray-100)"><span class="cr-id">WRF-2026-04501</span><span class="chip warning" style="font-size:10px">SV · 21 days</span></div>
+    </div>
+    <div class="section-header">Recent Cases</div>
+    <div class="card" style="padding:0">
+      <div class="case-row" onclick="App.goTo('war-detail')"><span class="cr-id">WRF-2026-04521</span><span class="chip success" style="font-size:10px">NEW</span><span class="cr-date">Today</span></div>
+      <div class="case-row" onclick="App.goTo('war-detail')" style="border-top:1px solid var(--gray-100)"><span class="cr-id">WRF-2026-04519</span><span class="chip info" style="font-size:10px">IPV</span><span class="cr-date">Sep 21</span></div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- W2: Case Intake -->
+<div class="screen" id="war-intake">
+  <div class="status-bar"><span class="status-time">9:43</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn" data-goto="war-home">‹</button>
+    <span class="top-bar-title">New Case Intake</span>
+  </div>
+  <div class="screen-content">
+    <div class="case-id-block">
+      <div class="case-id-label">CASE ID — Auto-assigned (never shared without consent)</div>
+      <div class="case-id-value">WRF-2026-04522</div>
+    </div>
+    <div class="section-header">Entry Point <span style="color:var(--red-600)">*</span></div>
+    <div class="radio-group">
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Medical</span></div>
+      <div class="radio-option selected"><div class="radio-dot"></div><span class="radio-label">Shelter (walk-in)</span></div>
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Legal Aid</span></div>
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Psychosocial</span></div>
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Hotline referral</span></div>
+    </div>
+    <div class="section-header" style="margin-top:4px">Basic Demographics</div>
+    <div class="form-group">
+      <label class="form-label">Age Range <span>*</span></label>
+      <input class="form-input select-arrow" value="18–24">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Gender Identity <span>*</span></label>
+      <input class="form-input select-arrow" value="Female">
+    </div>
+    <div class="form-group">
+      <label class="form-label">State of Origin</label>
+      <input class="form-input select-arrow" placeholder="Select state…">
+    </div>
+    <div class="section-header" style="margin-top:4px">⚠ Immediate Safety</div>
+    <p class="text-sm text-gray" style="margin-bottom:8px">Is the survivor currently in danger?</p>
+    <div class="radio-group">
+      <div class="radio-option" onclick="App.goTo('war-alert')"><div class="radio-dot"></div><span class="radio-label" style="color:var(--red-600);font-weight:600">Yes — currently in danger</span></div>
+      <div class="radio-option selected"><div class="radio-dot"></div><span class="radio-label">No — safe right now</span></div>
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Unsure</span></div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('war-cases')" style="margin-top:12px">Continue to Incident Details →</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- W3: Safety Alert -->
+<div class="screen" id="war-alert">
+  <div class="status-bar danger"><span class="status-time">9:44</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar danger">
+    <span class="top-bar-title" style="color:white">🔴 IMMEDIATE SAFETY CONCERN</span>
+  </div>
+  <div class="danger-fullscreen">
+    <div class="danger-icon">🚨</div>
+    <div class="danger-title">Survivor Is Currently In Danger</div>
+    <div class="danger-body">Case: <strong>WRF-2026-04522</strong><br>The survivor has indicated they are currently in danger. Follow the steps below immediately.</div>
+    <div class="action-list">
+      <div class="action-item"><div class="action-num">1</div><div class="action-text">Ensure the survivor is physically safe within your facility <strong>right now</strong>.</div></div>
+      <div class="action-item"><div class="action-num">2</div><div class="action-text">Notify your supervisor immediately. Do not handle this alone.</div></div>
+      <div class="action-item"><div class="action-num">3</div><div class="action-text">Do NOT disclose the survivor's location to anyone outside this facility.</div></div>
+      <div class="action-item"><div class="action-num">4</div><div class="action-text">Follow <strong>WARIF Safety Protocol 3B</strong>.</div></div>
+    </div>
+    <button class="btn btn-secondary" onclick="App.goTo('war-cases')" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);margin-top:auto">📞 Call Supervisor</button>
+    <button class="btn" onclick="App.goTo('war-cases')" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);font-size:13px;height:40px">I understand — continue intake</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- W4: Case List -->
+<div class="screen" id="war-cases">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn" data-goto="war-home">‹</button>
+    <span class="top-bar-title">All Cases — Lagos Shelter</span>
+  </div>
+  <div class="screen-content" style="gap:8px">
+    <div style="display:flex;gap:8px">
+      <div class="chip info" style="flex:1;justify-content:center;padding:8px">All (89)</div>
+      <div class="chip warning" style="flex:1;justify-content:center;padding:8px">Due (12)</div>
+      <div class="chip success" style="flex:1;justify-content:center;padding:8px">Open (67)</div>
+    </div>
+    <div class="form-group"><input class="form-input" placeholder="🔍 Search by case number…"></div>
+    <div class="section-header">⚠ Follow-Up Overdue</div>
+    <div class="case-row overdue" onclick="App.goTo('war-detail')"><span class="cr-id">WRF-2026-04498</span><span class="chip warning" style="font-size:10px">IPV · ⚠ 14 days</span></div>
+    <div class="case-row overdue" onclick="App.goTo('war-detail')" style="margin-top:4px"><span class="cr-id">WRF-2026-04501</span><span class="chip warning" style="font-size:10px">SV · ⚠ 21 days</span></div>
+    <div class="section-header" style="margin-top:4px">Active Cases</div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div class="case-row" onclick="App.goTo('war-detail')"><span class="cr-id">WRF-2026-04521</span><span class="chip success" style="font-size:10px">NEW</span><span class="cr-date">Today</span></div>
+      <div class="case-row" onclick="App.goTo('war-detail')"><span class="cr-id">WRF-2026-04519</span><span class="chip info" style="font-size:10px">IPV</span><span class="cr-date">Sep 21</span></div>
+      <div class="case-row" onclick="App.goTo('war-detail')"><span class="cr-id">WRF-2026-04515</span><span class="chip danger" style="font-size:10px">SV</span><span class="cr-date">Sep 18</span></div>
+      <div class="case-row" onclick="App.goTo('war-detail')"><span class="cr-id">WRF-2026-04510</span><span class="chip neutral" style="font-size:10px">PA</span><span class="cr-date">Sep 15</span></div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('war-intake')" style="margin-top:8px">+ New Case Intake</button>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- W5: Case Detail + Timeline -->
+<div class="screen" id="war-detail">
+  <div class="status-bar"><span class="status-time">9:45</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn" data-goto="war-cases">‹</button>
+    <span class="top-bar-title">WRF-2026-04521</span>
+    <div class="chip success" style="margin-left:auto">NEW</div>
+  </div>
+  <div class="screen-content">
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+        <div><span class="text-gray">Entry point</span><div class="font-semi">Shelter (walk-in)</div></div>
+        <div><span class="text-gray">Age range</span><div class="font-semi">18–24</div></div>
+        <div><span class="text-gray">Status</span><div class="chip success" style="margin-top:2px">Open</div></div>
+        <div><span class="text-gray">Assigned to</span><div class="font-semi">Binta Suleiman</div></div>
+      </div>
+    </div>
+    <div class="section-header">Case Timeline</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot done">✓</div>
+        <div class="timeline-body">
+          <div class="timeline-title">Intake Completed</div>
+          <div class="timeline-sub">Sep 22, 10:34 AM · Reception staff</div>
+          <div class="timeline-tag done">Intake</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot current">→</div>
+        <div class="timeline-body">
+          <div class="timeline-title">Medical Assessment Pending</div>
+          <div class="timeline-sub">Awaiting medical staff — PEP window open</div>
+          <div class="timeline-tag alert">Action required</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot pending">3</div>
+        <div class="timeline-body">
+          <div class="timeline-title">Psychosocial Support</div>
+          <div class="timeline-sub">Scheduled: Sep 23, 2 PM</div>
+          <div class="timeline-tag pending">Upcoming</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot pending">4</div>
+        <div class="timeline-body">
+          <div class="timeline-title">Legal Aid Referral</div>
+          <div class="timeline-sub">Not yet initiated</div>
+          <div class="timeline-tag pending">Pending</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('war-referral')">Create Referral →</button>
+    <button class="btn btn-secondary" onclick="App.goTo('war-cases')">Back to Cases</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- W6: Referral -->
+<div class="screen" id="war-referral">
+  <div class="status-bar"><span class="status-time">9:50</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn" data-goto="war-detail">‹</button>
+    <span class="top-bar-title">Create Referral</span>
+  </div>
+  <div class="screen-content">
+    <div class="form-hint">Case: <strong>WRF-2026-04521</strong></div>
+    <div class="form-group">
+      <label class="form-label">Referral Type <span>*</span></label>
+      <input class="form-input select-arrow filled" value="Medical Care">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Receiving Organisation <span>*</span></label>
+      <input class="form-input select-arrow filled" value="Lagos State SARC — Ikoyi">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Urgency <span>*</span></label>
+      <div class="radio-group">
+        <div class="radio-option selected"><div class="radio-dot"></div><span class="radio-label">Priority — within 24 hours</span></div>
+        <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Routine — within 72 hours</span></div>
+        <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Emergency — immediate</span></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Reason</label>
+      <input class="form-input filled" value="Forensic medical examination required within PEP window">
+    </div>
+    <div class="alert-banner warning" style="margin-top:4px"><span class="alert-icon">⚠</span><div><div class="alert-title warning">PEP Window</div><div class="alert-body">Post-exposure prophylaxis must be initiated within 72 hours of incident. Elapsed time: ~18 hours. <strong>Act within 54 hours.</strong></div></div></div>
+    <button class="btn btn-primary" onclick="App.goTo('war-detail')" style="margin-top:8px">✓ Send Referral — Referral Saved ✓</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  MSF MODULE — M1: Home
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="msf-home">
+  <div class="status-bar danger"><span class="status-time">14:22</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="home-header" style="background:var(--gray-900)">
+    <div class="home-greeting">MSF Nigeria · Borno Field Ops 🚑</div>
+    <div class="home-name">Dr. Fatou Diallo</div>
+    <div class="home-badge" style="background:rgba(220,38,38,0.3);color:#FCA5A5">🔴 MCI ACTIVE · MCI-2026-BNO-042</div>
+  </div>
+  <div class="screen-content">
+    <div class="alert-banner danger"><span class="alert-icon">🚨</span><div><div class="alert-title danger">Mass Casualty Incident Active</div><div class="alert-body">23 patients triaged · RED: 8 · YEL: 9 · GRN: 5 · BLK: 1<br>Duration: 0:23</div></div></div>
+    <button class="quick-action" style="background:var(--red-600)" onclick="App.goTo('msf-triage')">
+      <div class="qa-icon" style="background:rgba(255,255,255,0.15)">⚡</div>
+      <div><div class="qa-label">Continue MCI Triage</div><div class="qa-sub">~40 patients remaining</div></div>
+    </button>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Camp B Patients</div><div class="kpi-value">189</div><div class="kpi-sub">This week</div></div>
+      <div class="kpi-card"><div class="kpi-label">SAM in OTP</div><div class="kpi-value">67</div><div class="kpi-sub">Cure rate: 72%</div></div>
+    </div>
+    <div class="section-header">Quick Actions</div>
+    <div class="list-item" onclick="App.goTo('msf-mci')" style="background:var(--gray-50);border-radius:var(--r-md)"><div class="li-icon" style="background:var(--red-100)">🚨</div><div class="li-body"><div class="li-title">MCI Summary</div><div class="li-sub">Live triage board</div></div><div class="li-right">›</div></div>
+    <div class="list-item" onclick="App.goTo('msf-nutrition')" style="background:var(--gray-50);border-radius:var(--r-md)"><div class="li-icon" style="background:var(--amber-50)">⚖️</div><div class="li-body"><div class="li-title">Nutrition Assessment</div><div class="li-sub">MUAC · SAM/MAM classification</div></div><div class="li-right">›</div></div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- M2: MCI Triage -->
+<div class="screen" id="msf-triage">
+  <div class="status-bar danger"><span class="status-time">14:32</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar dark">
+    <button class="back-btn" data-goto="msf-home" style="background:rgba(255,255,255,0.1);color:white">‹</button>
+    <span class="top-bar-title" style="color:white">MCI Triage — Patient #24</span>
+  </div>
+  <div style="background:var(--gray-900);padding:8px 16px;flex-shrink:0">
+    <div class="mci-board">
+      <div class="mci-cell red"><div class="mci-count">8</div><div class="mci-label">RED</div></div>
+      <div class="mci-cell yellow"><div class="mci-count">9</div><div class="mci-label">YELLOW</div></div>
+      <div class="mci-cell green"><div class="mci-count">5</div><div class="mci-label">GREEN</div></div>
+      <div class="mci-cell black"><div class="mci-count">1</div><div class="mci-label">BLACK</div></div>
+    </div>
+  </div>
+  <div class="screen-content" style="background:var(--gray-900);gap:16px">
+    <div class="triage-question">CAN THE PATIENT WALK?</div>
+    <div class="triage-btn-row">
+      <button class="triage-btn green-btn" onclick="App.goTo('msf-mci')">YES<div class="triage-btn-sub">→ GREEN zone</div></button>
+      <button class="triage-btn red-btn" onclick="App.goTo('msf-triage-2')">NO<div class="triage-btn-sub">→ Assess further</div></button>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border-radius:var(--r-md);padding:12px">
+      <div class="text-xs" style="color:rgba(255,255,255,0.5)">START TRIAGE PROTOCOL · MCI-2026-BNO-042</div>
+      <div class="text-sm" style="color:rgba(255,255,255,0.7);margin-top:4px">Tap YES or NO to classify. Each assessment takes ~60 seconds.</div>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- M2b: Triage Step 2 -->
+<div class="screen" id="msf-triage-2">
+  <div class="status-bar danger"><span class="status-time">14:33</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar dark">
+    <button class="back-btn" data-goto="msf-triage" style="background:rgba(255,255,255,0.1);color:white">‹</button>
+    <span class="top-bar-title" style="color:white">Patient #24 · Cannot Walk</span>
+  </div>
+  <div class="screen-content" style="background:var(--gray-900);gap:16px">
+    <div class="triage-question">IS PATIENT BREATHING?</div>
+    <div class="triage-btn-row">
+      <button class="triage-btn" style="background:rgba(255,255,255,0.1)" onclick="App.goTo('msf-triage-3')">YES<div class="triage-btn-sub">→ Check rate</div></button>
+      <button class="triage-btn black-btn" onclick="App.goTo('msf-mci')">NO<div class="triage-btn-sub">→ Open airway<br>Recheck</div></button>
+    </div>
+    <div class="triage-question" style="font-size:14px;opacity:0.7">RESPIRATORY RATE</div>
+    <div class="triage-btn-row">
+      <button class="triage-btn red-btn" onclick="App.goTo('msf-result-red')">&lt;10 or &gt;30/min<div class="triage-btn-sub">→ 🔴 RED</div></button>
+      <button class="triage-btn" style="background:rgba(255,255,255,0.1)" onclick="App.goTo('msf-triage-3')">10–30/min<div class="triage-btn-sub">→ Continue</div></button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- M2c: Triage RED result -->
+<div class="screen" id="msf-result-red">
+  <div class="status-bar danger"><span class="status-time">14:34</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar danger"><span class="top-bar-title">Patient #24 — Classified</span></div>
+  <div style="background:var(--red-600);flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px">
+    <div style="font-size:80px">🔴</div>
+    <div style="font-size:28px;font-weight:900;color:white;letter-spacing:0.05em">RED — IMMEDIATE</div>
+    <div style="font-size:14px;color:rgba(255,255,255,0.8);text-align:center;line-height:1.6">Respiratory rate &gt;30/min<br>Requires immediate life-saving intervention</div>
+    <button class="btn" style="background:white;color:var(--red-700);font-weight:700;margin-top:16px;width:100%" onclick="App.goTo('msf-triage')">✓ Confirm · Next Patient →</button>
+    <button class="btn" style="background:rgba(255,255,255,0.15);color:white" onclick="App.goTo('msf-mci')">View MCI Summary</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- M2d: Triage step 3 -->
+<div class="screen" id="msf-triage-3">
+  <div class="status-bar danger"><span class="status-time">14:35</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar dark"><button class="back-btn" data-goto="msf-triage-2" style="background:rgba(255,255,255,0.1);color:white">‹</button><span class="top-bar-title" style="color:white">Patient #24 · Rate OK</span></div>
+  <div class="screen-content" style="background:var(--gray-900);gap:16px">
+    <div class="triage-question">RADIAL PULSE / CAP REFILL</div>
+    <div class="triage-btn-row">
+      <button class="triage-btn red-btn" onclick="App.goTo('msf-result-red')">Absent / &gt;2 sec<div class="triage-btn-sub">→ 🔴 RED</div></button>
+      <button class="triage-btn" style="background:rgba(255,255,255,0.1)" onclick="App.goTo('msf-result-yellow')">Present / &lt;2 sec<div class="triage-btn-sub">→ Continue</div></button>
+    </div>
+    <div class="triage-question" style="font-size:14px;opacity:0.7">MENTAL STATUS (AVPU)</div>
+    <div class="triage-btn-row">
+      <button class="triage-btn" style="background:rgba(255,200,0,0.4)" onclick="App.goTo('msf-result-yellow')">Alert / Voice<div class="triage-btn-sub">→ 🟡 YELLOW</div></button>
+      <button class="triage-btn red-btn" onclick="App.goTo('msf-result-red')">Pain / Unresp.<div class="triage-btn-sub">→ 🔴 RED</div></button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- M2e: YELLOW result -->
+<div class="screen" id="msf-result-yellow">
+  <div class="status-bar"><span class="status-time">14:36</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar" style="background:var(--amber-600)"><span class="top-bar-title">Patient #24 — Classified</span></div>
+  <div style="background:var(--amber-600);flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px">
+    <div style="font-size:80px">🟡</div>
+    <div style="font-size:28px;font-weight:900;color:white">YELLOW — DELAYED</div>
+    <div style="font-size:14px;color:rgba(255,255,255,0.8);text-align:center;line-height:1.6">Stable. Can wait for treatment.<br>Monitor and reassess if condition changes.</div>
+    <button class="btn" style="background:white;color:var(--amber-600);font-weight:700;margin-top:16px;width:100%" onclick="App.goTo('msf-triage')">✓ Confirm · Next Patient →</button>
+    <button class="btn" style="background:rgba(255,255,255,0.15);color:white" onclick="App.goTo('msf-mci')">View MCI Summary</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- M3: MCI Summary Board -->
+<div class="screen" id="msf-mci">
+  <div class="status-bar danger"><span class="status-time">14:38</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar dark"><button class="back-btn" data-goto="msf-home" style="background:rgba(255,255,255,0.1);color:white">‹</button><span class="top-bar-title" style="color:white">MCI Live Board</span></div>
+  <div style="background:var(--gray-900);padding:12px 16px;flex-shrink:0">
+    <div class="mci-board" style="margin-bottom:8px">
+      <div class="mci-cell red"><div class="mci-count">8</div><div class="mci-label">🔴 RED</div></div>
+      <div class="mci-cell yellow"><div class="mci-count">9</div><div class="mci-label">🟡 YEL</div></div>
+      <div class="mci-cell green"><div class="mci-count">5</div><div class="mci-label">🟢 GRN</div></div>
+      <div class="mci-cell black"><div class="mci-count">1</div><div class="mci-label">⬛ BLK</div></div>
+    </div>
+    <div style="color:rgba(255,255,255,0.6);font-size:12px;text-align:center">Total triaged: 23 · Remaining: ~40 · Duration: 0:26</div>
+  </div>
+  <div class="screen-content">
+    <div class="alert-banner danger"><span class="alert-icon">🩸</span><div><div class="alert-title danger">Blood Supply — B+ LOW</div><div class="alert-body">Request emergency resupply from Maiduguri Depot. Estimated arrival: 35 min.</div></div></div>
+    <div class="card">
+      <div class="section-header" style="margin-bottom:8px">Resources</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+        <div><span class="text-gray">Ambulances avail.</span><div class="font-bold">2 of 5</div></div>
+        <div><span class="text-gray">OR capacity</span><div class="font-bold">1 slot open</div></div>
+        <div><span class="text-gray">Triage officers</span><div class="font-bold">3 active</div></div>
+        <div><span class="text-gray">Surgeons on call</span><div class="font-bold">2</div></div>
+      </div>
+    </div>
+    <button class="btn btn-danger" onclick="App.goTo('msf-triage')" style="margin-top:4px">⚡ Continue Triage</button>
+    <button class="btn btn-secondary" onclick="App.goTo('msf-home')">Back to Home</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- M4: Nutrition Assessment -->
+<div class="screen" id="msf-nutrition">
+  <div class="status-bar danger"><span class="status-time">11:15</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="msf-home">‹</button><span class="top-bar-title">Nutrition Assessment</span></div>
+  <div class="screen-content">
+    <div class="alert-banner info"><span class="alert-icon">ℹ️</span><div><div class="alert-title" style="color:var(--blue-600)">Patient</div><div class="alert-body">Age: 3 yrs 4 mo (40 months) · Sex: Female · Weight: 8.2 kg · Height: 71 cm</div></div></div>
+    <div class="form-group">
+      <label class="form-label">MUAC (mm) <span>*</span></label>
+      <input class="form-input filled" value="108" type="number">
+      <span class="form-hint danger">⚠ Below 115mm — SAM threshold</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input filled" value="8.2" type="number"></div>
+      <div class="form-group"><label class="form-label">Height (cm)</label><input class="form-input filled" value="71" type="number"></div>
+    </div>
+    <div class="computed-field">
+      <div class="cf-label">WHZ Score (auto-calculated)</div>
+      <div class="cf-value" style="color:var(--red-600)">–3.8</div>
+      <div class="cf-sub">Below –3 SD → SAM classification confirmed</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Bilateral Pitting Oedema?</label>
+      <div class="radio-group" style="flex-direction:row;gap:12px">
+        <div class="radio-option" style="flex:1"><div class="radio-dot"></div><span class="radio-label">Yes</span></div>
+        <div class="radio-option selected" style="flex:1"><div class="radio-dot"></div><span class="radio-label">No</span></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Appetite Test (RUTF)</label>
+      <div class="radio-group" style="flex-direction:row;gap:12px">
+        <div class="radio-option selected" style="flex:1"><div class="radio-dot"></div><span class="radio-label">Pass</span></div>
+        <div class="radio-option" style="flex:1"><div class="radio-dot"></div><span class="radio-label">Fail</span></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('msf-nutrition-result')">Classify Patient →</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- M5: Nutrition Result -->
+<div class="screen" id="msf-nutrition-result">
+  <div class="status-bar danger"><span class="status-time">11:18</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="msf-nutrition">‹</button><span class="top-bar-title">Classification</span></div>
+  <div class="screen-content">
+    <div class="nutrition-result sam">
+      <div class="nr-status">⚠ SEVERE ACUTE MALNUTRITION</div>
+      <div class="nr-detail">MUAC: 108mm (&lt;115mm) · WHZ: –3.8 · No oedema · Appetite: Pass</div>
+    </div>
+    <div class="card">
+      <div class="section-header" style="margin-bottom:8px">Treatment Protocol — OTP</div>
+      <div style="font-size:12px;color:var(--gray-700);line-height:1.7">
+        <div>✅ <strong>Outpatient Therapeutic Programme (OTP)</strong></div>
+        <div>· Plumpy'Nut® RUTF: 200 kcal/kg/day</div>
+        <div>· Amoxicillin: 250 mg BD × 5 days</div>
+        <div>· Vitamin A: 100,000 IU (single dose)</div>
+        <div>· Next appointment: <strong>Sep 29, 2026 (+7 days)</strong></div>
+      </div>
+    </div>
+    <div class="alert-banner warning"><span class="alert-icon">⚠</span><div><div class="alert-title warning">Monitor For Deterioration</div><div class="alert-body">If appetite fails or oedema develops → transfer to SC (inpatient) immediately.</div></div></div>
+    <button class="btn btn-primary" onclick="App.goTo('msf-home')">✓ Enrol in OTP &amp; Save</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  MAMAI MODULE — A1: Home
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="anc-home">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="home-header" style="background:var(--teal-600)">
+    <div class="home-greeting">MAMAI ANC Programme</div>
+    <div class="home-name">Midwife Hauwa Adamu 🩺</div>
+    <div class="home-badge">Katsina Central PHC · Q3 2026</div>
+  </div>
+  <div class="screen-content">
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Active ANC Patients</div><div class="kpi-value">47</div><div class="kpi-sub">This month</div></div>
+      <div class="kpi-card"><div class="kpi-label">High-Risk</div><div class="kpi-value" style="color:var(--red-600)">12</div><div class="kpi-sub">Need attention</div></div>
+    </div>
+    <div class="alert-banner danger"><span class="alert-icon">🔴</span><div><div class="alert-title danger">3 Patients Overdue</div><div class="alert-body">ANC-2026-KAT-1198 and 2 others have missed their scheduled contact. CHU follow-up recommended.</div></div></div>
+    <button class="quick-action" onclick="App.goTo('anc-register')">
+      <div class="qa-icon">+</div>
+      <div><div class="qa-label">Register New ANC Patient</div><div class="qa-sub">Start 8-contact programme</div></div>
+    </button>
+    <button class="quick-action" style="background:var(--teal-600);margin-top:0" onclick="App.goTo('anc-patient-list')">
+      <div class="qa-icon">📋</div>
+      <div><div class="qa-label">Record ANC Contact</div><div class="qa-sub">Existing patient visit</div></div>
+    </button>
+    <div class="section-header">High-Risk Patients</div>
+    <div class="card" style="padding:0">
+      <div class="list-item" onclick="App.goTo('anc-journey')"><div class="li-icon" style="background:var(--red-100)">⚠</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1247</div><div class="li-sub">GA: 30+2 · Pre-eclampsia risk</div></div><div class="li-right">›</div></div>
+      <div class="list-item" onclick="App.goTo('anc-journey')"><div class="li-icon" style="background:var(--amber-50)">⚠</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1198</div><div class="li-sub">GA: 34+0 · Severe anaemia</div></div><div class="li-right">›</div></div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- A2: ANC Registration -->
+<div class="screen" id="anc-register">
+  <div class="status-bar"><span class="status-time">9:43</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="anc-home">‹</button><span class="top-bar-title">New ANC Registration</span></div>
+  <div class="screen-content">
+    <div class="case-id-block" style="--accent:var(--teal-600);--accent-light:var(--teal-50)">
+      <div class="case-id-label">ANC NUMBER (Auto-assigned)</div>
+      <div class="case-id-value" style="color:var(--teal-600)">ANC-2026-KAT-1248</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Last Menstrual Period (LMP) <span>*</span></label>
+      <input class="form-input filled" value="Jan 15, 2026  📅">
+    </div>
+    <div class="computed-field" style="--accent:var(--teal-600);--accent-light:var(--teal-50)">
+      <div class="cf-label">Gestational Age (auto-calculated)</div>
+      <div class="cf-value" style="color:var(--teal-600)">30 weeks + 2 days</div>
+      <div class="cf-sub">Estimated Delivery Date: Jan 5, 2027</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Gravida</label><input class="form-input filled" value="3"></div>
+      <div class="form-group"><label class="form-label">Para</label><input class="form-input filled" value="2"></div>
+      <div class="form-group"><label class="form-label">Abortus</label><input class="form-input filled" value="0"></div>
+    </div>
+    <div class="section-header" style="margin-top:4px">Risk Factors</div>
+    <div class="radio-group">
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Previous stillbirth</span></div>
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Previous C-section</span></div>
+      <div class="radio-option selected"><div class="radio-dot"></div><span class="radio-label">None of the above</span></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Facility <span>*</span></label>
+      <input class="form-input select-arrow filled" value="Katsina Central PHC" readonly>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('anc-contact')" style="margin-top:8px">Start Contact 1 →</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- A3: ANC Contact 4 Form -->
+<div class="screen" id="anc-contact">
+  <div class="status-bar"><span class="status-time">9:55</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="anc-journey">‹</button><span class="top-bar-title">Contact 4 — ANC Visit</span><span class="step-badge">30+2 wks</span></div>
+  <div class="step-bar" style="background:var(--teal-700)"><div class="step-fill" style="width:50%"></div></div>
+  <div class="screen-content">
+    <div class="alert-banner info" style="background:var(--teal-50);border-color:var(--teal-500)"><span class="alert-icon">🩺</span><div><div class="alert-title" style="color:var(--teal-600)">ANC-2026-KAT-1247 · 4th Contact</div><div class="alert-body">Expected: BP, FHR, Fundal height, Urine, Hb recheck</div></div></div>
+    <div class="section-header">Vitals</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group">
+        <label class="form-label">Systolic BP <span>*</span></label>
+        <input class="form-input filled" value="148" type="number" style="border-color:var(--amber-400)">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Diastolic BP <span>*</span></label>
+        <input class="form-input filled" value="96" type="number" style="border-color:var(--amber-400)">
+      </div>
+    </div>
+    <div class="form-hint warning">⚠ BP 148/96 — above 140/90 threshold</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input filled" value="68.4" type="number"></div>
+      <div class="form-group"><label class="form-label">MUAC (mm)</label><input class="form-input filled" value="245" type="number"></div>
+    </div>
+    <div class="section-header" style="margin-top:4px">Clinical Findings</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Fundal Height (cm)</label><input class="form-input filled" value="29" type="number"></div>
+      <div class="form-group"><label class="form-label">FHR (bpm)</label><input class="form-input filled" value="146" type="number"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Urine Protein <span>*</span></label>
+      <div class="radio-group" style="flex-direction:row;flex-wrap:wrap;gap:8px">
+        <div class="radio-option" style="flex:0 1 auto;padding:6px 12px"><div class="radio-dot"></div><span class="radio-label">Neg</span></div>
+        <div class="radio-option" style="flex:0 1 auto;padding:6px 12px"><div class="radio-dot"></div><span class="radio-label">1+</span></div>
+        <div class="radio-option selected" style="flex:0 1 auto;padding:6px 12px;border-color:var(--red-600);background:var(--red-50)"><div class="radio-dot"></div><span class="radio-label" style="color:var(--red-600)">2+</span></div>
+        <div class="radio-option" style="flex:0 1 auto;padding:6px 12px"><div class="radio-dot"></div><span class="radio-label">3+</span></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Haemoglobin (g/dL)</label>
+      <input class="form-input filled" value="10.2" type="number">
+      <span class="form-hint warning">⚠ Moderate anaemia (&lt;11 g/dL)</span>
+    </div>
+    <button class="btn btn-danger" onclick="App.goTo('anc-alert')" style="margin-top:8px">⚠ View Danger Sign Alerts (2)</button>
+    <button class="btn btn-secondary" onclick="App.goTo('anc-journey')">View ANC Journey</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- A4: Danger Sign Alert -->
+<div class="screen" id="anc-alert">
+  <div class="status-bar danger"><span class="status-time">9:57</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar danger"><button class="back-btn" data-goto="anc-contact" style="background:rgba(255,255,255,0.2);color:white">‹</button><span class="top-bar-title">Clinical Alerts — ANC Contact 4</span></div>
+  <div class="screen-content">
+    <div class="card danger-border" style="margin-top:0">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:20px">🔴</span>
+        <div class="font-bold text-danger">PRE-ECLAMPSIA RISK</div>
+        <div class="chip danger" style="margin-left:auto;font-size:10px">URGENT</div>
+      </div>
+      <div class="text-sm" style="line-height:1.6;color:var(--gray-700)"><strong>Trigger:</strong> BP 148/96 + Urine Protein 2+<br><strong>Threshold:</strong> BP ≥140/90 with proteinuria ≥2+<br><strong>Required action:</strong> Same-day referral to EmONC facility</div>
+    </div>
+    <div class="card" style="border-color:var(--amber-400);background:var(--amber-50)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:20px">🟡</span>
+        <div class="font-bold" style="color:var(--amber-600)">MODERATE ANAEMIA</div>
+        <div class="chip warning" style="margin-left:auto;font-size:10px">MONITOR</div>
+      </div>
+      <div class="text-sm" style="line-height:1.6;color:var(--gray-700)"><strong>Trigger:</strong> Hb 10.2 g/dL<br><strong>Threshold:</strong> &lt;11.0 g/dL<br><strong>Action:</strong> Review iron adherence, increase dose if needed</div>
+    </div>
+    <div class="card" style="background:var(--red-50);border:2px solid var(--red-600)">
+      <div class="section-header danger" style="margin-bottom:8px;color:var(--red-600)">AUTO-GENERATED REFERRAL</div>
+      <div class="text-sm" style="line-height:1.7;color:var(--gray-800)">
+        <div>🏥 <strong>Katsina Central Hospital — EmONC</strong></div>
+        <div>Urgency: <strong style="color:var(--red-600)">URGENT — same day</strong></div>
+        <div>Reason: Pre-eclampsia (BP 148/96 + 2+ proteinuria)</div>
+        <div>Danger signs to watch: severe headache, visual changes, epigastric pain</div>
+      </div>
+    </div>
+    <button class="btn btn-danger" onclick="App.goTo('anc-journey')" style="margin-top:8px">🔴 Confirm Referral &amp; Save Contact ✓</button>
+    <button class="btn btn-secondary" onclick="App.goTo('anc-contact')">← Continue Documenting Contact</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- A5: ANC Journey View -->
+<div class="screen" id="anc-journey">
+  <div class="status-bar"><span class="status-time">10:02</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="anc-home">‹</button><span class="top-bar-title">ANC Journey</span><div class="chip danger" style="margin-left:auto">HIGH RISK</div></div>
+  <div class="screen-content">
+    <div class="card">
+      <div class="font-bold" style="font-size:15px;margin-bottom:4px">ANC-2026-KAT-1247</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:12px">
+        <div><span class="text-gray">GA: </span><strong>30+2 weeks</strong></div>
+        <div><span class="text-gray">EDD: </span><strong>Jan 5, 2027</strong></div>
+        <div><span class="text-gray">Blood: </span><strong>O+</strong></div>
+        <div><span class="text-gray">Gravida: </span><strong>G3P2A0</strong></div>
+      </div>
+    </div>
+    <div class="progress-label"><span>Contact Progress</span><strong>4 of 8</strong></div>
+    <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+    <div class="section-header">Contact History</div>
+    <div style="display:flex;flex-direction:column">
+      <div class="contact-step">
+        <div class="contact-num done">✓</div>
+        <div class="contact-info">
+          <div class="contact-title">Contact 1 — Jan 30, 2026</div>
+          <div class="contact-data">BP: 110/70 · Hb: 10.8 · HIV: –ve · TT1: ✓</div>
+        </div>
+        <div class="chip success" style="font-size:10px">Done</div>
+      </div>
+      <div class="contact-step">
+        <div class="contact-num done">✓</div>
+        <div class="contact-info">
+          <div class="contact-title">Contact 2 — Mar 12, 2026</div>
+          <div class="contact-data">BP: 118/74 · FHR: 142 · FH: 22cm · IPTp-1: ✓</div>
+        </div>
+        <div class="chip success" style="font-size:10px">Done</div>
+      </div>
+      <div class="contact-step">
+        <div class="contact-num done">✓</div>
+        <div class="contact-info">
+          <div class="contact-title">Contact 3 — May 7, 2026</div>
+          <div class="contact-data">BP: 124/78 · IPTp-2: ✓ · Hb: 10.2</div>
+        </div>
+        <div class="chip success" style="font-size:10px">Done</div>
+      </div>
+      <div class="contact-step" onclick="App.goTo('anc-contact')" style="cursor:pointer">
+        <div class="contact-num alert">!</div>
+        <div class="contact-info">
+          <div class="contact-title">Contact 4 — Sep 22, 2026 (TODAY) ▶</div>
+          <div class="contact-data">BP: 148/96 🔴 · Urine: 2+ · Hb: 10.2</div>
+        </div>
+        <div class="chip danger" style="font-size:10px">Alert</div>
+      </div>
+      <div class="contact-step" onclick="App.goTo('anc-contact-routine')" style="cursor:pointer">
+        <div class="contact-num pending">5</div>
+        <div class="contact-info">
+          <div class="contact-title">Contact 5 — Expected Oct 15</div>
+          <div class="contact-data">BP monitoring · IPTp-3 · Haemoglobin</div>
+        </div>
+        <div class="chip neutral" style="font-size:10px">Upcoming</div>
+      </div>
+      <div class="contact-step">
+        <div class="contact-num pending">6</div>
+        <div class="contact-info"><div class="contact-title">Contact 6 — Expected Nov 12</div></div>
+      </div>
+      <div class="contact-step" style="border-bottom:none">
+        <div class="contact-num pending">7–8</div>
+        <div class="contact-info"><div class="contact-title">Contacts 7 &amp; 8 — Dec 2026</div></div>
+      </div>
+    </div>
+    <button class="btn btn-danger" onclick="App.goTo('anc-alert')" style="margin-top:4px">⚠ View Active Alerts (2)</button>
+    <button class="btn btn-primary" onclick="App.goTo('anc-contact')">Record Contact 4</button>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+  ACTIVATION + ONBOARDING FLOWS
+══════════════════════════════════════════════════════════ -->
+
+<!-- ACT-1: Activation Code Entry (New Member) -->
+<div class="screen" id="activation-code">
+  <div class="status-bar light"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar light" style="padding:0 16px">
+    <button class="back-btn dark-btn" data-goto="landing">‹</button>
+    <span class="top-bar-title" style="color:var(--gray-900)">Activate Account</span>
+    <span style="font-size:11px;color:var(--gray-400);margin-left:auto">1 of 3</span>
+  </div>
+  <div class="onboarding-screen" style="padding-top:16px">
+    <div class="onb-logo" style="margin-bottom:0">EHA<span>Care</span></div>
+    <div class="onb-step">Step 1 of 3 — Activation</div>
+    <div class="onb-title">You've been invited!</div>
+    <div class="onb-body">Your supervisor has added you to the team. Enter the 6-digit activation code from your SMS or email.</div>
+    <div class="code-input-row">
+      <div class="code-digit filled">4</div>
+      <div class="code-digit filled">7</div>
+      <div class="code-digit filled">2</div>
+      <div class="code-digit active">_</div>
+      <div class="code-digit">_</div>
+      <div class="code-digit">_</div>
+    </div>
+    <div class="form-hint" style="text-align:center;margin-bottom:16px">Didn't get the code? <span style="color:var(--accent);cursor:pointer">Resend it</span></div>
+    <button class="btn btn-primary" onclick="App.goTo('activation-pin')">Verify Code →</button>
+    <button class="btn btn-ghost" onclick="App.goTo('landing')">Contact supervisor</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ACT-2: Set PIN -->
+<div class="screen" id="activation-pin">
+  <div class="status-bar light"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar light" style="padding:0 16px">
+    <button class="back-btn dark-btn" data-goto="activation-code">‹</button>
+    <span class="top-bar-title" style="color:var(--gray-900)">Set Your PIN</span>
+    <span style="font-size:11px;color:var(--gray-400);margin-left:auto">2 of 3</span>
+  </div>
+  <div class="onboarding-screen" style="padding-top:16px">
+    <div class="onb-logo" style="margin-bottom:0">EHA<span>Care</span></div>
+    <div class="onb-step">Step 2 of 3 — Security</div>
+    <div class="onb-title">Set your PIN</div>
+    <div class="onb-body">Your PIN lets you log in when you're offline. Choose something memorable but secure.</div>
+    <div class="pin-grid">
+      <div class="pin-dot filled">●</div>
+      <div class="pin-dot filled">●</div>
+      <div class="pin-dot filled">●</div>
+      <div class="pin-dot filled">●</div>
+    </div>
+    <div class="form-hint" style="text-align:center;margin-bottom:16px">4-digit PIN — required for offline access</div>
+    <button class="btn btn-primary" onclick="App.goTo('activation-profile')">Continue →</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ACT-3: Profile Completion (Minimal) -->
+<div class="screen" id="activation-profile">
+  <div class="status-bar light"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar light" style="padding:0 16px">
+    <button class="back-btn dark-btn" data-goto="activation-pin">‹</button>
+    <span class="top-bar-title" style="color:var(--gray-900)">Your Profile</span>
+    <span style="font-size:11px;color:var(--gray-400);margin-left:auto">3 of 3</span>
+  </div>
+  <div class="onboarding-screen" style="padding-top:16px">
+    <div class="onb-logo" style="margin-bottom:0">EHA<span>Care</span></div>
+    <div class="onb-step">Step 3 of 3 — Your Profile</div>
+    <div class="onb-title">Almost done!</div>
+    <div class="onb-body">Confirm your details. Your supervisor has pre-filled most of this.</div>
+    <div style="display:flex;flex-direction:column;gap:12px;flex:1">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input filled" value="Amina Mohammed">
+        <span class="form-hint">Set by your supervisor. Contact them to change.</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input class="form-input filled" value="+234 803 xxx xxxx">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role</label>
+        <input class="form-input filled" value="Data Collector — Lafiya Project" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Assigned To</label>
+        <input class="form-input filled" value="Dala Ward, Kano LGA" readonly>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="App.launchModule('mamai','anc-home')" style="margin-top:16px">Start Using EHACare ✓</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  SUPERVISOR — TEAM MANAGEMENT FLOWS
+══════════════════════════════════════════════════════════ -->
+
+<!-- SUP-1: My Team -->
+<div class="screen" id="sup-team">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar">
+    <button class="back-btn">‹</button>
+    <span class="top-bar-title">My Team</span>
+    <button style="margin-left:auto;background:rgba(255,255,255,0.2);border:none;color:white;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer" onclick="App.goTo('sup-add-member')">+ Add</button>
+  </div>
+  <div class="screen-content" style="padding:0;gap:0">
+    <div style="padding:12px 16px;background:var(--gray-50);border-bottom:1px solid var(--gray-100)">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div class="chip info" style="padding:6px 12px">Active (7)</div>
+        <div class="chip warning" style="padding:6px 12px">Pending (2)</div>
+        <div class="chip neutral" style="padding:6px 12px">Inactive (1)</div>
+      </div>
+    </div>
+    <div class="section-header" style="padding:12px 16px 4px;margin:0">Active Members</div>
+    <div class="card" style="margin:0 16px 8px;padding:0">
+      <div class="member-card" onclick="App.goTo('sup-member-detail')">
+        <div class="member-avatar">AM</div>
+        <div><div class="member-name">Amina Mohammed</div><div class="member-meta">Data Collector · Dala Ward · Active today</div></div>
+        <div class="member-status"><div class="sync-badge synced">✓ Synced</div></div>
+      </div>
+      <div class="member-card" onclick="App.goTo('sup-member-detail')">
+        <div class="member-avatar">KA</div>
+        <div><div class="member-name">Khadija Abdullahi</div><div class="member-meta">Data Collector · Dala Ward · 2 days ago</div></div>
+        <div class="member-status"><div class="sync-badge pending">2 pending</div></div>
+      </div>
+      <div class="member-card" onclick="App.goTo('sup-member-detail')">
+        <div class="member-avatar">MI</div>
+        <div><div class="member-name">Musa Ibrahim</div><div class="member-meta">CHW · Kurmi Market · Active today</div></div>
+        <div class="member-status"><div class="sync-badge synced">✓ Synced</div></div>
+      </div>
+    </div>
+    <div class="section-header" style="padding:12px 16px 4px;margin:0">Pending Activation (2)</div>
+    <div class="card" style="margin:0 16px 8px;padding:0">
+      <div class="member-card">
+        <div class="member-avatar" style="background:var(--amber-50);color:var(--amber-600)">FA</div>
+        <div><div class="member-name">Fatima Aliyu</div><div class="member-meta">Invitation sent 2 days ago</div></div>
+        <div class="member-status"><div class="status-pill pending">Pending</div></div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar" style="background:var(--amber-50);color:var(--amber-600)">SA</div>
+        <div><div class="member-name">Suleiman Ahmed</div><div class="member-meta">Saved offline — not yet sent</div></div>
+        <div class="member-status"><div class="status-pill" style="background:var(--gray-100);color:var(--gray-500)">Offline</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- SUP-2: Add Team Member -->
+<div class="screen" id="sup-add-member">
+  <div class="status-bar"><span class="status-time">9:43</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="sup-team">‹</button><span class="top-bar-title">Add Team Member</span></div>
+  <div class="screen-content">
+    <div class="alert-banner info"><span class="alert-icon">ℹ️</span><div><div class="alert-title" style="color:var(--blue-600)">Scope</div><div class="alert-body">You can only add members within your assigned geography and programme. They will be created as Data Collectors or CHWs.</div></div></div>
+    <div class="form-group">
+      <label class="form-label">Full Name <span style="color:var(--red-600)">*</span></label>
+      <input class="form-input" id="new-member-name" placeholder="Enter full name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Phone Number <span style="color:var(--red-600)">*</span></label>
+      <input class="form-input" type="tel" placeholder="+234 xxx xxx xxxx">
+      <span class="form-hint">Activation code will be sent to this number via SMS</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email (optional)</label>
+      <input class="form-input" type="email" placeholder="name@example.com">
+      <span class="form-hint">Alternative — will receive activation by email</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Role <span style="color:var(--red-600)">*</span></label>
+      <input class="form-input select-arrow" value="Data Collector">
+      <span class="form-hint">Only Data Collector and CHW roles can be created here</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Geography (pre-filled)</label>
+      <input class="form-input filled" value="Dala Ward, Kano Municipal LGA" readonly>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Programme</label>
+      <input class="form-input select-arrow filled" value="Lafiya Community Survey — 2026" readonly>
+    </div>
+    <div class="section-header" style="margin-top:4px">Send Activation Via</div>
+    <div class="radio-group">
+      <div class="radio-option selected"><div class="radio-dot"></div><span class="radio-label">SMS to phone number</span></div>
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Email</span></div>
+      <div class="radio-option"><div class="radio-dot"></div><span class="radio-label">Show code on screen (I'll share it)</span></div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('sup-member-created')" style="margin-top:8px">Send Invitation</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- SUP-3: Member Created Confirmation -->
+<div class="screen" id="sup-member-created">
+  <div class="status-bar"><span class="status-time">9:45</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="screen-content" style="justify-content:center">
+    <div class="success-screen">
+      <div class="success-icon">📱</div>
+      <div class="success-title">Invitation Sent!</div>
+      <div class="success-body">Fatima Aliyu has been added to your team.<br><br>She'll receive an SMS with her activation code. Once she activates, she'll appear as "Active" in your team.</div>
+      <div class="card" style="width:100%;text-align:left;margin-top:8px">
+        <div class="text-xs text-gray mb-1">Activation expires in</div>
+        <div class="font-bold" style="font-size:16px;color:var(--accent)">72 hours</div>
+        <div class="text-xs text-gray mt-2">You can resend from My Team if needed.</div>
+      </div>
+      <button class="btn btn-primary" onclick="App.goTo('sup-team')" style="width:240px">Back to My Team</button>
+      <button class="btn btn-ghost" onclick="App.goTo('sup-add-member')">Add Another Member</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- SUP-4: Member Detail -->
+<div class="screen" id="sup-member-detail">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="sup-team">‹</button><span class="top-bar-title">Amina Mohammed</span></div>
+  <div class="screen-content">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div class="member-avatar" style="width:56px;height:56px;border-radius:28px;font-size:20px">AM</div>
+        <div><div class="font-bold" style="font-size:16px">Amina Mohammed</div><div class="text-xs text-gray">Data Collector · Dala Ward</div><div class="sync-badge synced" style="margin-top:4px">Active</div></div>
+      </div>
+      <div class="sep"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;font-size:12px">
+        <div><span class="text-gray">Phone</span><div class="font-semi">+234 803 xxx xxxx</div></div>
+        <div><span class="text-gray">Member since</span><div class="font-semi">Sep 10, 2026</div></div>
+        <div><span class="text-gray">Programme</span><div class="font-semi">Lafiya Survey 2026</div></div>
+        <div><span class="text-gray">Last active</span><div class="font-semi">Today, 09:41</div></div>
+      </div>
+    </div>
+    <div class="section-header">Activity This Month</div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Surveys Submitted</div><div class="kpi-value">12</div></div>
+      <div class="kpi-card"><div class="kpi-label">Pending Sync</div><div class="kpi-value">0</div><div class="kpi-sub">All synced ✓</div></div>
+    </div>
+    <div class="section-header">Recent Submissions</div>
+    <div class="card" style="padding:0">
+      <div class="list-item"><div class="li-icon">📋</div><div class="li-body"><div class="li-title">Sabuwar Kasuwa</div><div class="li-sub">Sep 22, 10:34 AM · GPS: ✓</div></div><div class="sync-badge synced">✓</div></div>
+      <div class="list-item"><div class="li-icon">📋</div><div class="li-body"><div class="li-title">Dan Agundi</div><div class="li-sub">Sep 21, 2:15 PM · GPS: ✓</div></div><div class="sync-badge synced">✓</div></div>
+    </div>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-secondary" onclick="App.goTo('sup-team')">← Back</button>
+      <button class="btn btn-danger" onclick="Modal.show('deactivate-modal')">Deactivate</button>
+    </div>
+  </div>
+  <!-- Deactivate confirmation modal -->
+  <div class="modal-overlay hidden" id="deactivate-modal">
+    <div class="modal-card">
+      <div class="modal-icon">⚠️</div>
+      <div class="modal-title">Deactivate Amina?</div>
+      <div class="modal-body">She will immediately lose access to EHACare. Any unsynced data on her device will be lost. This cannot be undone without contacting your admin.</div>
+      <div class="modal-actions">
+        <button class="btn btn-danger" onclick="Modal.hide('deactivate-modal');App.goTo('sup-team')">Yes, Deactivate</button>
+        <button class="btn btn-secondary" onclick="Modal.hide('deactivate-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  EDGE CASE SCREENS — OFFLINE, SYNC, ERRORS
+══════════════════════════════════════════════════════════ -->
+
+<!-- EDGE-1: Offline Warning -->
+<div class="screen" id="edge-offline">
+  <div class="status-bar light"><span class="status-time">9:41</span><span class="status-icons">●●●  No Signal  🔋</span></div>
+  <div class="offline-banner">
+    <div class="ob-dot"></div>
+    Offline — data saves locally and syncs when connected
+  </div>
+  <div class="top-bar light"><button class="back-btn dark-btn">‹</button><span class="top-bar-title" style="color:var(--gray-900)">Offline Mode</span></div>
+  <div class="error-screen">
+    <div class="error-icon">📵</div>
+    <div class="error-title">You're Offline</div>
+    <div class="error-body">EHACare works fully without internet. Continue collecting data — everything saves locally and syncs automatically when you're back online.</div>
+    <div class="card" style="width:100%;text-align:left;margin-top:8px">
+      <div class="section-header" style="margin-bottom:8px">Saved locally</div>
+      <div style="font-size:12px;display:flex;flex-direction:column;gap:6px">
+        <div class="flex between"><span>Surveys waiting to sync</span><span class="font-bold text-accent">3</span></div>
+        <div class="flex between"><span>Last successful sync</span><span class="font-bold">Today 07:23</span></div>
+        <div class="flex between"><span>Data at risk</span><span class="font-bold text-success">None — all saved</span></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="App.resumeLastModule()" style="width:240px">Continue Working →</button>
+    <button class="btn btn-ghost" onclick="Sync.simulate(document.querySelector('.offline-banner'),() => App.resumeLastModule())">Retry Connection</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-2: Sync Failed -->
+<div class="screen" id="edge-sync-failed">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="offline-banner" style="background:var(--red-600)">
+    <div class="ob-dot"></div>
+    Sync failed — tap to retry
+  </div>
+  <div class="top-bar"><button class="back-btn">‹</button><span class="top-bar-title">Sync Failed</span></div>
+  <div class="error-screen">
+    <div class="error-icon">🔁</div>
+    <div class="error-title">Sync Failed</div>
+    <div class="error-body">3 surveys couldn't sync. Your data is safe on this device. Try again when you have a better connection.</div>
+    <div class="card" style="width:100%;text-align:left">
+      <div class="section-header" style="margin-bottom:8px;color:var(--red-600)">Failed (3)</div>
+      <div style="font-size:12px;display:flex;flex-direction:column;gap:6px">
+        <div class="flex between items-center"><span>Sabuwar Kasuwa survey</span><div class="sync-badge failed">Failed</div></div>
+        <div class="flex between items-center"><span>Dan Agundi survey</span><div class="sync-badge failed">Failed</div></div>
+        <div class="flex between items-center"><span>Kurmi Market survey</span><div class="sync-badge failed">Failed</div></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="App.resumeLastModule()" style="width:240px">Retry Sync</button>
+    <button class="btn btn-ghost">View error details</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-3: Duplicate Survey Warning -->
+<div class="screen" id="edge-duplicate">
+  <div class="status-bar"><span class="status-time">9:47</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-setup">‹</button><span class="top-bar-title">Survey Setup</span></div>
+  <div class="screen-content" style="justify-content:center">
+    <div class="modal-card" style="max-width:100%">
+      <div class="modal-icon">📋</div>
+      <div class="modal-title">Settlement Already Surveyed</div>
+      <div class="modal-body"><strong>Sabuwar Kasuwa</strong> was already surveyed by <strong>you</strong> on <strong>Sep 20, 2026</strong> at 11:34 AM.<br><br>Are you sure you want to start a new survey? The previous survey will not be deleted.</div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="App.goTo('laf-population')">Yes — start new survey</button>
+        <button class="btn btn-secondary" onclick="App.goTo('laf-setup')">Cancel — go back</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-4: WARIF — Danger = YES Safety Alert -->
+<div class="screen" id="edge-safety-alert">
+  <div class="status-bar danger"><span class="status-time">9:44</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar danger" style="height:auto;padding:12px 16px"><span class="top-bar-title" style="font-size:13px">🔴 IMMEDIATE SAFETY CONCERN — WRF-2026-04522</span></div>
+  <div class="danger-fullscreen">
+    <div class="danger-icon">🚨</div>
+    <div class="danger-title">Survivor Indicated She Is Currently in Danger</div>
+    <div class="danger-body">Do NOT proceed to documentation until safety is confirmed.</div>
+    <div class="action-list">
+      <div class="action-item"><div class="action-num">1</div><div class="action-text"><strong>Immediately</strong> confirm the survivor is physically safe within this facility.</div></div>
+      <div class="action-item"><div class="action-num">2</div><div class="action-text">Call your supervisor NOW. Do not handle alone.</div></div>
+      <div class="action-item"><div class="action-num">3</div><div class="action-text">Do NOT share the survivor's location with anyone outside this facility.</div></div>
+      <div class="action-item"><div class="action-num">4</div><div class="action-text">Follow <strong>WARIF Safety Protocol 3B</strong> on your site wall.</div></div>
+    </div>
+    <div class="card" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:white">
+      <div style="font-size:11px;opacity:0.8;margin-bottom:4px">⚡ Supervisor auto-notified</div>
+      <div style="font-size:12px;font-weight:600">Binta Suleiman — 9:44 AM</div>
+      <div style="font-size:11px;opacity:0.8">"New case intake — safety concern raised"</div>
+    </div>
+    <button class="btn" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3)" onclick="App.goTo('war-intake')">📞 Call Supervisor</button>
+    <button class="btn" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);height:40px;font-size:12px" onclick="App.goTo('war-intake')">I have confirmed she is safe — continue intake</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-5: MAMAI — Danger Sign Cannot Dismiss -->
+<div class="screen" id="edge-mamai-danger">
+  <div class="status-bar danger"><span class="status-time">9:57</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar danger"><span class="top-bar-title">⚠ Danger Sign Detected — Action Required</span></div>
+  <div class="screen-content">
+    <div class="alert-banner danger" style="margin:0">
+      <span class="alert-icon">🔴</span>
+      <div>
+        <div class="alert-title danger">CANNOT PROCEED WITHOUT ACTION</div>
+        <div class="alert-body">A danger sign has been detected. You must either create a referral or document a clinical reason for not referring before this contact can be saved.</div>
+      </div>
+    </div>
+    <div class="card danger-border">
+      <div class="font-bold text-danger" style="margin-bottom:6px">Pre-eclampsia Risk Detected</div>
+      <div class="text-sm" style="color:var(--gray-700);line-height:1.6">BP: 148/96 mmHg + Urine Protein 2+<br>Threshold: BP ≥140/90 with proteinuria ≥2+<br>Required: Same-day referral to EmONC facility</div>
+    </div>
+    <div class="section-header">Choose an Action</div>
+    <button class="btn btn-danger" onclick="App.goTo('anc-alert')">🔴 Create Urgent Referral (recommended)</button>
+    <div style="text-align:center;font-size:12px;color:var(--gray-500);padding:4px 0">or</div>
+    <button class="btn btn-secondary" onclick="Modal.show('no-referral-modal')">Document reason for not referring</button>
+  </div>
+  <!-- No-referral reason modal -->
+  <div class="modal-overlay hidden" id="no-referral-modal">
+    <div class="modal-card">
+      <div class="modal-icon">📝</div>
+      <div class="modal-title">Document Clinical Reason</div>
+      <div class="modal-body">This decision will be permanently recorded in the audit trail. Why is referral not being created at this time?</div>
+      <textarea style="width:100%;height:80px;border:1.5px solid var(--gray-200);border-radius:8px;padding:10px;font-family:var(--font);font-size:13px;margin-bottom:12px" placeholder="Patient refused referral / Facility unavailable / To be referred by supervising clinician..."></textarea>
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="Modal.hide('no-referral-modal');App.goTo('anc-contact')">Save Reason &amp; Continue</button>
+        <button class="btn btn-secondary" onclick="Modal.hide('no-referral-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-6: Session Expired -->
+<div class="screen" id="edge-session-expired">
+  <div class="status-bar light"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="screen-content" style="justify-content:center">
+    <div class="error-screen">
+      <div class="error-icon">🔒</div>
+      <div class="error-title">Session Expired</div>
+      <div class="error-body">Your session has timed out for security. Your data is safe. Log back in to continue where you left off.</div>
+      <div class="card" style="width:100%;text-align:left">
+        <div class="text-xs text-gray mb-1">Unsaved data</div>
+        <div class="font-bold text-success">✓ All data auto-saved as draft</div>
+      </div>
+      <button class="btn btn-primary" onclick="App.goTo('landing')" style="width:240px">Log Back In →</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-7: GPS Unavailable -->
+<div class="screen" id="edge-gps-unavailable">
+  <div class="status-bar"><span class="status-time">9:43</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-setup">‹</button><span class="top-bar-title">GPS Unavailable</span></div>
+  <div class="screen-content">
+    <div class="alert-banner warning"><span class="alert-icon">⚠</span><div><div class="alert-title warning">GPS Signal Not Available</div><div class="alert-body">Move to an open area for better signal, or use the map to pin your location manually.</div></div></div>
+    <div class="gps-block failed">
+      <span class="gps-icon">📡</span>
+      <div class="gps-coords"><strong style="color:var(--red-600)">No GPS signal</strong><br><span style="color:var(--gray-500)">Searching for satellites...</span></div>
+    </div>
+    <div class="section-header">Options</div>
+    <div class="card" onclick="App.goTo('laf-setup')" style="cursor:pointer">
+      <div class="flex items-center gap-3"><span style="font-size:24px">🗺</span><div><div class="font-semi">Pin on map</div><div class="text-xs text-gray">Tap the map to mark your exact location</div></div></div>
+    </div>
+    <div class="card" onclick="App.goTo('laf-setup')" style="cursor:pointer">
+      <div class="flex items-center gap-3"><span style="font-size:24px">⌨️</span><div><div class="font-semi">Enter coordinates manually</div><div class="text-xs text-gray">Enter latitude and longitude if known</div></div></div>
+    </div>
+    <div class="card" onclick="App.goTo('laf-population')" style="cursor:pointer">
+      <div class="flex items-center gap-3"><span style="font-size:24px">⏭</span><div><div class="font-semi">Continue without GPS</div><div class="text-xs text-gray">Survey will be flagged as "No GPS". Supervisor will be notified.</div></div></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-8: Draft Saved -->
+<div class="screen" id="edge-draft-saved">
+  <div class="status-bar"><span class="status-time">9:55</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="screen-content" style="justify-content:center">
+    <div class="success-screen">
+      <div class="success-icon" style="background:var(--amber-50)">📝</div>
+      <div class="success-title">Draft Saved</div>
+      <div class="success-body">Your survey for <strong>Sabuwar Kasuwa</strong> has been saved as a draft. You can resume it from your home screen at any time.</div>
+      <div class="card" style="width:100%;text-align:left">
+        <div class="text-xs text-gray mb-1">Draft status</div>
+        <div class="font-bold" style="color:var(--amber-600)">● Step 3 of 5 completed</div>
+        <div class="text-xs text-gray mt-1">FP data remaining + mortality + review</div>
+      </div>
+      <button class="btn btn-primary" onclick="App.goTo('laf-fp')" style="width:240px">Resume Now →</button>
+      <button class="btn btn-ghost" onclick="App.goTo('laf-home')">Back to Home</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-9: MSF — BLACK classification (deceased) -->
+<div class="screen" id="msf-result-black">
+  <div class="status-bar danger"><span class="status-time">14:37</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar dark"><span class="top-bar-title" style="color:white">Patient #24 — Classified</span></div>
+  <div style="background:var(--gray-800);flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px">
+    <div style="font-size:64px">⬛</div>
+    <div style="font-size:24px;font-weight:900;color:rgba(255,255,255,0.9);letter-spacing:0.05em">BLACK — EXPECTANT</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.65);text-align:center;line-height:1.6">No spontaneous respiration after airway opening.<br>Resources should focus on survivable patients.</div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:12px;width:100%;font-size:12px;color:rgba(255,255,255,0.7)">Compassionate care should still be provided where possible.</div>
+    <button class="btn" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);margin-top:8px;width:100%" onclick="App.goTo('msf-triage')">✓ Confirm · Next Patient →</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-10: MSF — No active MCI -->
+<div class="screen" id="msf-no-mci">
+  <div class="status-bar danger"><span class="status-time">09:00</span><span class="status-icons">●●●  SAT  🔋</span></div>
+  <div class="top-bar dark"><button class="back-btn" data-goto="msf-home" style="background:rgba(255,255,255,0.1);color:white">‹</button><span class="top-bar-title" style="color:white">MCI Management</span></div>
+  <div class="screen-content" style="background:var(--gray-900)">
+    <div class="error-screen" style="color:rgba(255,255,255,0.8)">
+      <div class="error-icon">✅</div>
+      <div class="error-title" style="color:white">No Active MCI</div>
+      <div class="error-body" style="color:rgba(255,255,255,0.6)">There is currently no Mass Casualty Incident in progress at this site.</div>
+    </div>
+    <button class="btn btn-danger" onclick="Modal.show('new-mci-modal')" style="margin:0 0 12px">+ Declare New MCI</button>
+    <div class="section-header" style="color:rgba(255,255,255,0.5)">Recent MCIs</div>
+    <div class="card" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.1)">
+      <div class="text-sm" style="color:rgba(255,255,255,0.7)">MCI-2026-BNO-041</div>
+      <div class="text-xs" style="color:rgba(255,255,255,0.5)">Sep 18 · 94 patients · Closed</div>
+    </div>
+  </div>
+  <!-- New MCI modal -->
+  <div class="modal-overlay hidden" id="new-mci-modal">
+    <div class="modal-card">
+      <div class="modal-icon">🚨</div>
+      <div class="modal-title">Declare Mass Casualty Incident</div>
+      <div class="modal-body">This will alert all active triage officers and the Medical Officer on duty. Confirm to start.</div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Incident Type</label>
+        <input class="form-input select-arrow" value="Explosion / Blast">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-danger" onclick="Modal.hide('new-mci-modal');App.goTo('msf-triage')">Declare MCI — Start Triaging ▶</button>
+        <button class="btn btn-secondary" onclick="Modal.hide('new-mci-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- EDGE-11: ANC — Overdue Contact -->
+<div class="screen" id="anc-overdue">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="anc-home">‹</button><span class="top-bar-title">Overdue Contacts</span></div>
+  <div class="screen-content">
+    <div class="alert-banner warning"><span class="alert-icon">⚠</span><div><div class="alert-title warning">3 Patients Overdue</div><div class="alert-body">These patients have missed their scheduled ANC contacts. CHU follow-up is recommended.</div></div></div>
+    <div class="card" style="padding:0">
+      <div class="list-item" onclick="App.goTo('anc-journey')">
+        <div class="li-icon" style="background:var(--red-100)">⚠</div>
+        <div class="li-body">
+          <div class="li-title">ANC-2026-KAT-1198</div>
+          <div class="li-sub">Contact 6 — 18 days overdue</div>
+          <div class="risk-badge high" style="margin-top:4px">High Risk</div>
+        </div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item" onclick="App.goTo('anc-journey')">
+        <div class="li-icon" style="background:var(--amber-50)">⚠</div>
+        <div class="li-body">
+          <div class="li-title">ANC-2026-KAT-1203</div>
+          <div class="li-sub">Contact 3 — 7 days overdue</div>
+          <div class="risk-badge medium">Medium Risk</div>
+        </div>
+        <div class="li-right">›</div>
+      </div>
+    </div>
+    <div class="section-header">Assign CHU Follow-Up</div>
+    <div class="form-group">
+      <label class="form-label">Assign to CHU</label>
+      <input class="form-input select-arrow" value="Amina Mohammed (CHU)">
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('anc-home')">✓ Send Follow-Up Tasks</button>
+  </div>
+
+  <div class="bottom-nav"></div>
+</div>
+
+
+
+<!-- ══════════════════════════════════════════════════════════
+  SHARED: SETTINGS SCREEN (all modules)
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="settings">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar light"><button class="back-btn dark-btn">‹</button><span class="top-bar-title" style="color:var(--gray-900)">Settings</span></div>
+  <div class="screen-content">
+    <div class="card">
+      <div class="flex items-center gap-3">
+        <div class="member-avatar" style="width:52px;height:52px;border-radius:26px;font-size:18px;background:var(--accent)">HM</div>
+        <div>
+          <div class="font-bold" style="font-size:16px">Haleema Mustapha</div>
+          <div class="text-xs text-gray">Clinician · EHA Clinics Abuja</div>
+          <div class="chip info" style="margin-top:4px;font-size:10px">Active</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-header">Data &amp; Sync</div>
+    <div class="card" style="padding:0">
+      <div class="list-item">
+        <div class="li-icon">🔄</div>
+        <div class="li-body"><div class="li-title">Sync Now</div><div class="li-sub">Last synced: Today 09:15 AM</div></div>
+        <div class="sync-badge synced">✓</div>
+      </div>
+      <div class="list-item">
+        <div class="li-icon">📥</div>
+        <div class="li-body"><div class="li-title">Facility Sync</div><div class="li-sub">Download data from another facility</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item">
+        <div class="li-icon">💾</div>
+        <div class="li-body"><div class="li-title">Offline Storage</div><div class="li-sub">1.2 GB used of 8 GB</div></div>
+        <div class="li-right">›</div>
+      </div>
+    </div>
+    <div class="section-header">App</div>
+    <div class="card" style="padding:0">
+      <div class="list-item">
+        <div class="li-icon">🔔</div>
+        <div class="li-body"><div class="li-title">Notifications</div><div class="li-sub">Alerts for danger signs and sync</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item">
+        <div class="li-icon">🌐</div>
+        <div class="li-body"><div class="li-title">Language</div><div class="li-sub">English</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item">
+        <div class="li-icon">ℹ️</div>
+        <div class="li-body"><div class="li-title">EHACare v2.0.1</div><div class="li-sub">Build 2026.09.22 · Up to date</div></div>
+      </div>
+    </div>
+    <div class="section-header">My Team</div>
+    <div class="card" style="padding:0">
+      <div class="list-item" onclick="App.goTo('sup-team')">
+        <div class="li-icon">👥</div>
+        <div class="li-body"><div class="li-title">Team Management</div><div class="li-sub">Add members, view activity</div></div>
+        <div class="li-right">›</div>
+      </div>
+    </div>
+    <button class="btn btn-secondary" onclick="Modal.show('logout-modal')" style="color:var(--red-600);border-color:var(--red-200)">Log Out</button>
+  </div>
+  <div class="bottom-nav"></div>
+  <div class="modal-overlay hidden" id="logout-modal">
+    <div class="modal-card">
+      <div class="modal-icon">👋</div>
+      <div class="modal-title">Log out?</div>
+      <div class="modal-body">Your data is saved. You can log back in with your PIN even without internet.</div>
+      <div class="modal-actions">
+        <button class="btn btn-danger" onclick="Modal.hide('logout-modal');App.goTo('landing')">Log Out</button>
+        <button class="btn btn-secondary" onclick="Modal.hide('logout-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  EHA CLINICS: ENCOUNTERS LIST
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="eha-encounters">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="eha-home">‹</button><span class="top-bar-title">Encounters</span></div>
+  <div class="screen-content" style="padding:0;gap:0">
+    <div style="padding:12px 16px;background:var(--gray-50);border-bottom:1px solid var(--gray-100)">
+      <div style="display:flex;gap:8px">
+        <div class="chip info" style="flex:1;justify-content:center;padding:7px">All</div>
+        <div class="chip neutral" style="flex:1;justify-content:center;padding:7px">Manual</div>
+        <div class="chip neutral" style="flex:1;justify-content:center;padding:7px">Guided</div>
+        <div class="chip neutral" style="flex:1;justify-content:center;padding:7px">Drafts</div>
+      </div>
+    </div>
+    <div class="section-header" style="padding:12px 16px 4px;margin:0">September 2026</div>
+    <div class="card" style="margin:0 16px 8px;padding:0">
+      <div class="list-item" onclick="App.goTo('eha-guided')"><div class="li-icon" style="background:var(--blue-50)">🤖</div><div class="li-body"><div class="li-title">Fatima Al-Hassan — Guided</div><div class="li-sub">Today 09:14 · Malaria (P.falciparum)</div></div><div class="chip success" style="font-size:10px">Done</div></div>
+      <div class="list-item" onclick="App.goTo('eha-encounter-type')"><div class="li-icon" style="background:var(--gray-100)">📝</div><div class="li-body"><div class="li-title">Emmanuel Okonkwo — Manual</div><div class="li-sub">Yesterday · Hypertension follow-up</div></div><div class="chip success" style="font-size:10px">Done</div></div>
+      <div class="list-item" onclick="App.goTo('eha-encounter-type')"><div class="li-icon" style="background:var(--amber-50)">📝</div><div class="li-body"><div class="li-title">Aisha Musa — Manual</div><div class="li-sub">Sep 20 · Lab results pending</div></div><div class="chip warning" style="font-size:10px">Draft</div></div>
+    </div>
+    <div class="section-header" style="padding:12px 16px 4px;margin:0">August 2026</div>
+    <div class="card" style="margin:0 16px 8px;padding:0">
+      <div class="list-item"><div class="li-icon" style="background:var(--blue-50)">🤖</div><div class="li-body"><div class="li-title">Yusuf Ibrahim — Guided</div><div class="li-sub">Aug 30 · Cough — referred</div></div><div class="chip success" style="font-size:10px">Done</div></div>
+      <div class="list-item"><div class="li-icon" style="background:var(--gray-100)">📝</div><div class="li-body"><div class="li-title">Ngozi Eze — Manual</div><div class="li-sub">Aug 12 · ANC visit</div></div><div class="chip success" style="font-size:10px">Done</div></div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  LAFIYA: SURVEY LIST
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="laf-survey-list">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-home">‹</button><span class="top-bar-title">My Surveys</span></div>
+  <div class="screen-content" style="padding:0;gap:0">
+    <div style="padding:10px 16px;background:var(--gray-50);border-bottom:1px solid var(--gray-100)">
+      <div style="display:flex;gap:8px">
+        <div class="chip success" style="padding:6px 12px">Submitted (12)</div>
+        <div class="chip warning" style="padding:6px 12px">Drafts (2)</div>
+        <div class="chip neutral" style="padding:6px 12px">Pending sync (1)</div>
+      </div>
+    </div>
+    <div class="section-header" style="padding:12px 16px 4px;margin:0">September 2026</div>
+    <div class="card" style="margin:0 16px 8px;padding:0">
+      <div class="list-item" onclick="App.goTo('laf-review')"><div class="li-icon" style="background:var(--green-50)">📋</div><div class="li-body"><div class="li-title">Sabuwar Kasuwa</div><div class="li-sub">Today 10:34 · Pop: 645 · WRA: 162</div></div><div class="sync-badge synced">✓</div></div>
+      <div class="list-item" onclick="App.goTo('laf-review')"><div class="li-icon" style="background:var(--green-50)">📋</div><div class="li-body"><div class="li-title">Dan Agundi</div><div class="li-sub">Sep 21 · Pop: 890 · WRA: 234</div></div><div class="sync-badge synced">✓</div></div>
+      <div class="list-item" onclick="App.goTo('laf-fp')"><div class="li-icon" style="background:var(--amber-50)">📋</div><div class="li-body"><div class="li-title">Kurmi Market</div><div class="li-sub">Resuming at Step 3 — FP Screening</div></div><div class="status-pill pending">Resume →</div></div>
+      <div class="list-item" onclick="App.goTo('laf-review')"><div class="li-icon" style="background:var(--blue-50)">📋</div><div class="li-body"><div class="li-title">Fanisau</div><div class="li-sub">Sep 20 · Queued for sync</div></div><div class="sync-badge pending">Pending</div></div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('laf-setup')" style="margin:12px 16px 0">+ Start New Survey</button>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  LAFIYA: MAP VIEW
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="laf-map">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-home">‹</button><span class="top-bar-title">Survey Map — Dala Ward</span></div>
+  <div style="flex:1;position:relative;overflow:hidden;background:#e8f4e8">
+    <!-- SVG map placeholder that looks like a real map -->
+    <svg width="100%" height="100%" viewBox="0 0 390 700" xmlns="http://www.w3.org/2000/svg">
+      <!-- Road network -->
+      <rect width="390" height="700" fill="#f0f4e8"/>
+      <line x1="0" y1="200" x2="390" y2="180" stroke="#d4d0c8" stroke-width="12"/>
+      <line x1="0" y1="380" x2="390" y2="400" stroke="#d4d0c8" stroke-width="8"/>
+      <line x1="130" y1="0" x2="150" y2="700" stroke="#d4d0c8" stroke-width="10"/>
+      <line x1="260" y1="0" x2="280" y2="700" stroke="#d4d0c8" stroke-width="6"/>
+      <!-- Settlement dots - surveyed (green) -->
+      <circle cx="80" cy="150" r="18" fill="#16A34A" opacity="0.85"/>
+      <circle cx="80" cy="150" r="24" fill="none" stroke="#16A34A" stroke-width="2" opacity="0.4"/>
+      <circle cx="200" cy="120" r="22" fill="#16A34A" opacity="0.85"/>
+      <circle cx="200" cy="120" r="28" fill="none" stroke="#16A34A" stroke-width="2" opacity="0.4"/>
+      <circle cx="320" cy="160" r="14" fill="#16A34A" opacity="0.85"/>
+      <circle cx="70" cy="310" r="20" fill="#16A34A" opacity="0.85"/>
+      <circle cx="180" cy="290" r="16" fill="#16A34A" opacity="0.85"/>
+      <circle cx="310" cy="330" r="18" fill="#16A34A" opacity="0.85"/>
+      <!-- Unsurveyed (red) -->
+      <circle cx="230" cy="450" r="20" fill="#DC2626" opacity="0.8"/>
+      <circle cx="230" cy="450" r="26" fill="none" stroke="#DC2626" stroke-width="2" opacity="0.35"/>
+      <circle cx="100" cy="480" r="16" fill="#DC2626" opacity="0.8"/>
+      <circle cx="340" cy="470" r="18" fill="#DC2626" opacity="0.8"/>
+      <circle cx="170" cy="560" r="14" fill="#DC2626" opacity="0.8"/>
+      <circle cx="290" cy="570" r="20" fill="#DC2626" opacity="0.8"/>
+      <circle cx="80" cy="610" r="16" fill="#DC2626" opacity="0.8"/>
+      <!-- Labels -->
+      <text x="80" y="128" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1,240</text>
+      <text x="200" y="116" text-anchor="middle" font-size="9" fill="white" font-weight="bold">645</text>
+      <text x="230" y="446" text-anchor="middle" font-size="9" fill="white" font-weight="bold">890</text>
+    </svg>
+    <!-- Map legend overlay -->
+    <div style="position:absolute;bottom:72px;left:12px;background:rgba(255,255,255,0.95);border-radius:10px;padding:10px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-size:11px">
+      <div style="font-weight:700;margin-bottom:6px;color:#111">Settlement Coverage</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><div style="width:12px;height:12px;border-radius:50%;background:#16A34A"></div> Surveyed (12)</div>
+      <div style="display:flex;align-items:center;gap:6px"><div style="width:12px;height:12px;border-radius:50%;background:#DC2626"></div> Pending (6)</div>
+      <div style="font-size:10px;color:#6B7280;margin-top:6px">Dot size = population</div>
+    </div>
+    <!-- Layer toggle -->
+    <div style="position:absolute;top:12px;right:12px;background:white;border-radius:10px;padding:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);display:flex;flex-direction:column;gap:4px">
+      <div style="font-size:10px;font-weight:700;color:#6B7280">LAYER</div>
+      <div class="chip success" style="font-size:10px;cursor:pointer">FP Need</div>
+      <div class="chip neutral" style="font-size:10px;cursor:pointer">Population</div>
+      <div class="chip neutral" style="font-size:10px;cursor:pointer">Mortality</div>
+    </div>
+    <!-- Tap prompt -->
+    <div style="position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.6);color:white;border-radius:8px;padding:6px 10px;font-size:11px">📍 Tap a settlement to view data</div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  WARIF: REFERRALS LIST
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="war-referrals">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="war-home">‹</button><span class="top-bar-title">Referrals</span></div>
+  <div class="screen-content" style="padding:0;gap:0">
+    <div style="padding:10px 16px;background:var(--gray-50);border-bottom:1px solid var(--gray-100)">
+      <div style="display:flex;gap:8px">
+        <div class="chip info" style="padding:6px 12px">All (28)</div>
+        <div class="chip danger" style="padding:6px 12px">No response (3)</div>
+        <div class="chip success" style="padding:6px 12px">Accepted (22)</div>
+      </div>
+    </div>
+    <div class="section-header" style="padding:12px 16px 4px;margin:0">⚠ No Response (3)</div>
+    <div class="card" style="margin:0 16px 8px;padding:0">
+      <div class="list-item" onclick="App.goTo('war-detail')"><div class="li-icon" style="background:var(--red-100)">↗️</div><div class="li-body"><div class="li-title">WRF-2026-04498 → Lagos SARC</div><div class="li-sub">Medical · Priority · Sent Sep 8 · No response</div></div><div class="chip danger" style="font-size:10px">Overdue</div></div>
+      <div class="list-item" onclick="App.goTo('war-detail')"><div class="li-icon" style="background:var(--red-100)">↗️</div><div class="li-body"><div class="li-title">WRF-2026-04501 → NAPTIP</div><div class="li-sub">Legal · Routine · Sent Sep 1 · No response</div></div><div class="chip danger" style="font-size:10px">Overdue</div></div>
+    </div>
+    <div class="section-header" style="padding:12px 16px 4px;margin:0">Active Referrals</div>
+    <div class="card" style="margin:0 16px 8px;padding:0">
+      <div class="list-item" onclick="App.goTo('war-detail')"><div class="li-icon" style="background:var(--green-50)">↗️</div><div class="li-body"><div class="li-title">WRF-2026-04521 → Lagos SARC</div><div class="li-sub">Medical · Priority · Today · Accepted</div></div><div class="chip success" style="font-size:10px">Accepted</div></div>
+      <div class="list-item" onclick="App.goTo('war-detail')"><div class="li-icon" style="background:var(--blue-50)">↗️</div><div class="li-body"><div class="li-title">WRF-2026-04519 → Legal Aid</div><div class="li-sub">Legal · Routine · Sep 21 · Pending</div></div><div class="chip info" style="font-size:10px">Pending</div></div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('war-referral')" style="margin:8px 16px 0">+ Create Referral</button>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  MAMAI: ANC CONTACTS 2 & 3 (example routine contact)
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="anc-contact-routine">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="anc-journey">‹</button><span class="top-bar-title">Contact 6 — ANC Visit</span><span class="step-badge">36+0 wks</span></div>
+  <div class="step-bar" style="background:var(--teal-700)"><div class="step-fill" style="width:75%"></div></div>
+  <div class="screen-content">
+    <div class="alert-banner" style="background:var(--teal-50);border:1px solid var(--teal-500)"><span class="alert-icon">🩺</span><div><div class="alert-title" style="color:var(--teal-600)">ANC-2026-KAT-1247 · Contact 6</div><div class="alert-body">Presentation check · Birth plan finalization · BP monitoring</div></div></div>
+    <div class="section-header">Vitals</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Systolic BP *</label><input class="form-input" type="number" placeholder="e.g. 118"></div>
+      <div class="form-group"><label class="form-label">Diastolic BP *</label><input class="form-input" type="number" placeholder="e.g. 76"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" type="number" placeholder="e.g. 72.1"></div>
+      <div class="form-group"><label class="form-label">Fundal Height (cm)</label><input class="form-input" type="number" placeholder="e.g. 35"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Fetal Heart Rate (bpm)</label><input class="form-input" type="number" placeholder="e.g. 144"></div>
+    <div class="section-header" style="margin-top:4px">Fetal Presentation</div>
+    <div class="radio-group" style="flex-direction:row;gap:10px">
+      <div class="radio-option selected" style="flex:1"><div class="radio-dot"></div><span class="radio-label">Cephalic (head down)</span></div>
+      <div class="radio-option" style="flex:1"><div class="radio-dot"></div><span class="radio-label">Breech</span></div>
+    </div>
+    <div class="section-header" style="margin-top:4px">Preventive Care</div>
+    <div class="radio-group" style="flex-direction:row;gap:10px">
+      <div class="radio-option selected" style="flex:1"><div class="radio-dot"></div><span class="radio-label">✓ TT2 given</span></div>
+      <div class="radio-option selected" style="flex:1"><div class="radio-dot"></div><span class="radio-label">✓ IPTp-3 given</span></div>
+    </div>
+    <div class="form-group"><label class="form-label">Birth Plan — Delivery Location</label><input class="form-input" type="text" placeholder="e.g. Katsina Central Hospital"></div>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-secondary" onclick="App.goTo('anc-journey')">← Back</button>
+      <button class="btn btn-primary" onclick="App.goTo('anc-journey')">Save Contact ✓</button>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- MAMAI: ANC PATIENT LIST -->
+<div class="screen" id="anc-patient-list">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="anc-home">‹</button><span class="top-bar-title">ANC Patients</span></div>
+  <div class="screen-content" style="padding:0;gap:0">
+    <div style="padding:10px 16px">
+      <input class="form-input" style="height:40px" placeholder="🔍 Search by ANC number or name…" type="text">
+    </div>
+    <div style="padding:0 16px;display:flex;gap:8px;margin-bottom:8px">
+      <div class="chip danger" style="padding:5px 10px">High Risk (12)</div>
+      <div class="chip warning" style="padding:5px 10px">Overdue (3)</div>
+      <div class="chip success" style="padding:5px 10px">Active (47)</div>
+    </div>
+    <div class="section-header" style="padding:4px 16px 4px;margin:0">High Risk — Requires Attention</div>
+    <div class="card" style="margin:4px 16px;padding:0">
+      <div class="list-item" onclick="App.goTo('anc-journey')">
+        <div class="li-icon" style="background:var(--red-100)">⚠</div>
+        <div class="li-body">
+          <div class="li-title">ANC-2026-KAT-1247</div>
+          <div class="li-sub">GA: 30+2 · Contact 4 due · Pre-eclampsia risk</div>
+          <div class="risk-badge high" style="margin-top:3px">High Risk</div>
+        </div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item" onclick="App.goTo('anc-journey')">
+        <div class="li-icon" style="background:var(--amber-50)">⚠</div>
+        <div class="li-body">
+          <div class="li-title">ANC-2026-KAT-1198</div>
+          <div class="li-sub">GA: 34+0 · Severe anaemia</div>
+          <div class="risk-badge medium">Medium Risk</div>
+        </div>
+        <div class="li-right">›</div>
+      </div>
+    </div>
+    <div class="section-header" style="padding:8px 16px 4px;margin:0">All Active Patients</div>
+    <div class="card" style="margin:4px 16px;padding:0">
+      <div class="list-item" onclick="App.goTo('anc-journey')"><div class="li-icon" style="background:var(--teal-50)">🩺</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1247</div><div class="li-sub">Contact 4 due · 30+2 wks</div></div><div class="li-right">›</div></div>
+      <div class="list-item" onclick="App.goTo('anc-journey')"><div class="li-icon" style="background:var(--teal-50)">🩺</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1248</div><div class="li-sub">Contact 1 due · 11+4 wks</div></div><div class="li-right">›</div></div>
+      <div class="list-item" onclick="App.goTo('anc-contact-routine')"><div class="li-icon" style="background:var(--teal-50)">🩺</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1203</div><div class="li-sub">Contact 6 due · 36+0 wks</div></div><div class="li-right">›</div></div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goTo('anc-register')" style="margin:12px 16px 0">+ Register New Patient</button>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- ══ END SCREENS ══ -->
+</div><!-- /device-screen -->
+</div><!-- /device-shell -->
+</div><!-- /device-wrapper -->
+
+<script src="js/app.js"></script>
+<script src="js/edge-states.js"></script>
+</body>
+</html>
