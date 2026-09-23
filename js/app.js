@@ -1,189 +1,187 @@
 /* ============================================================
-   EHACare Platform — Prototype Navigation Engine v4
-   - Opacity-based transitions (no transform flicker in tablet)
-   - Context-aware bottom nav
-   - resumeLastModule() for offline recovery
-   - Clean history management
+   EHACare Platform — Navigation Engine v5 (Production)
+   FIXES: window.App global · no blocking guard ·
+          direct DOM nav · context-aware bottom nav
    ============================================================ */
 
-const App = (() => {
-  let currentScreen = 'landing';
-  let history       = [];
-  let currentModule = null;
-  let transitioning = false;
+(function () {
 
-  const MODULE_NAV = {
-    eha: [
-      { icon: '🏠', label: 'Home',       screen: 'eha-home' },
-      { icon: '👥', label: 'Patients',   screen: 'eha-patient' },
-      { icon: '📋', label: 'Encounters', screen: 'eha-encounters' },
-      { icon: '⚙️', label: 'Settings',   screen: 'settings' },
-    ],
-    lafiya: [
-      { icon: '🏠', label: 'Home',    screen: 'laf-home' },
-      { icon: '📋', label: 'Surveys', screen: 'laf-survey-list' },
-      { icon: '🗺', label: 'Map',     screen: 'laf-map' },
-      { icon: '⚙️', label: 'Settings',screen: 'settings' },
-    ],
-    warif: [
-      { icon: '🏠', label: 'Home',     screen: 'war-home' },
-      { icon: '📋', label: 'Cases',    screen: 'war-cases' },
-      { icon: '↗️', label: 'Referrals',screen: 'war-referrals' },
-      { icon: '⚙️', label: 'Settings', screen: 'settings' },
-    ],
-    msf: [
-      { icon: '🏠', label: 'Home',      screen: 'msf-home' },
-      { icon: '⚡', label: 'Triage',    screen: 'msf-triage' },
-      { icon: '⚖️', label: 'Nutrition', screen: 'msf-nutrition' },
-      { icon: '⚙️', label: 'Settings',  screen: 'settings' },
-    ],
-    mamai: [
-      { icon: '🏠', label: 'Home',     screen: 'anc-home' },
-      { icon: '👤', label: 'Patients', screen: 'anc-patient-list' },
-      { icon: '📋', label: 'Contacts', screen: 'anc-journey' },
-      { icon: '⚙️', label: 'Settings', screen: 'settings' },
-    ],
-    supervisor: [
-      { icon: '🏠', label: 'Team',    screen: 'sup-team' },
-      { icon: '➕', label: 'Add',     screen: 'sup-add-member' },
-      { icon: '📊', label: 'Activity',screen: 'sup-team' },
-      { icon: '⚙️', label: 'Settings',screen: 'settings' },
-    ],
+  var currentScreen = 'landing';
+  var navHistory    = [];
+  var activeModule  = null;
+
+  /* ── Module tab configurations ── */
+  var MODULE_NAV = {
+    eha:   [['🏠','Home','eha-home'],['👥','Patients','eha-patient'],['📋','Encounters','eha-encounters'],['⚙️','Settings','settings']],
+    lafiya:[['🏠','Home','laf-home'],['📋','Surveys','laf-survey-list'],['🗺','Map','laf-map'],['⚙️','Settings','settings']],
+    warif: [['🏠','Home','war-home'],['📋','Cases','war-cases'],['↗️','Referrals','war-referrals'],['⚙️','Settings','settings']],
+    msf:   [['🏠','Home','msf-home'],['⚡','Triage','msf-triage'],['⚖️','Nutrition','msf-nutrition'],['⚙️','Settings','settings']],
+    mamai: [['🏠','Home','anc-home'],['👤','Patients','anc-patient-list'],['📋','Contacts','anc-journey'],['⚙️','Settings','settings']],
+    supervisor:[['🏠','Team','sup-team'],['➕','Add','sup-add-member'],['📊','Activity','sup-team'],['⚙️','Settings','settings']],
   };
 
-  const MODULE_HOMES = {
-    eha: 'eha-home', lafiya: 'laf-home', warif: 'war-home',
-    msf: 'msf-home', mamai: 'anc-home', supervisor: 'sup-team',
+  /* Module → accent class */
+  var MODULE_THEMES = {
+    eha:'', lafiya:'module-lafiya', warif:'module-warif',
+    msf:'module-msf', mamai:'module-mamai', supervisor:''
   };
 
-  const MODULE_THEMES = {
-    eha: '', lafiya: 'module-lafiya', warif: 'module-warif',
-    msf: 'module-msf', mamai: 'module-mamai', supervisor: '',
+  /* Which nav tab is "active" for a given screen */
+  var NAV_GROUPS = {
+    'eha-home':        'eha-home',
+    'eha-guided':      'eha-home',
+    'eha-encounter-type':'eha-home',
+    'eha-patient':     'eha-patient',
+    'eha-encounters':  'eha-encounters',
+    'laf-home':        'laf-home',
+    'laf-setup':       'laf-survey-list',
+    'laf-population':  'laf-survey-list',
+    'laf-fp':          'laf-survey-list',
+    'laf-mortality':   'laf-survey-list',
+    'laf-review':      'laf-survey-list',
+    'laf-success':     'laf-survey-list',
+    'laf-survey-list': 'laf-survey-list',
+    'laf-map':         'laf-map',
+    'war-home':        'war-home',
+    'war-intake':      'war-cases',
+    'war-alert':       'war-cases',
+    'war-cases':       'war-cases',
+    'war-detail':      'war-cases',
+    'war-referrals':   'war-referrals',
+    'war-referral':    'war-referrals',
+    'msf-home':        'msf-home',
+    'msf-mci':         'msf-home',
+    'msf-no-mci':      'msf-home',
+    'msf-result-black':'msf-triage',
+    'msf-triage':      'msf-triage',
+    'msf-triage-2':    'msf-triage',
+    'msf-triage-3':    'msf-triage',
+    'msf-result-red':  'msf-triage',
+    'msf-result-yellow':'msf-triage',
+    'msf-nutrition':   'msf-nutrition',
+    'msf-nutrition-result':'msf-nutrition',
+    'anc-home':        'anc-home',
+    'anc-patient-list':'anc-patient-list',
+    'anc-register':    'anc-patient-list',
+    'anc-contact':     'anc-journey',
+    'anc-contact-routine':'anc-journey',
+    'anc-alert':       'anc-journey',
+    'anc-journey':     'anc-journey',
+    'anc-overdue':     'anc-journey',
+    'sup-team':        'sup-team',
+    'sup-member-detail':'sup-team',
+    'sup-member-created':'sup-team',
+    'sup-add-member':  'sup-add-member',
   };
 
-  function goTo(screenId, addToHistory = true) {
-    if (transitioning || screenId === currentScreen) return;
-    const next = document.getElementById(screenId);
+  /* ── Core: navigate to a screen ── */
+  function goTo(screenId, addHistory) {
+    if (screenId === currentScreen) return;
+
+    var next = document.getElementById(screenId);
     if (!next) { console.warn('Screen not found:', screenId); return; }
 
-    transitioning = true;
-    const prev = document.getElementById(currentScreen);
+    var prev = document.getElementById(currentScreen);
 
-    if (addToHistory) history.push(currentScreen);
+    if (addHistory !== false) navHistory.push(currentScreen);
 
-    // Fade out current
-    if (prev) {
-      prev.classList.remove('active');
-      prev.classList.add('leaving');
-    }
+    /* Hide previous */
+    if (prev) prev.classList.remove('active');
 
-    // Small delay so leaving fade starts, then show next
-    requestAnimationFrame(() => {
-      next.classList.add('active');
-      renderBottomNav();
-      setTimeout(() => {
-        if (prev) prev.classList.remove('leaving');
-        transitioning = false;
-      }, 260);
-    });
+    /* Show next */
+    next.classList.add('active');
+
+    /* Scroll content to top */
+    var content = next.querySelector('.screen-content');
+    if (content) content.scrollTop = 0;
 
     currentScreen = screenId;
+    renderNav();
   }
 
   function goBack() {
-    if (transitioning) return;
-    if (history.length === 0) return;
-    const prev = history.pop();
-    goTo(prev, false);
+    if (navHistory.length === 0) return;
+    goTo(navHistory.pop(), false);
   }
 
-  function setModule(moduleId) {
-    currentModule = moduleId;
-    const body = document.body;
-    Object.values(MODULE_THEMES).forEach(t => { if (t) body.classList.remove(t); });
-    if (MODULE_THEMES[moduleId]) body.classList.add(MODULE_THEMES[moduleId]);
+  function setModule(mod) {
+    activeModule = mod;
+    var body = document.body;
+    Object.values(MODULE_THEMES).forEach(function(t){ if (t) body.classList.remove(t); });
+    if (MODULE_THEMES[mod]) body.classList.add(MODULE_THEMES[mod]);
   }
 
-  function launchModule(moduleId, firstScreen) {
-    setModule(moduleId);
-    history = ['landing'];
+  function launchModule(mod, firstScreen) {
+    setModule(mod);
+    navHistory = ['landing'];
     goTo(firstScreen, false);
   }
 
   function resumeLastModule() {
-    const home = MODULE_HOMES[currentModule] || 'landing';
-    goTo(home, false);
+    var homes = {eha:'eha-home',lafiya:'laf-home',warif:'war-home',msf:'msf-home',mamai:'anc-home',supervisor:'sup-team'};
+    goTo(homes[activeModule] || 'landing', false);
   }
 
-  // Active nav matching
-  function isNavActive(item) {
-    const s = currentScreen;
-    if (s === item.screen) return true;
-    const g = {
-      'eha-home':       ['eha-home','eha-guided','eha-encounter-type'],
-      'eha-patient':    ['eha-patient'],
-      'eha-encounters': ['eha-encounters'],
-      'laf-home':       ['laf-home'],
-      'laf-survey-list':['laf-survey-list','laf-setup','laf-population','laf-fp','laf-mortality','laf-review','laf-success'],
-      'laf-map':        ['laf-map'],
-      'war-home':       ['war-home'],
-      'war-cases':      ['war-cases','war-detail','war-intake','war-alert'],
-      'war-referrals':  ['war-referrals','war-referral'],
-      'msf-home':       ['msf-home','msf-mci','msf-no-mci','msf-result-black'],
-      'msf-triage':     ['msf-triage','msf-triage-2','msf-triage-3','msf-result-red','msf-result-yellow'],
-      'msf-nutrition':  ['msf-nutrition','msf-nutrition-result'],
-      'anc-home':       ['anc-home'],
-      'anc-patient-list':['anc-patient-list','anc-register'],
-      'anc-journey':    ['anc-journey','anc-contact','anc-alert','anc-contact-routine','anc-overdue'],
-      'sup-team':       ['sup-team','sup-member-detail','sup-member-created'],
-      'sup-add-member': ['sup-add-member'],
-    };
-    return (g[item.screen] || []).includes(s);
-  }
+  /* ── Render context-aware bottom nav ── */
+  function renderNav() {
+    var tabs = MODULE_NAV[activeModule] || null;
+    var activeTab = NAV_GROUPS[currentScreen] || '';
 
-  function renderBottomNav() {
-    const navConf = MODULE_NAV[currentModule] || null;
-    document.querySelectorAll('.bottom-nav').forEach(nav => {
-      if (!navConf) {
-        nav.innerHTML = '';
-        return;
-      }
-      nav.innerHTML = navConf.map(item => {
-        const active = isNavActive(item);
-        return `<button class="nav-item${active ? ' active' : ''}" onclick="App.goTo('${item.screen}')">
-          ${active ? '<span class="nav-dot"></span>' : ''}
-          <span class="nav-icon">${item.icon}</span>
-          <span class="nav-label">${item.label}</span>
-        </button>`;
+    document.querySelectorAll('.bottom-nav').forEach(function(nav) {
+      if (!tabs) { nav.innerHTML = ''; return; }
+
+      nav.innerHTML = tabs.map(function(tab) {
+        var icon = tab[0], label = tab[1], screen = tab[2];
+        var isActive = (screen === activeTab);
+        return '<button class="nav-item' + (isActive ? ' active' : '') + '" ' +
+          'onclick="App.goTo(\'' + screen + '\')">' +
+          (isActive ? '<span class="nav-dot"></span>' : '') +
+          '<span class="nav-icon">' + icon + '</span>' +
+          '<span class="nav-label">' + label + '</span>' +
+          '</button>';
       }).join('');
     });
   }
 
+  /* ── Init ── */
   function init() {
-    const landing = document.getElementById('landing');
-    if (landing) {
-      landing.classList.add('active');
-      // Ensure no other screen is active
-      document.querySelectorAll('.screen').forEach(s => {
-        if (s.id !== 'landing') s.classList.remove('active', 'leaving');
-      });
-    }
+    /* Show landing, hide everything else */
+    document.querySelectorAll('.screen').forEach(function(s) {
+      s.classList.remove('active', 'leaving');
+    });
+    var landing = document.getElementById('landing');
+    if (landing) landing.classList.add('active');
 
-    // Global back-button handler
-    document.addEventListener('click', e => {
-      const backBtn = e.target.closest('.back-btn');
-      if (backBtn) {
-        e.preventDefault();
-        const target = backBtn.dataset.goto;
-        if (target) goTo(target, false);
-        else goBack();
-      }
+    /* Delegate back-button clicks */
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.back-btn');
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var target = btn.getAttribute('data-goto');
+      if (target) goTo(target, false);
+      else goBack();
     });
 
-    renderBottomNav();
+    renderNav();
   }
 
-  return { goTo, goBack, setModule, launchModule, resumeLastModule, init, renderBottomNav };
-})();
+  /* ── Expose globally so inline onclick="App.goTo()" works ── */
+  window.App = {
+    goTo: goTo,
+    goBack: goBack,
+    setModule: setModule,
+    launchModule: launchModule,
+    resumeLastModule: resumeLastModule,
+    renderNav: renderNav,
+    renderBottomNav: renderNav, /* alias for backwards compat */
+    init: init,
+  };
 
-document.addEventListener('DOMContentLoaded', App.init);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+}());

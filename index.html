@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EHACare Platform — Interactive Prototype</title>
 <link rel="stylesheet" href="css/app.css">
-<link rel="stylesheet" href="css/edge-states.css">
+<meta name="theme-color" content="#0073F3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 
 <!-- ══════════════════════════════════════════════════════════
   DEVICE TYPE SWITCHER (sits outside device chrome)
 ══════════════════════════════════════════════════════════ -->
-<div id="device-wrapper">
+<div id="device-wrapper" style="display:flex;flex-direction:column;align-items:center;width:100%">
 <div class="device-type-switcher">
   <button class="dts-btn active" id="btn-phone" onclick="setDeviceType('phone')">
     <span class="dts-icon">📱</span> Phone
