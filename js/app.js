@@ -10,14 +10,17 @@
   var navHistory    = [];
   var activeModule  = null;
 
-  /* ── Module tab configurations ── */
+  /* ── Module tab configurations ──
+     🏠 Home tab ALWAYS goes to landing (module selector).
+     Tabs 2-4 provide module-specific navigation.
+  */
   var MODULE_NAV = {
-    eha:   [['🏠','Home','eha-home'],['👥','Patients','eha-patient'],['📋','Encounters','eha-encounters'],['⚙️','Settings','settings']],
-    lafiya:[['🏠','Home','laf-home'],['📋','Surveys','laf-survey-list'],['🗺','Map','laf-map'],['⚙️','Settings','settings']],
-    warif: [['🏠','Home','war-home'],['📋','Cases','war-cases'],['↗️','Referrals','war-referrals'],['⚙️','Settings','settings']],
-    msf:   [['🏠','Home','msf-home'],['⚡','Triage','msf-triage'],['⚖️','Nutrition','msf-nutrition'],['⚙️','Settings','settings']],
-    mamai: [['🏠','Home','anc-home'],['👤','Patients','anc-patient-list'],['📋','Contacts','anc-journey'],['⚙️','Settings','settings']],
-    supervisor:[['🏠','Team','sup-team'],['➕','Add','sup-add-member'],['📊','Activity','sup-team'],['⚙️','Settings','settings']],
+    eha:   [['🏠','Modules','landing'],['👥','Patients','eha-patient'],['📋','Encounters','eha-encounters'],['⚙️','Settings','settings']],
+    lafiya:[['🏠','Modules','landing'],['📋','Surveys','laf-survey-list'],['🗺','Map','laf-map'],['⚙️','Settings','settings']],
+    warif: [['🏠','Modules','landing'],['📋','Cases','war-cases'],['↗️','Referrals','war-referrals'],['⚙️','Settings','settings']],
+    msf:   [['🏠','Modules','landing'],['⚡','Triage','msf-triage'],['⚖️','Nutrition','msf-nutrition'],['⚙️','Settings','settings']],
+    mamai: [['🏠','Modules','landing'],['👤','Patients','anc-patient-list'],['📋','Contacts','anc-journey'],['⚙️','Settings','settings']],
+    supervisor:[['🏠','Modules','landing'],['➕','Add Member','sup-add-member'],['👤','Team','sup-team'],['⚙️','Settings','settings']],
   };
 
   /* Module → accent class */
@@ -26,14 +29,19 @@
     msf:'module-msf', mamai:'module-mamai', supervisor:''
   };
 
-  /* Which nav tab is "active" for a given screen */
+  /* Which nav tab is "active" for a given screen.
+     'landing' = Home tab active; module screens = their own tab active. */
   var NAV_GROUPS = {
-    'eha-home':        'eha-home',
-    'eha-guided':      'eha-home',
-    'eha-encounter-type':'eha-home',
-    'eha-patient':     'eha-patient',
-    'eha-encounters':  'eha-encounters',
-    'laf-home':        'laf-home',
+    /* Landing: Home tab active */
+    'landing':         'landing',
+    /* EHACare */
+    'eha-home':           'eha-patient',   /* dashboard → Patients tab context */
+    'eha-guided':         'eha-encounters',
+    'eha-encounter-type': 'eha-encounters',
+    'eha-patient':        'eha-patient',
+    'eha-encounters':     'eha-encounters',
+    /* Lafiya */
+    'laf-home':        'laf-survey-list',
     'laf-setup':       'laf-survey-list',
     'laf-population':  'laf-survey-list',
     'laf-fp':          'laf-survey-list',
@@ -42,25 +50,28 @@
     'laf-success':     'laf-survey-list',
     'laf-survey-list': 'laf-survey-list',
     'laf-map':         'laf-map',
-    'war-home':        'war-home',
+    /* WARIF */
+    'war-home':        'war-cases',
     'war-intake':      'war-cases',
     'war-alert':       'war-cases',
     'war-cases':       'war-cases',
     'war-detail':      'war-cases',
     'war-referrals':   'war-referrals',
     'war-referral':    'war-referrals',
-    'msf-home':        'msf-home',
-    'msf-mci':         'msf-home',
-    'msf-no-mci':      'msf-home',
-    'msf-result-black':'msf-triage',
-    'msf-triage':      'msf-triage',
-    'msf-triage-2':    'msf-triage',
-    'msf-triage-3':    'msf-triage',
-    'msf-result-red':  'msf-triage',
-    'msf-result-yellow':'msf-triage',
-    'msf-nutrition':   'msf-nutrition',
+    /* MSF */
+    'msf-home':           'msf-triage',
+    'msf-mci':            'msf-triage',
+    'msf-no-mci':         'msf-triage',
+    'msf-result-black':   'msf-triage',
+    'msf-triage':         'msf-triage',
+    'msf-triage-2':       'msf-triage',
+    'msf-triage-3':       'msf-triage',
+    'msf-result-red':     'msf-triage',
+    'msf-result-yellow':  'msf-triage',
+    'msf-nutrition':      'msf-nutrition',
     'msf-nutrition-result':'msf-nutrition',
-    'anc-home':        'anc-home',
+    /* MAMAI */
+    'anc-home':        'anc-patient-list',
     'anc-patient-list':'anc-patient-list',
     'anc-register':    'anc-patient-list',
     'anc-contact':     'anc-journey',
@@ -96,6 +107,10 @@
     if (content) content.scrollTop = 0;
 
     currentScreen = screenId;
+
+    /* Clear module context when returning to the selector */
+    if (screenId === 'landing') activeModule = null;
+
     renderNav();
   }
 
@@ -122,23 +137,37 @@
     goTo(homes[activeModule] || 'landing', false);
   }
 
-  /* ── Render context-aware bottom nav ── */
+  /* ── Render context-aware bottom nav ──
+     - Hidden entirely on landing screen (no module active)
+     - 🏠 Home tab is ALWAYS the first tab and ALWAYS goes to landing
+     - Remaining tabs are module-specific
+  */
   function renderNav() {
-    var tabs = MODULE_NAV[activeModule] || null;
+    /* No nav on the module selector screen */
+    var onLanding = (currentScreen === 'landing');
+    var tabs      = (!onLanding && activeModule) ? MODULE_NAV[activeModule] : null;
     var activeTab = NAV_GROUPS[currentScreen] || '';
 
     document.querySelectorAll('.bottom-nav').forEach(function(nav) {
-      if (!tabs) { nav.innerHTML = ''; return; }
+      if (!tabs) {
+        nav.innerHTML = '';
+        nav.style.display = 'none';
+        return;
+      }
+      nav.style.display = '';
 
       nav.innerHTML = tabs.map(function(tab) {
-        var icon = tab[0], label = tab[1], screen = tab[2];
-        var isActive = (screen === activeTab);
+        var icon   = tab[0];
+        var label  = tab[1];
+        var screen = tab[2];
+        /* Home tab (landing) is active ONLY when on landing — never highlighted inside a module */
+        var isActive = (screen !== 'landing') && (screen === activeTab);
         return '<button class="nav-item' + (isActive ? ' active' : '') + '" ' +
-          'onclick="App.goTo(\'' + screen + '\')">' +
-          (isActive ? '<span class="nav-dot"></span>' : '') +
-          '<span class="nav-icon">' + icon + '</span>' +
-          '<span class="nav-label">' + label + '</span>' +
-          '</button>';
+               'onclick="App.goTo(\'' + screen + '\')">' +
+               (isActive ? '<span class="nav-dot"></span>' : '') +
+               '<span class="nav-icon">' + icon + '</span>' +
+               '<span class="nav-label">' + label + '</span>' +
+               '</button>';
       }).join('');
     });
   }
