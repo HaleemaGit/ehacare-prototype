@@ -183,60 +183,126 @@ body {
    MOBILE / TABLET LAYOUT  (< 960 px) — full-screen native
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 959px) {
+  /* ─────────────────────────────────────────────────────────────
+     MOBILE SCROLLING — body-level scroll (definitive fix)
+
+     Internal overflow:scroll inside stacked position:absolute
+     containers does not reliably receive touch events on iOS
+     Safari or Chrome Android. The only guaranteed fix is to let
+     the BODY scroll and make all intermediate containers
+     height:auto with overflow:visible.
+
+     Inactive screens remain display:none — no visual conflicts.
+     Active screen expands to content height; body scrolls.
+  ──────────────────────────────────────────────────────────────── */
   body {
     background: var(--white);
-    height: 100dvh;
-    height: 100vh; /* fallback */
-    overflow: hidden;
+    height: auto !important;          /* not fixed — body grows with content */
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;                  /* BODY is the scroll container */
+    -webkit-overflow-scrolling: touch; /* iOS momentum scroll */
   }
 
   /* Hide desktop chrome */
   .device-type-switcher { display: none !important; }
   .android-gesture-bar  { display: none !important; }
 
-  /* Shell fills viewport */
-  #device-wrapper { width: 100%; height: 100%; display: flex; flex-direction: column; }
+  /* Wrapper: block, auto height */
+  #device-wrapper {
+    width: 100%;
+    height: auto !important;
+    min-height: 100vh;
+    display: block !important;
+  }
+
+  /* Shell: strip all fixed sizing and overflow clipping */
   .device-shell {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
     border-radius: 0 !important;
     box-shadow: none !important;
     background: var(--white) !important;
-    position: relative;
-    overflow: hidden;
-    flex: 1;
-    min-height: 0;  /* allow flex child to shrink — prerequisite for inner scroll */
+    position: relative !important;
+    overflow: visible !important;      /* remove overflow:hidden chain */
   }
   .device-shell::before,
   .device-shell::after { display: none !important; }
 
+  /* Device screen: relative flow, auto height, no clipping */
   .device-screen {
-    position: absolute !important;
-    inset: 0 !important;
+    position: relative !important;
+    inset: unset !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
     border-radius: 0 !important;
-    overflow: hidden;
+    overflow: visible !important;      /* no clipping */
     background: var(--white);
-    height: 100%; /* explicit height so children can calculate their size */
   }
 
-  /* On mobile, screen-content uses native full momentum scroll */
+  /* Inactive screens: display:none is sufficient — no overflow:hidden needed */
+  .screen {
+    position: relative !important;
+    inset: unset !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    display: none !important;
+  }
+  .screen.active {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100vh;
+  }
+
+  /* Content area: no internal scroll — body handles it */
   .screen-content {
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0;
+    flex: none !important;            /* don't shrink — grow to content height */
+    -webkit-overflow-scrolling: auto;
+    touch-action: auto;
+  }
+  .screen-content.no-pad { padding: 0; }
+
+  /* Danger fullscreen: also allow natural height */
+  .danger-fullscreen {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+    flex: none !important;
   }
 
-  /* Status bar: minimal on real device */
+  /* Onboarding (activation) screens */
+  .onboarding-screen {
+    overflow: visible !important;
+    height: auto !important;
+    flex: none !important;
+  }
+
+  /* Status bar: minimal — no fake notch */
   .status-bar {
-    height: env(safe-area-inset-top, 44px);
+    position: relative;
+    height: 44px;
     min-height: 44px;
     padding-top: env(safe-area-inset-top, 0);
   }
-  .status-bar::before { display: none !important; } /* no fake notch */
+  .status-bar::before { display: none !important; }
 
-  /* Bottom safe area for nav */
+  /* Bottom nav: STICKY — stays visible as user scrolls */
   .bottom-nav {
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
     padding-bottom: env(safe-area-inset-bottom, 8px);
     height: calc(64px + env(safe-area-inset-bottom, 0px));
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    box-shadow: 0 -2px 12px rgba(0,0,0,.06);
   }
 }
 
