@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EHACare Platform — Interactive Prototype</title>
-<link rel="stylesheet" href="css/app.css?v=8">
+<link rel="stylesheet" href="css/app.css?v=9">
 <meta name="theme-color" content="#0073F3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1017,7 +1017,7 @@
     </button>
     <button class="quick-action" style="background:var(--teal-600);margin-top:0" onclick="App.goTo('anc-patient-list')">
       <div class="qa-icon">📋</div>
-      <div><div class="qa-label">Record ANC Contact</div><div class="qa-sub">Existing patient visit</div></div>
+      <div><div class="qa-label">Record ANC Contact</div><div class="qa-sub">Emergency or routine visit</div></div>
     </button>
     <div class="section-header">High-Risk Patients</div>
     <div class="card" style="padding:0">
@@ -2093,12 +2093,904 @@
   <div class="bottom-nav"></div>
 </div>
 
+
+<!-- ══════════════════════════════════════════════════════════
+  LAFIYA: ANALYTICS HUB
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="laf-analytics">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-home">‹</button><span class="top-bar-title">Analytics Centre</span>
+    <button onclick="App.goTo('laf-filter')" style="margin-left:auto;background:rgba(255,255,255,.2);border:none;color:white;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer">🔍 Filter</button>
+  </div>
+  <div class="screen-content">
+    <!-- Key performance metrics -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="kpi-card" style="border-left:3px solid var(--green-600)">
+        <div class="kpi-label">Surveys Completed</div>
+        <div class="kpi-value">247</div>
+        <div class="kpi-sub">↑18% vs last month</div>
+      </div>
+      <div class="kpi-card" style="border-left:3px solid var(--blue-600)">
+        <div class="kpi-label">Settlement Coverage</div>
+        <div class="kpi-value">73%</div>
+        <div class="kpi-sub">Target: 85% by Dec</div>
+      </div>
+      <div class="kpi-card" style="border-left:3px solid var(--amber-600)">
+        <div class="kpi-label">Avg Unmet FP Need</div>
+        <div class="kpi-value">27.4%</div>
+        <div class="kpi-sub">↑2.1% vs last cycle</div>
+      </div>
+      <div class="kpi-card" style="border-left:3px solid var(--red-600)">
+        <div class="kpi-label">Maternal Deaths</div>
+        <div class="kpi-value">34</div>
+        <div class="kpi-sub">MMR: 412/100K LB</div>
+      </div>
+    </div>
+    <div class="section-header">Analytics Views</div>
+    <div class="card" style="padding:0">
+      <div class="list-item" onclick="App.goTo('laf-analytics-all')">
+        <div class="li-icon" style="background:var(--green-50)">📊</div>
+        <div class="li-body"><div class="li-title">All Surveys Analytics</div><div class="li-sub">Aggregate data across all 247 surveys</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item" onclick="App.goTo('laf-analytics-survey')">
+        <div class="li-icon" style="background:var(--blue-50)">🔍</div>
+        <div class="li-body"><div class="li-title">Individual Survey</div><div class="li-sub">Deep-dive into a single survey record</div></div>
+        <div class="li-right">›</div>
+      </div>
+    </div>
+    <div class="section-header">Segmentation Analytics</div>
+    <div class="card" style="padding:0">
+      <div class="list-item" onclick="App.goTo('laf-analytics-ward')">
+        <div class="li-icon" style="background:#f0fdf4">🏘</div>
+        <div class="li-body"><div class="li-title">By Ward</div><div class="li-sub">18 wards · Coverage & metrics per ward</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item" onclick="App.goTo('laf-analytics-lga')">
+        <div class="li-icon" style="background:#eff6ff">🏛</div>
+        <div class="li-body"><div class="li-title">By Local Government Area</div><div class="li-sub">6 LGAs · Kano, Kaduna, Katsina…</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item" onclick="App.goTo('laf-analytics-state')">
+        <div class="li-icon" style="background:#fdf4ff">🗾</div>
+        <div class="li-body"><div class="li-title">By State (Nigeria)</div><div class="li-sub">36 States + FCT · National view</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item" onclick="App.goTo('laf-analytics-geo')">
+        <div class="li-icon" style="background:#fff7ed">🌍</div>
+        <div class="li-body"><div class="li-title">By Geopolitical Zone</div><div class="li-sub">NW · NE · NC · SW · SE · SS</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item" onclick="App.goTo('laf-analytics-ns')">
+        <div class="li-icon" style="background:#f0f9ff">⬆⬇</div>
+        <div class="li-body"><div class="li-title">North vs South</div><div class="li-sub">Binary regional comparison</div></div>
+        <div class="li-right">›</div>
+      </div>
+      <div class="list-item" onclick="App.goTo('laf-analytics-collector')">
+        <div class="li-icon" style="background:#f8fafc">👤</div>
+        <div class="li-body"><div class="li-title">By Data Collector</div><div class="li-sub">Performance & output per assignee</div></div>
+        <div class="li-right">›</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- LAFIYA: ALL SURVEYS ANALYTICS -->
+<div class="screen" id="laf-analytics-all">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">All Surveys Analytics</span>
+    <button onclick="App.goTo('laf-filter')" style="margin-left:auto;background:rgba(255,255,255,.2);border:none;color:white;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer">Filter ▾</button>
+  </div>
+  <div class="screen-content">
+    <!-- 5 Core Metrics -->
+    <div class="section-header">5 Core Population Health Metrics</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <!-- Metric: Population -->
+      <div class="card" style="padding:12px 14px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:.04em">Total Population Covered</div>
+          <div style="font-size:24px;font-weight:800;color:var(--gray-900);margin-top:2px">1,847,230</div></div>
+          <div style="font-size:11px;color:var(--green-600);background:var(--green-50);padding:3px 8px;border-radius:12px;font-weight:600">+12.4% ↑</div>
+        </div>
+        <div style="margin-top:8px">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray-400);margin-bottom:3px"><span>Coverage progress</span><span>73%</span></div>
+          <div style="height:6px;background:var(--gray-100);border-radius:3px"><div style="height:6px;width:73%;background:var(--green-600);border-radius:3px"></div></div>
+        </div>
+      </div>
+      <!-- Metric: WRA -->
+      <div class="card" style="padding:12px 14px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:.04em">Women of Reproductive Age</div>
+          <div style="font-size:24px;font-weight:800;color:var(--gray-900);margin-top:2px">462,047</div></div>
+          <div style="font-size:11px;color:var(--blue-600);background:var(--blue-50);padding:3px 8px;border-radius:12px;font-weight:600">25.0% of pop.</div>
+        </div>
+        <!-- Mini bar chart - WRA by zone -->
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:10px;color:var(--gray-400);margin-bottom:2px">Distribution by zone</div>
+          <div style="display:flex;align-items:center;gap:6px"><div style="font-size:10px;width:24px;color:var(--gray-500)">NW</div><div style="flex:1;height:10px;background:var(--gray-100);border-radius:2px"><div style="height:10px;width:68%;background:var(--blue-500);border-radius:2px"></div></div><div style="font-size:10px;color:var(--gray-600);width:30px">68%</div></div>
+          <div style="display:flex;align-items:center;gap:6px"><div style="font-size:10px;width:24px;color:var(--gray-500)">NE</div><div style="flex:1;height:10px;background:var(--gray-100);border-radius:2px"><div style="height:10px;width:54%;background:var(--blue-400);border-radius:2px"></div></div><div style="font-size:10px;color:var(--gray-600);width:30px">54%</div></div>
+          <div style="display:flex;align-items:center;gap:6px"><div style="font-size:10px;width:24px;color:var(--gray-500)">NC</div><div style="flex:1;height:10px;background:var(--gray-100);border-radius:2px"><div style="height:10px;width:61%;background:var(--blue-300);border-radius:2px"></div></div><div style="font-size:10px;color:var(--gray-600);width:30px">61%</div></div>
+        </div>
+      </div>
+      <!-- Metric: Unmet FP -->
+      <div class="card" style="padding:12px 14px;border-left:3px solid var(--amber-600)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:.04em">Unmet FP Need</div>
+          <div style="font-size:24px;font-weight:800;color:var(--amber-600);margin-top:2px">126,440</div></div>
+          <div style="font-size:11px;color:var(--amber-600);background:var(--amber-50);padding:3px 8px;border-radius:12px;font-weight:600">27.4% of WRA ⚠</div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:8px;font-size:12px">
+          <div><div style="color:var(--gray-500);font-size:10px">Spacing</div><div style="font-weight:700;color:var(--amber-600)">81,240</div></div>
+          <div><div style="color:var(--gray-500);font-size:10px">Limiting</div><div style="font-weight:700;color:var(--amber-700)">45,200</div></div>
+          <div><div style="color:var(--gray-500);font-size:10px">Top barrier</div><div style="font-weight:700;color:var(--gray-700)">Partner opposition</div></div>
+        </div>
+      </div>
+      <!-- Metric: Maternal Deaths -->
+      <div class="card" style="padding:12px 14px;border-left:3px solid var(--red-600)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:.04em">Maternal Deaths (12 mo)</div>
+          <div style="font-size:24px;font-weight:800;color:var(--red-600);margin-top:2px">34</div></div>
+          <div style="font-size:11px;color:var(--red-600);background:var(--red-50);padding:3px 8px;border-radius:12px;font-weight:600">MMR: 412/100K</div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:8px;font-size:11px">
+          <div style="text-align:center"><div style="color:var(--gray-400);font-size:10px">Hemorrhage</div><div style="font-weight:700">38%</div></div>
+          <div style="text-align:center"><div style="color:var(--gray-400);font-size:10px">Eclampsia</div><div style="font-weight:700">24%</div></div>
+          <div style="text-align:center"><div style="color:var(--gray-400);font-size:10px">Sepsis</div><div style="font-weight:700">18%</div></div>
+          <div style="text-align:center"><div style="color:var(--gray-400);font-size:10px">Other</div><div style="font-weight:700">20%</div></div>
+        </div>
+      </div>
+      <!-- Metric: Infant Mortality -->
+      <div class="card" style="padding:12px 14px;border-left:3px solid var(--purple-600)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><div style="font-size:11px;color:var(--gray-500);font-weight:600;text-transform:uppercase;letter-spacing:.04em">Infant Deaths (u-1, 12 mo)</div>
+          <div style="font-size:24px;font-weight:800;color:var(--purple-600);margin-top:2px">128</div></div>
+          <div style="font-size:11px;color:var(--purple-600);background:var(--purple-50);padding:3px 8px;border-radius:12px;font-weight:600">IMR: 69/1,000 LB</div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:8px;font-size:11px">
+          <div><div style="color:var(--gray-400);font-size:10px">Neonatal (0–28d)</div><div style="font-weight:700">71</div></div>
+          <div><div style="color:var(--gray-400);font-size:10px">Post-neonatal</div><div style="font-weight:700">57</div></div>
+          <div><div style="color:var(--gray-400);font-size:10px">Top cause</div><div style="font-weight:700">Malaria 31%</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Monthly trend chart -->
+    <div class="section-header">Survey Submission Trend (6 months)</div>
+    <div class="card" style="padding:14px">
+      <svg width="100%" height="100" viewBox="0 0 320 100">
+        <!-- Grid lines -->
+        <line x1="0" y1="20" x2="320" y2="20" stroke="#f1f5f9" stroke-width="1"/>
+        <line x1="0" y1="50" x2="320" y2="50" stroke="#f1f5f9" stroke-width="1"/>
+        <line x1="0" y1="80" x2="320" y2="80" stroke="#f1f5f9" stroke-width="1"/>
+        <!-- Line path: surveys per month -->
+        <polyline points="20,72 72,60 124,50 176,38 228,28 280,18" fill="none" stroke="#16A34A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Area fill -->
+        <polygon points="20,72 72,60 124,50 176,38 228,28 280,18 280,95 20,95" fill="rgba(22,163,74,0.08)"/>
+        <!-- Data dots -->
+        <circle cx="20"  cy="72" r="4" fill="#16A34A"/>
+        <circle cx="72"  cy="60" r="4" fill="#16A34A"/>
+        <circle cx="124" cy="50" r="4" fill="#16A34A"/>
+        <circle cx="176" cy="38" r="4" fill="#16A34A"/>
+        <circle cx="228" cy="28" r="4" fill="#16A34A"/>
+        <circle cx="280" cy="18" r="5" fill="#16A34A" stroke="white" stroke-width="2"/>
+        <!-- Labels -->
+        <text x="20"  y="98" font-size="9" fill="#94a3b8" text-anchor="middle">Apr</text>
+        <text x="72"  y="98" font-size="9" fill="#94a3b8" text-anchor="middle">May</text>
+        <text x="124" y="98" font-size="9" fill="#94a3b8" text-anchor="middle">Jun</text>
+        <text x="176" y="98" font-size="9" fill="#94a3b8" text-anchor="middle">Jul</text>
+        <text x="228" y="98" font-size="9" fill="#94a3b8" text-anchor="middle">Aug</text>
+        <text x="280" y="98" font-size="9" fill="#16A34A" font-weight="bold" text-anchor="middle">Sep</text>
+        <!-- Values -->
+        <text x="280" y="12" font-size="9" fill="#16A34A" font-weight="bold" text-anchor="middle">247</text>
+      </svg>
+      <div style="display:flex;gap:16px;margin-top:4px;font-size:11px">
+        <div><span style="color:var(--gray-400)">This month: </span><span style="font-weight:700;color:var(--green-600)">247 surveys</span></div>
+        <div><span style="color:var(--gray-400)">Growth: </span><span style="font-weight:700;color:var(--green-600)">+18.3% ↑</span></div>
+      </div>
+    </div>
+    <div class="section-header">Data Quality Summary</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div style="background:var(--green-50);border-radius:10px;padding:10px 8px;text-align:center">
+        <div style="font-size:18px;font-weight:800;color:var(--green-600)">96%</div>
+        <div style="font-size:9px;color:var(--green-700);font-weight:500">GPS Accuracy</div>
+      </div>
+      <div style="background:var(--blue-50);border-radius:10px;padding:10px 8px;text-align:center">
+        <div style="font-size:18px;font-weight:800;color:var(--blue-600)">94%</div>
+        <div style="font-size:9px;color:var(--blue-700);font-weight:500">Completion Rate</div>
+      </div>
+      <div style="background:var(--amber-50);border-radius:10px;padding:10px 8px;text-align:center">
+        <div style="font-size:18px;font-weight:800;color:var(--amber-600)">7</div>
+        <div style="font-size:9px;color:var(--amber-700);font-weight:500">Outlier Flags</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- LAFIYA: INDIVIDUAL SURVEY ANALYTICS -->
+<div class="screen" id="laf-analytics-survey">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">Individual Survey</span></div>
+  <div class="screen-content">
+    <!-- Survey picker -->
+    <div class="form-group"><label class="form-label">Select Survey</label>
+      <input class="form-input select-arrow" value="Sabuwar Kasuwa · Sep 22, 2026">
+    </div>
+    <!-- Survey metadata card -->
+    <div class="card" style="background:var(--green-50);border-color:var(--green-600)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-weight:700;color:var(--green-700)">Sabuwar Kasuwa Settlement</div>
+        <div class="chip success">Synced ✓</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
+        <div><span style="color:var(--gray-500)">Ward: </span><span style="font-weight:600">Dala Ward</span></div>
+        <div><span style="color:var(--gray-500)">LGA: </span><span style="font-weight:600">Kano Municipal</span></div>
+        <div><span style="color:var(--gray-500)">Collector: </span><span style="font-weight:600">Amina Mohammed</span></div>
+        <div><span style="color:var(--gray-500)">GPS: </span><span style="font-weight:600;color:var(--green-600)">±8m ✓</span></div>
+        <div><span style="color:var(--gray-500)">Date: </span><span style="font-weight:600">Sep 22, 2026</span></div>
+        <div><span style="color:var(--gray-500)">Duration: </span><span style="font-weight:600">14 min</span></div>
+      </div>
+    </div>
+    <!-- This survey's metrics vs LGA average -->
+    <div class="section-header">Survey Metrics vs LGA Average</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="card" style="padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-700)">Population</div>
+          <div style="font-size:10px;color:var(--gray-400)">vs LGA avg: 612</div>
+        </div>
+        <div style="font-size:22px;font-weight:800;color:var(--gray-900);margin:4px 0">645</div>
+        <div style="height:6px;background:var(--gray-100);border-radius:3px;position:relative">
+          <div style="height:6px;width:66%;background:var(--green-500);border-radius:3px"></div>
+          <div style="position:absolute;left:63%;top:-4px;width:2px;height:14px;background:var(--gray-400);border-radius:1px"></div>
+        </div>
+        <div style="font-size:10px;color:var(--green-600);margin-top:3px">+5.4% above LGA average</div>
+      </div>
+      <div class="card" style="padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-700)">Women of Reproductive Age</div>
+          <div style="font-size:10px;color:var(--gray-400)">vs avg: 24.8%</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin:4px 0">
+          <div style="font-size:22px;font-weight:800;color:var(--gray-900)">162</div>
+          <div style="font-size:14px;color:var(--blue-600);font-weight:600">25.1%</div>
+        </div>
+        <div style="height:6px;background:var(--gray-100);border-radius:3px"><div style="height:6px;width:51%;background:var(--blue-500);border-radius:3px"></div></div>
+      </div>
+      <div class="card" style="padding:12px;border-left:3px solid var(--amber-600)">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-700)">Unmet FP Need</div>
+          <div style="font-size:10px;color:var(--amber-600);font-weight:600">⚠ Above avg</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin:4px 0">
+          <div style="font-size:22px;font-weight:800;color:var(--amber-600)">42</div>
+          <div style="font-size:14px;color:var(--amber-600);font-weight:600">25.9%</div>
+        </div>
+        <div style="font-size:10px;color:var(--gray-500)">Spacing: 28 · Limiting: 14</div>
+      </div>
+      <div class="card" style="padding:12px">
+        <div style="font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:6px">Mortality Data</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:var(--red-50);border-radius:8px;padding:8px;text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--red-600)">2</div>
+            <div style="font-size:10px;color:var(--red-700)">Maternal deaths</div>
+            <div style="font-size:9px;color:var(--gray-500)">Hemorrhage (1), Unknown (1)</div>
+          </div>
+          <div style="background:var(--purple-50);border-radius:8px;padding:8px;text-align:center">
+            <div style="font-size:20px;font-weight:800;color:var(--purple-600)">5</div>
+            <div style="font-size:10px;color:var(--purple-700)">Infant deaths</div>
+            <div style="font-size:9px;color:var(--gray-500)">3 neonatal, 2 post-neonatal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- LAFIYA: WARD ANALYTICS -->
+<div class="screen" id="laf-analytics-ward">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">Analytics by Ward</span>
+    <button onclick="App.goTo('laf-filter')" style="margin-left:auto;background:rgba(255,255,255,.2);border:none;color:white;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer">Filter</button>
+  </div>
+  <div class="screen-content">
+    <div class="section-header">Dala LGA — 18 Wards · Coverage: 67%</div>
+    <!-- Coverage bar chart by ward -->
+    <div class="card" style="padding:14px">
+      <div style="font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:10px">Settlement Coverage by Ward</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11px;width:80px;color:var(--gray-600);white-space:nowrap">Dala Ward</div><div style="flex:1;height:14px;background:var(--gray-100);border-radius:3px"><div style="height:14px;width:78%;background:var(--green-500);border-radius:3px;display:flex;align-items:center;padding-left:4px"><span style="font-size:9px;color:white;font-weight:700">78%</span></div></div></div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11px;width:80px;color:var(--gray-600);white-space:nowrap">Fagge</div><div style="flex:1;height:14px;background:var(--gray-100);border-radius:3px"><div style="height:14px;width:65%;background:var(--green-400);border-radius:3px;display:flex;align-items:center;padding-left:4px"><span style="font-size:9px;color:white;font-weight:700">65%</span></div></div></div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11px;width:80px;color:var(--gray-600);white-space:nowrap">Gwale</div><div style="flex:1;height:14px;background:var(--gray-100);border-radius:3px"><div style="height:14px;width:54%;background:var(--amber-400);border-radius:3px;display:flex;align-items:center;padding-left:4px"><span style="font-size:9px;color:white;font-weight:700">54%</span></div></div></div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11px;width:80px;color:var(--gray-600);white-space:nowrap">Kano Mun.</div><div style="flex:1;height:14px;background:var(--gray-100);border-radius:3px"><div style="height:14px;width:88%;background:var(--green-600);border-radius:3px;display:flex;align-items:center;padding-left:4px"><span style="font-size:9px;color:white;font-weight:700">88%</span></div></div></div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11px;width:80px;color:var(--gray-600);white-space:nowrap">Nassarawa</div><div style="flex:1;height:14px;background:var(--gray-100);border-radius:3px"><div style="height:14px;width:42%;background:var(--red-400);border-radius:3px;display:flex;align-items:center;padding-left:4px"><span style="font-size:9px;color:white;font-weight:700">42%</span></div></div></div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11px;width:80px;color:var(--gray-600);white-space:nowrap">Tarauni</div><div style="flex:1;height:14px;background:var(--gray-100);border-radius:3px"><div style="height:14px;width:71%;background:var(--green-400);border-radius:3px;display:flex;align-items:center;padding-left:4px"><span style="font-size:9px;color:white;font-weight:700">71%</span></div></div></div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:10px;font-size:10px">
+        <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:var(--green-600)"></div>≥75% Good</div>
+        <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:var(--amber-400)"></div>50–74% Moderate</div>
+        <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:var(--red-400)"></div>&lt;50% Low</div>
+      </div>
+    </div>
+    <!-- Unmet FP need by ward -->
+    <div class="section-header">Highest Unmet FP Need by Ward</div>
+    <div class="card" style="padding:0">
+      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:600;font-size:13px">Nassarawa Ward</div><div style="font-size:11px;color:var(--gray-400)">42% coverage · 12 settlements</div></div>
+        <div style="text-align:right"><div style="font-size:18px;font-weight:800;color:var(--red-600)">34.2%</div><div style="font-size:10px;color:var(--red-600)">Unmet FP ⚠</div></div>
+      </div>
+      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:600;font-size:13px">Gwale Ward</div><div style="font-size:11px;color:var(--gray-400)">54% coverage · 9 settlements</div></div>
+        <div style="text-align:right"><div style="font-size:18px;font-weight:800;color:var(--amber-600)">29.8%</div><div style="font-size:10px;color:var(--amber-600)">Unmet FP</div></div>
+      </div>
+      <div style="padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:600;font-size:13px">Tarauni Ward</div><div style="font-size:11px;color:var(--gray-400)">71% coverage · 11 settlements</div></div>
+        <div style="text-align:right"><div style="font-size:18px;font-weight:800;color:var(--amber-600)">26.1%</div><div style="font-size:10px;color:var(--amber-600)">Unmet FP</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- LAFIYA: GEOPOLITICAL ZONE ANALYTICS -->
+<div class="screen" id="laf-analytics-geo">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">Geopolitical Zones</span></div>
+  <div class="screen-content">
+    <!-- Zone visual representation -->
+    <div class="card" style="padding:14px">
+      <div style="font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:12px">Nigeria — 6 Geopolitical Zones</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+        <!-- Zone tiles -->
+        <div style="background:var(--blue-600);border-radius:8px;padding:10px 8px;text-align:center;cursor:pointer" onclick="App.goTo('laf-analytics-geo')">
+          <div style="font-size:11px;font-weight:800;color:white">NW</div>
+          <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">247</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">73% cov.</div>
+        </div>
+        <div style="background:var(--green-700);border-radius:8px;padding:10px 8px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:white">NE</div>
+          <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">183</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">61% cov.</div>
+        </div>
+        <div style="background:var(--amber-600);border-radius:8px;padding:10px 8px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:white">NC</div>
+          <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">129</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">48% cov.</div>
+        </div>
+        <div style="background:var(--purple-600);border-radius:8px;padding:10px 8px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:white">SW</div>
+          <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">94</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">35% cov.</div>
+        </div>
+        <div style="background:var(--teal-600);border-radius:8px;padding:10px 8px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:white">SE</div>
+          <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">67</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">29% cov.</div>
+        </div>
+        <div style="background:var(--red-600);border-radius:8px;padding:10px 8px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:white">SS</div>
+          <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">58</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">24% cov.</div>
+        </div>
+      </div>
+    </div>
+    <!-- Unmet FP by zone -->
+    <div class="section-header">Unmet FP Need by Geopolitical Zone</div>
+    <div class="card" style="padding:14px">
+      <svg width="100%" height="130" viewBox="0 0 320 130">
+        <!-- Bars -->
+        <rect x="12"  y="28" width="38" height="80" rx="4" fill="#1d4ed8"/>
+        <rect x="62"  y="42" width="38" height="66" rx="4" fill="#16a34a"/>
+        <rect x="112" y="52" width="38" height="56" rx="4" fill="#d97706"/>
+        <rect x="162" y="60" width="38" height="48" rx="4" fill="#7c3aed"/>
+        <rect x="212" y="70" width="38" height="38" rx="4" fill="#0d9488"/>
+        <rect x="262" y="75" width="38" height="33" rx="4" fill="#dc2626"/>
+        <!-- Values -->
+        <text x="31"  y="22" font-size="10" font-weight="bold" fill="#1d4ed8" text-anchor="middle">30.4%</text>
+        <text x="81"  y="36" font-size="10" font-weight="bold" fill="#16a34a" text-anchor="middle">27.1%</text>
+        <text x="131" y="46" font-size="10" font-weight="bold" fill="#d97706" text-anchor="middle">23.8%</text>
+        <text x="181" y="54" font-size="10" font-weight="bold" fill="#7c3aed" text-anchor="middle">20.4%</text>
+        <text x="231" y="64" font-size="10" font-weight="bold" fill="#0d9488" text-anchor="middle">17.2%</text>
+        <text x="281" y="69" font-size="10" font-weight="bold" fill="#dc2626" text-anchor="middle">15.8%</text>
+        <!-- Zone labels -->
+        <text x="31"  y="124" font-size="9" fill="#64748b" text-anchor="middle" font-weight="600">NW</text>
+        <text x="81"  y="124" font-size="9" fill="#64748b" text-anchor="middle" font-weight="600">NE</text>
+        <text x="131" y="124" font-size="9" fill="#64748b" text-anchor="middle" font-weight="600">NC</text>
+        <text x="181" y="124" font-size="9" fill="#64748b" text-anchor="middle" font-weight="600">SW</text>
+        <text x="231" y="124" font-size="9" fill="#64748b" text-anchor="middle" font-weight="600">SE</text>
+        <text x="281" y="124" font-size="9" fill="#64748b" text-anchor="middle" font-weight="600">SS</text>
+        <!-- Baseline -->
+        <line x1="0" y1="108" x2="320" y2="108" stroke="#e2e8f0" stroke-width="1"/>
+      </svg>
+      <div style="font-size:11px;color:var(--gray-500);margin-top:4px">North West has highest unmet FP need (30.4%) — priority intervention zone</div>
+    </div>
+    <!-- MMR by zone -->
+    <div class="section-header">Maternal Mortality Ratio by Zone</div>
+    <div class="card" style="padding:0">
+      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between">
+        <div style="font-weight:600;font-size:13px">North West (NW)</div>
+        <div style="font-weight:800;font-size:14px;color:var(--red-600)">612 <span style="font-size:10px;font-weight:400;color:var(--gray-400)">/100K LB</span></div>
+      </div>
+      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between">
+        <div style="font-weight:600;font-size:13px">North East (NE)</div>
+        <div style="font-weight:800;font-size:14px;color:var(--amber-600)">487 <span style="font-size:10px;font-weight:400;color:var(--gray-400)">/100K LB</span></div>
+      </div>
+      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between">
+        <div style="font-weight:600;font-size:13px">North Central (NC)</div>
+        <div style="font-weight:800;font-size:14px;color:var(--amber-600)">412 <span style="font-size:10px;font-weight:400;color:var(--gray-400)">/100K LB</span></div>
+      </div>
+      <div style="padding:10px 14px;display:flex;justify-content:space-between">
+        <div style="font-weight:600;font-size:13px">South (SW/SE/SS avg)</div>
+        <div style="font-weight:800;font-size:14px;color:var(--green-600)">287 <span style="font-size:10px;font-weight:400;color:var(--gray-400)">/100K LB</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- LAFIYA: NORTH vs SOUTH -->
+<div class="screen" id="laf-analytics-ns">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">North vs South</span></div>
+  <div class="screen-content">
+    <div class="section-header">Binary Regional Comparison</div>
+    <!-- Side-by-side comparison -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:linear-gradient(160deg,#1e3a8a,#1d4ed8);border-radius:14px;padding:14px">
+        <div style="font-size:13px;font-weight:800;color:white;margin-bottom:10px">🌙 NORTH</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.7);margin-bottom:2px">NW + NE + NC</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+          <div><div style="font-size:9px;color:rgba(255,255,255,.7)">Surveys</div><div style="font-size:18px;font-weight:800;color:white">559</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,.7)">Coverage</div><div style="font-size:18px;font-weight:800;color:#93c5fd">61%</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,.7)">Unmet FP</div><div style="font-size:18px;font-weight:800;color:#fca5a5">27.8%</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,.7)">MMR</div><div style="font-size:18px;font-weight:800;color:#fca5a5">504</div></div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(160deg,#064e3b,#059669);border-radius:14px;padding:14px">
+        <div style="font-size:13px;font-weight:800;color:white;margin-bottom:10px">☀️ SOUTH</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.7);margin-bottom:2px">SW + SE + SS</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+          <div><div style="font-size:9px;color:rgba(255,255,255,.7)">Surveys</div><div style="font-size:18px;font-weight:800;color:white">219</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,.7)">Coverage</div><div style="font-size:18px;font-weight:800;color:#a7f3d0">29%</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,.7)">Unmet FP</div><div style="font-size:18px;font-weight:800;color:#a7f3d0">17.8%</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,.7)">MMR</div><div style="font-size:18px;font-weight:800;color:#a7f3d0">287</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Key insight cards -->
+    <div class="section-header">Key Insights</div>
+    <div class="alert-banner warning"><span class="alert-icon">⚠</span><div><div class="alert-title warning">North-South Disparity</div><div class="alert-body">Maternal mortality in the North (504/100K) is <strong>75% higher</strong> than the South (287/100K). Unmet FP need is 56% higher in the North.</div></div></div>
+    <div class="alert-banner info"><span class="alert-icon">📊</span><div><div class="alert-title" style="color:var(--blue-600)">Coverage Gap</div><div class="alert-body">Northern states have 559 surveys (61% coverage) vs South's 219 surveys (29% coverage). <strong>Southern expansion needed.</strong></div></div></div>
+    <div class="card">
+      <div style="font-size:12px;font-weight:700;color:var(--gray-800);margin-bottom:8px">Top Priority Recommendations</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--gray-700)">
+        <div>1. 🏥 Increase FP service points in NW states (Kano, Katsina, Zamfara)</div>
+        <div>2. 📋 Expand survey coverage to Southern states (current: 29%)</div>
+        <div>3. 🚑 Emergency obstetric care (EmONC) scale-up in NE states</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- LAFIYA: STATE ANALYTICS -->
+<div class="screen" id="laf-analytics-state">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">Analytics by State</span></div>
+  <div class="screen-content">
+    <div class="form-group"><label class="form-label">Filter by State</label><input class="form-input" placeholder="Search state name…" type="text"></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px">
+      <div class="chip info" style="cursor:pointer;padding:5px 10px">All States</div>
+      <div class="chip neutral" style="cursor:pointer;padding:5px 10px">North West</div>
+      <div class="chip neutral" style="cursor:pointer;padding:5px 10px">North East</div>
+      <div class="chip neutral" style="cursor:pointer;padding:5px 10px">South West</div>
+    </div>
+    <div class="section-header">State-Level Summary (Top by Unmet FP)</div>
+    <div class="card" style="padding:0">
+      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:700;font-size:13px">Zamfara</div><div style="font-size:10px;color:var(--gray-400)">NW · 34 surveys · 48% coverage</div></div>
+        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--red-600)">36.2%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+      </div>
+      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:700;font-size:13px">Sokoto</div><div style="font-size:10px;color:var(--gray-400)">NW · 28 surveys · 41% coverage</div></div>
+        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--red-600)">34.8%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+      </div>
+      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:700;font-size:13px">Kebbi</div><div style="font-size:10px;color:var(--gray-400)">NW · 22 surveys · 38% coverage</div></div>
+        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--amber-600)">31.4%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+      </div>
+      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:700;font-size:13px">Kano</div><div style="font-size:10px;color:var(--gray-400)">NW · 247 surveys · 73% coverage</div></div>
+        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--amber-600)">27.4%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+      </div>
+      <div style="padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-weight:700;font-size:13px">Katsina</div><div style="font-size:10px;color:var(--gray-400)">NW · 198 surveys · 69% coverage</div></div>
+        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--amber-600)">26.8%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- LAFIYA: LGA ANALYTICS -->
+<div class="screen" id="laf-analytics-lga">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">Analytics by LGA</span></div>
+  <div class="screen-content">
+    <div class="form-group"><label class="form-label">State</label><input class="form-input select-arrow" value="Kano State"></div>
+    <div class="section-header">Kano State — 44 LGAs</div>
+    <div class="card" style="padding:14px">
+      <div style="font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:10px">Coverage by LGA (selected)</div>
+      <svg width="100%" height="120" viewBox="0 0 320 120">
+        <!-- Donut chart for LGA coverage distribution -->
+        <circle cx="80" cy="60" r="46" fill="none" stroke="#f1f5f9" stroke-width="22"/>
+        <circle cx="80" cy="60" r="46" fill="none" stroke="#16a34a" stroke-width="22" stroke-dasharray="145 144" stroke-dashoffset="0" transform="rotate(-90 80 60)"/>
+        <circle cx="80" cy="60" r="46" fill="none" stroke="#d97706" stroke-width="22" stroke-dasharray="58 231" stroke-dashoffset="-145" transform="rotate(-90 80 60)"/>
+        <circle cx="80" cy="60" r="46" fill="none" stroke="#dc2626" stroke-width="22" stroke-dasharray="86 203" stroke-dashoffset="-203" transform="rotate(-90 80 60)"/>
+        <text x="80" y="56" text-anchor="middle" font-size="18" font-weight="800" fill="#111827">44</text>
+        <text x="80" y="70" text-anchor="middle" font-size="9" fill="#6b7280">LGAs</text>
+        <!-- Legend -->
+        <rect x="160" y="20" width="10" height="10" rx="2" fill="#16a34a"/>
+        <text x="174" y="29" font-size="10" fill="#374151">≥60% Coverage (20)</text>
+        <rect x="160" y="40" width="10" height="10" rx="2" fill="#d97706"/>
+        <text x="174" y="49" font-size="10" fill="#374151">30–59% (12)</text>
+        <rect x="160" y="60" width="10" height="10" rx="2" fill="#dc2626"/>
+        <text x="174" y="69" font-size="10" fill="#374151">&lt;30% (12)</text>
+        <text x="160" y="92" font-size="10" fill="#6b7280">Top LGA: Kano Mun.</text>
+        <text x="160" y="105" font-size="10" fill="#16a34a" font-weight="600">88% coverage ✓</text>
+      </svg>
+    </div>
+    <div class="section-header">LGA Comparison Table</div>
+    <div class="card" style="padding:0;overflow:auto">
+      <table style="width:100%;font-size:11px;border-collapse:collapse">
+        <thead><tr style="background:var(--gray-50)">
+          <th style="padding:8px 12px;text-align:left;font-weight:600;color:var(--gray-600);border-bottom:1px solid var(--gray-200)">LGA</th>
+          <th style="padding:8px 8px;text-align:center;font-weight:600;color:var(--gray-600);border-bottom:1px solid var(--gray-200)">Surveys</th>
+          <th style="padding:8px 8px;text-align:center;font-weight:600;color:var(--gray-600);border-bottom:1px solid var(--gray-200)">Coverage</th>
+          <th style="padding:8px 8px;text-align:center;font-weight:600;color:var(--gray-600);border-bottom:1px solid var(--gray-200)">FP%</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--gray-100)"><td style="padding:8px 12px;font-weight:600">Kano Mun.</td><td style="padding:8px;text-align:center">247</td><td style="padding:8px;text-align:center;color:var(--green-600);font-weight:600">88%</td><td style="padding:8px;text-align:center;color:var(--amber-600)">27.4%</td></tr>
+          <tr style="border-bottom:1px solid var(--gray-100)"><td style="padding:8px 12px;font-weight:600">Dala</td><td style="padding:8px;text-align:center">184</td><td style="padding:8px;text-align:center;color:var(--green-600);font-weight:600">76%</td><td style="padding:8px;text-align:center;color:var(--amber-600)">29.1%</td></tr>
+          <tr style="border-bottom:1px solid var(--gray-100)"><td style="padding:8px 12px;font-weight:600">Gwale</td><td style="padding:8px;text-align:center">112</td><td style="padding:8px;text-align:center;color:var(--amber-600);font-weight:600">54%</td><td style="padding:8px;text-align:center;color:var(--red-600)">32.8%</td></tr>
+          <tr style="border-bottom:1px solid var(--gray-100)"><td style="padding:8px 12px;font-weight:600">Nassarawa</td><td style="padding:8px;text-align:center">89</td><td style="padding:8px;text-align:center;color:var(--red-600);font-weight:600">42%</td><td style="padding:8px;text-align:center;color:var(--red-600)">34.2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- LAFIYA: DATA COLLECTOR ANALYTICS -->
+<div class="screen" id="laf-analytics-collector">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">By Data Collector</span></div>
+  <div class="screen-content">
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Active Collectors</div><div class="kpi-value">24</div><div class="kpi-sub">Across 6 LGAs</div></div>
+      <div class="kpi-card"><div class="kpi-label">Avg Surveys / CHW</div><div class="kpi-value">10.3</div><div class="kpi-sub">This month</div></div>
+    </div>
+    <div class="section-header">Top Performers</div>
+    <div class="card" style="padding:0">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--gray-100)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:36px;height:36px;border-radius:18px;background:var(--green-500);color:white;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">AM</div>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:13px">Amina Mohammed</div>
+            <div style="font-size:10px;color:var(--gray-400)">Dala Ward · Kano Municipal LGA</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:18px;font-weight:800;color:var(--green-600)">47</div>
+            <div style="font-size:9px;color:var(--gray-400)">surveys</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:10px">
+          <div style="background:var(--green-50);padding:4px 6px;border-radius:6px;text-align:center"><div style="font-weight:700;color:var(--green-700)">98%</div><div style="color:var(--green-600)">GPS acc.</div></div>
+          <div style="background:var(--blue-50);padding:4px 6px;border-radius:6px;text-align:center"><div style="font-weight:700;color:var(--blue-700)">96%</div><div style="color:var(--blue-600)">Complete</div></div>
+          <div style="background:var(--gray-50);padding:4px 6px;border-radius:6px;text-align:center"><div style="font-weight:700;color:var(--gray-700)">0</div><div style="color:var(--gray-500)">Flags</div></div>
+        </div>
+      </div>
+      <div style="padding:12px 14px;border-bottom:1px solid var(--gray-100)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:36px;height:36px;border-radius:18px;background:var(--blue-500);color:white;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">KA</div>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:13px">Khadija Abdullahi</div>
+            <div style="font-size:10px;color:var(--gray-400)">Dala Ward · Kano Municipal LGA</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:18px;font-weight:800;color:var(--blue-600)">38</div>
+            <div style="font-size:9px;color:var(--gray-400)">surveys</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:10px">
+          <div style="background:var(--green-50);padding:4px 6px;border-radius:6px;text-align:center"><div style="font-weight:700;color:var(--green-700)">94%</div><div style="color:var(--green-600)">GPS acc.</div></div>
+          <div style="background:var(--blue-50);padding:4px 6px;border-radius:6px;text-align:center"><div style="font-weight:700;color:var(--blue-700)">91%</div><div style="color:var(--blue-600)">Complete</div></div>
+          <div style="background:var(--amber-50);padding:4px 6px;border-radius:6px;text-align:center"><div style="font-weight:700;color:var(--amber-700)">2</div><div style="color:var(--amber-600)">Flags</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-header">Needs Support</div>
+    <div class="alert-banner warning"><span class="alert-icon">⚠</span><div><div class="alert-title warning">Musa Ibrahim — 3 surveys this month</div><div class="alert-body">GPS accuracy 72% (below 85% threshold). 4 incomplete surveys. Supervisor follow-up recommended.</div></div></div>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- LAFIYA: SMART FILTER PANEL -->
+<div class="screen" id="laf-filter">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar light"><button class="back-btn dark-btn">‹</button><span class="top-bar-title" style="color:var(--gray-900)">Smart Filter</span>
+    <button onclick="App.goBack()" style="margin-left:auto;background:var(--green-600);border:none;color:white;padding:5px 14px;border-radius:16px;font-size:12px;font-weight:600;cursor:pointer">Apply</button>
+  </div>
+  <div class="screen-content">
+    <div class="alert-banner info"><span class="alert-icon">🔍</span><div><div class="alert-body">Select any combination of filters. Analytics views update automatically.</div></div></div>
+    <div class="section-header">Geographic Segmentation</div>
+    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:12px">
+      <div class="form-group" style="margin:0"><label class="form-label">Geopolitical Zone</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+          <div class="chip info" style="cursor:pointer;padding:6px 12px">All Zones</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">NW</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">NE</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">NC</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">SW</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">SE</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">SS</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin:0"><label class="form-label">Region</label>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <div class="radio-option selected" style="flex:1"><div class="radio-dot"></div><span class="radio-label">All</span></div>
+          <div class="radio-option" style="flex:1"><div class="radio-dot"></div><span class="radio-label">North</span></div>
+          <div class="radio-option" style="flex:1"><div class="radio-dot"></div><span class="radio-label">South</span></div>
+        </div>
+      </div>
+      <div class="form-group" style="margin:0"><label class="form-label">State</label><input class="form-input" placeholder="All states" type="text"></div>
+      <div class="form-group" style="margin:0"><label class="form-label">LGA</label><input class="form-input select-arrow" value="All LGAs"></div>
+      <div class="form-group" style="margin:0"><label class="form-label">Ward</label><input class="form-input select-arrow" value="All Wards"></div>
+    </div>
+    <div class="section-header">Survey Categorisation</div>
+    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:12px">
+      <div class="form-group" style="margin:0"><label class="form-label">Data Collector (Assignee)</label><input class="form-input select-arrow" value="All collectors"></div>
+      <div class="form-group" style="margin:0"><label class="form-label">Survey Status</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+          <div class="chip success" style="cursor:pointer;padding:6px 12px">Submitted</div>
+          <div class="chip warning" style="cursor:pointer;padding:6px 12px">Draft</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Pending Sync</div>
+          <div class="chip danger" style="cursor:pointer;padding:6px 12px">Flagged</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin:0"><label class="form-label">Data Quality</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+          <div class="chip info" style="cursor:pointer;padding:6px 12px">All quality</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">GPS ≥85%</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Complete only</div>
+          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">No outliers</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-header">Date Range</div>
+    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:10px">
+      <div class="form-group" style="margin:0"><label class="form-label">From</label><input class="form-input" type="text" value="Jan 1, 2026"></div>
+      <div class="form-group" style="margin:0"><label class="form-label">To</label><input class="form-input" type="text" value="Sep 22, 2026"></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <div class="chip info" style="cursor:pointer;padding:5px 10px">This Month</div>
+        <div class="chip neutral" style="cursor:pointer;padding:5px 10px">Last 3 Months</div>
+        <div class="chip neutral" style="cursor:pointer;padding:5px 10px">This Year</div>
+        <div class="chip neutral" style="cursor:pointer;padding:5px 10px">Custom</div>
+      </div>
+    </div>
+    <div class="section-header">Metric Focus</div>
+    <div class="card" style="padding:12px">
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <div class="chip success" style="cursor:pointer;padding:6px 12px">Population</div>
+        <div class="chip success" style="cursor:pointer;padding:6px 12px">WRA</div>
+        <div class="chip success" style="cursor:pointer;padding:6px 12px">Unmet FP</div>
+        <div class="chip success" style="cursor:pointer;padding:6px 12px">Maternal Deaths</div>
+        <div class="chip success" style="cursor:pointer;padding:6px 12px">Infant Mortality</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="App.goBack()">✓ Apply Filters</button>
+    <button class="btn btn-secondary" onclick="App.goBack()">Reset to Defaults</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  MAMAI: HEALTHY ANC CONTACT (Normal Vitals — No Emergency)
+══════════════════════════════════════════════════════════ -->
+<div class="screen" id="anc-contact-healthy">
+  <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar" style="background:var(--teal-600)"><button class="back-btn" data-goto="anc-patient-list">‹</button><span class="top-bar-title">Contact 2 — 20+0 Weeks</span><span class="step-badge">Routine Visit</span></div>
+  <div class="step-bar" style="background:var(--teal-700)"><div class="step-fill" style="width:25%"></div></div>
+  <div class="screen-content">
+    <!-- Patient banner -->
+    <div class="card" style="background:var(--teal-50);border-color:var(--teal-500);padding:10px 14px">
+      <div style="font-size:10px;color:var(--teal-600);font-weight:600">ANC PATIENT</div>
+      <div style="font-size:14px;font-weight:700;color:var(--gray-900);margin-top:1px">ANC-2026-KAT-1248 · GA: 20+0 wks</div>
+      <div style="font-size:11px;color:var(--gray-500)">G3P2A0 · EDD: Feb 2, 2027 · Blood: A+</div>
+    </div>
+    <!-- Vitals -->
+    <div class="section-header">Vitals *</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Systolic BP (mmHg)</label><input class="form-input" type="number" value="116" style="border-color:var(--green-500)"><span class="form-hint success">✓ Normal</span></div>
+      <div class="form-group"><label class="form-label">Diastolic BP (mmHg)</label><input class="form-input" type="number" value="74" style="border-color:var(--green-500)"><span class="form-hint success">✓ Normal</span></div>
+      <div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" type="number" value="62.4"></div>
+      <div class="form-group"><label class="form-label">MUAC (mm)</label><input class="form-input" type="number" value="248"><span class="form-hint success">✓ ≥210mm</span></div>
+    </div>
+    <!-- Clinical Findings -->
+    <div class="section-header">Clinical Findings</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="form-group"><label class="form-label">Fundal Height (cm)</label><input class="form-input" type="number" value="21"><span class="form-hint success">✓ GA-appropriate</span></div>
+      <div class="form-group"><label class="form-label">Fetal Heart Rate (bpm)</label><input class="form-input" type="number" value="148"><span class="form-hint success">✓ 120–160 bpm</span></div>
+    </div>
+    <div class="form-group"><label class="form-label">Urine Protein</label>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <div class="radio-option selected" style="flex:1;padding:8px 12px"><div class="radio-dot"></div><span class="radio-label">Negative ✓</span></div>
+        <div class="radio-option" style="flex:1;padding:8px 12px"><div class="radio-dot"></div><span class="radio-label">Trace (+)</span></div>
+        <div class="radio-option" style="flex:1;padding:8px 12px"><div class="radio-dot"></div><span class="radio-label">1+ / 2+</span></div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Haemoglobin (g/dL)</label><input class="form-input" type="number" value="11.8"><span class="form-hint success">✓ ≥11 g/dL — normal</span></div>
+    <!-- Preventive Care -->
+    <div class="section-header">Preventive Care — Contact 2</div>
+    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:13px;color:var(--gray-800)">Tetanus Toxoid (TT2)</div>
+        <div style="display:flex;gap:6px">
+          <div class="radio-option selected" style="padding:5px 12px"><div class="radio-dot"></div><span class="radio-label" style="font-size:12px">Given ✓</span></div>
+          <div class="radio-option" style="padding:5px 12px"><div class="radio-dot"></div><span class="radio-label" style="font-size:12px">Deferred</span></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:13px;color:var(--gray-800)">IPTp-SP (Dose 1)</div>
+        <div style="display:flex;gap:6px">
+          <div class="radio-option selected" style="padding:5px 12px"><div class="radio-dot"></div><span class="radio-label" style="font-size:12px">Given ✓</span></div>
+          <div class="radio-option" style="padding:5px 12px"><div class="radio-dot"></div><span class="radio-label" style="font-size:12px">Deferred</span></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:13px;color:var(--gray-800)">Iron/Folic Acid</div>
+        <div style="display:flex;gap:6px">
+          <div class="radio-option selected" style="padding:5px 12px"><div class="radio-dot"></div><span class="radio-label" style="font-size:12px">Adherent ✓</span></div>
+          <div class="radio-option" style="padding:5px 12px"><div class="radio-dot"></div><span class="radio-label" style="font-size:12px">Missed doses</span></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="background:var(--teal-600)" onclick="App.goTo('anc-healthy-summary')">Review Contact Summary →</button>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- MAMAI: HEALTHY CONTACT SUMMARY (All Normal — No Referral) -->
+<div class="screen" id="anc-healthy-summary">
+  <div class="status-bar" style="background:var(--teal-600)"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar" style="background:var(--teal-600)"><button class="back-btn" data-goto="anc-contact-healthy">‹</button><span class="top-bar-title">Contact 2 — Summary</span></div>
+  <div class="screen-content">
+    <!-- All clear banner -->
+    <div style="background:var(--green-600);border-radius:14px;padding:16px;text-align:center;margin-bottom:4px">
+      <div style="font-size:32px;margin-bottom:6px">✅</div>
+      <div style="font-size:17px;font-weight:800;color:white">All Checks Passed</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.85);margin-top:4px">No danger signs detected · Healthy routine visit</div>
+    </div>
+    <!-- Vitals summary -->
+    <div class="section-header">Contact 2 — Vitals Summary</div>
+    <div class="card" style="padding:0">
+      <div style="padding:8px 14px;display:flex;justify-content:space-between;border-bottom:1px solid var(--gray-100)">
+        <span style="font-size:12px;color:var(--gray-600)">Blood Pressure</span>
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;font-weight:700">116/74 mmHg</span><span class="chip success" style="font-size:10px">Normal ✓</span></div>
+      </div>
+      <div style="padding:8px 14px;display:flex;justify-content:space-between;border-bottom:1px solid var(--gray-100)">
+        <span style="font-size:12px;color:var(--gray-600)">Fetal Heart Rate</span>
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;font-weight:700">148 bpm</span><span class="chip success" style="font-size:10px">Normal ✓</span></div>
+      </div>
+      <div style="padding:8px 14px;display:flex;justify-content:space-between;border-bottom:1px solid var(--gray-100)">
+        <span style="font-size:12px;color:var(--gray-600)">Fundal Height</span>
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;font-weight:700">21 cm</span><span class="chip success" style="font-size:10px">GA-appropriate ✓</span></div>
+      </div>
+      <div style="padding:8px 14px;display:flex;justify-content:space-between;border-bottom:1px solid var(--gray-100)">
+        <span style="font-size:12px;color:var(--gray-600)">Haemoglobin</span>
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;font-weight:700">11.8 g/dL</span><span class="chip success" style="font-size:10px">Normal ✓</span></div>
+      </div>
+      <div style="padding:8px 14px;display:flex;justify-content:space-between;border-bottom:1px solid var(--gray-100)">
+        <span style="font-size:12px;color:var(--gray-600)">Urine Protein</span>
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;font-weight:700">Negative</span><span class="chip success" style="font-size:10px">Normal ✓</span></div>
+      </div>
+      <div style="padding:8px 14px;display:flex;justify-content:space-between">
+        <span style="font-size:12px;color:var(--gray-600)">MUAC</span>
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;font-weight:700">248 mm</span><span class="chip success" style="font-size:10px">Normal ✓</span></div>
+      </div>
+    </div>
+    <!-- Preventive care given -->
+    <div class="section-header">Preventive Care Administered</div>
+    <div class="card" style="padding:10px 14px;display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--green-600);font-size:16px">✓</span><span style="font-size:13px;color:var(--gray-800)">Tetanus Toxoid TT2 — given</span></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--green-600);font-size:16px">✓</span><span style="font-size:13px;color:var(--gray-800)">IPTp-SP Dose 1 — given</span></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="color:var(--green-600);font-size:16px">✓</span><span style="font-size:13px;color:var(--gray-800)">Iron/Folic Acid — adherent</span></div>
+    </div>
+    <!-- Counseling notes -->
+    <div class="section-header">Counselling Notes</div>
+    <div class="form-group">
+      <textarea style="width:100%;min-height:80px;border:1.5px solid var(--gray-200);border-radius:8px;padding:10px;font-size:13px;font-family:var(--font);color:var(--gray-900);resize:vertical" placeholder="Add counselling notes (nutrition, danger signs education, birth plan…)">Counselled on balanced diet including protein and iron-rich foods. Educated on danger signs to watch for. Encouraged birth plan discussion with family. Stress importance of Contact 3 at 26 weeks.</textarea>
+    </div>
+    <!-- No referral — healthy conclusion -->
+    <div class="alert-banner success">
+      <span class="alert-icon">🟢</span>
+      <div>
+        <div class="alert-title success">No Referral Required</div>
+        <div class="alert-body">All parameters within normal range. Patient to continue routine ANC care. Next contact: <strong>Contact 3 at 26 weeks</strong>.</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="background:var(--teal-600)" onclick="App.goTo('anc-schedule')">Schedule Next Contact →</button>
+    <button class="btn btn-secondary" onclick="App.goTo('anc-journey')">View ANC Journey</button>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+<!-- MAMAI: SCHEDULE NEXT CONTACT -->
+<div class="screen" id="anc-schedule">
+  <div class="status-bar" style="background:var(--teal-600)"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
+  <div class="top-bar" style="background:var(--teal-600)"><button class="back-btn" data-goto="anc-healthy-summary">‹</button><span class="top-bar-title">Schedule Contact 3</span></div>
+  <div class="screen-content">
+    <!-- Success card -->
+    <div style="background:var(--teal-600);border-radius:14px;padding:16px;text-align:center">
+      <div style="font-size:28px;margin-bottom:6px">📅</div>
+      <div style="font-size:15px;font-weight:800;color:white">Contact 2 Completed ✓</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.8);margin-top:4px">ANC-2026-KAT-1248 · Sep 22, 2026</div>
+    </div>
+    <!-- Next contact scheduling -->
+    <div class="section-header">Next Scheduled Contact</div>
+    <div class="card" style="border-color:var(--teal-500);background:var(--teal-50)">
+      <div style="font-size:14px;font-weight:800;color:var(--teal-700)">Contact 3 — 26 Weeks</div>
+      <div style="font-size:13px;color:var(--gray-700);margin-top:4px">Recommended: approx. <strong>Oct 27, 2026</strong></div>
+      <div style="font-size:11px;color:var(--gray-500);margin-top:2px">Fundal height · FHR · BP · IPTp Dose 2 · Gestational diabetes screen</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Confirm Appointment Date</label>
+      <input class="form-input" type="text" value="Oct 27, 2026">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Appointment Location</label>
+      <input class="form-input select-arrow" value="Katsina Central PHC">
+    </div>
+    <!-- CHU assignment -->
+    <div class="section-header">CHU Community Follow-Up</div>
+    <div class="card" style="padding:12px">
+      <div style="font-size:12px;color:var(--gray-600);margin-bottom:8px">Assign a CHU to visit patient at home before Contact 3 (community check-in)</div>
+      <div class="form-group" style="margin:0">
+        <label class="form-label">Assigned CHU</label>
+        <input class="form-input select-arrow" value="Amina Mohammed (CHU)">
+      </div>
+      <div class="form-group" style="margin-top:8px">
+        <label class="form-label">Home visit date (optional)</label>
+        <input class="form-input" type="text" value="Oct 20, 2026">
+      </div>
+    </div>
+    <!-- Education materials -->
+    <div class="section-header">Education Materials Provided</div>
+    <div class="card" style="padding:12px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border:2px solid var(--teal-600);border-radius:4px;background:var(--teal-50);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--teal-600)">✓</div><span style="font-size:13px">Danger signs card (laminated)</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border:2px solid var(--teal-600);border-radius:4px;background:var(--teal-50);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--teal-600)">✓</div><span style="font-size:13px">Nutrition during pregnancy booklet</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border:1.5px solid var(--gray-300);border-radius:4px;background:var(--white)"></div><span style="font-size:13px;color:var(--gray-500)">Birth preparedness plan (pending)</span></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="background:var(--teal-600)" onclick="App.goTo('anc-journey')">✓ Save &amp; Return to Journey</button>
+  </div>
+  <div class="bottom-nav"></div>
+</div>
+
+
 <!-- ══ END SCREENS ══ -->
 </div><!-- /device-screen -->
 </div><!-- /device-shell -->
 </div><!-- /device-wrapper -->
 
-<script src="js/app.js?v=8"></script>
-<script src="js/edge-states.js?v=8"></script>
+<script src="js/app.js?v=9"></script>
+<script src="js/edge-states.js?v=9"></script>
 </body>
 </html>
