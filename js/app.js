@@ -125,6 +125,7 @@
     /* Scroll content to top */
     var content = next.querySelector('.screen-content');
     if (content) content.scrollTop = 0;
+    window.scrollTo(0, 0);
 
     currentScreen = screenId;
 
@@ -236,7 +237,157 @@
       }
     }, true); /* capture phase — fires before onClick */
 
+    initControls();
     renderNav();
+  }
+
+  /* ── Interactive controls: radio options, filter chips, selects ── */
+  function initControls() {
+    document.addEventListener('click', function(e) {
+      var radio = e.target.closest('.radio-option');
+      if (radio && radio.parentElement) {
+        Array.prototype.forEach.call(radio.parentElement.children, function(r) { r.classList.remove('selected'); });
+        radio.classList.add('selected');
+        return;
+      }
+      var chip = e.target.closest('.f-chip');
+      if (!chip) return;
+      var row = chip.closest('[data-chips]');
+      if (!row) return;
+      var chips = row.querySelectorAll('.f-chip');
+      if (row.getAttribute('data-chips') === 'single') {
+        chips.forEach(function(c) { c.classList.remove('on'); });
+        chip.classList.add('on');
+      } else if (chip === chips[0] && /^(All|Any)/.test(chip.textContent)) {
+        chips.forEach(function(c) { c.classList.toggle('on', c === chip); });
+      } else {
+        chip.classList.toggle('on');
+        if (/^(All|Any)/.test(chips[0].textContent)) {
+          var any = row.querySelectorAll('.f-chip.on:not(:first-child)').length;
+          chips[0].classList.toggle('on', !any);
+        }
+      }
+      var cb = row.getAttribute('data-onchange');
+      if (cb && App[cb]) App[cb]();
+      if (row.closest('#laf-filter')) updateFilterResult();
+    });
+    document.addEventListener('change', function(e) {
+      if (e.target.closest('#laf-filter')) updateFilterResult();
+    });
+    document.addEventListener('input', function(e) {
+      if (e.target.matches('input[data-normal]')) checkVitals();
+    });
+  }
+
+  /* Collect active filters as "Group: value" labels (defaults excluded) */
+  function activeFilters() {
+    var out = [];
+    document.querySelectorAll('#laf-filter [data-group]').forEach(function(g) {
+      var name = g.getAttribute('data-group');
+      if (g.tagName === 'SELECT') {
+        if (g.selectedIndex > 0) out.push(g.value);
+        return;
+      }
+      if (name === 'Metrics') return;
+      var on = Array.prototype.map.call(g.querySelectorAll('.f-chip.on'), function(c) { return c.textContent; })
+        .filter(function(t) { return !/^(All|Any)/.test(t); });
+      if (name === 'Period') { if (on[0] !== 'This year') out.push(on[0]); return; }
+      if (on.length) out.push(on.join(' + '));
+    });
+    return out;
+  }
+
+  function updateFilterResult() {
+    var n = activeFilters().length;
+    var surveys = Math.max(12, Math.round(247 / Math.pow(1.9, n)));
+    var wards = Math.max(1, Math.round(18 / Math.pow(1.7, n)));
+    var el = document.getElementById('filter-result');
+    if (el) el.innerHTML = 'Matching: <b>' + surveys + ' surveys</b> across <b>' + wards + ' ward' + (wards > 1 ? 's' : '') + '</b>';
+  }
+
+  function applyFilters() {
+    var f = activeFilters();
+    var text = f.length ? f.join(' · ') : 'All zones · All collectors · Jan 1 – Sep 22, 2026';
+    document.querySelectorAll('.filter-summary').forEach(function(s) {
+      s.classList.toggle('active', f.length > 0);
+      s.querySelector('.fs-text').textContent = text;
+      s.querySelector('.fs-edit').textContent = f.length ? f.length + ' active · Edit' : 'Edit';
+    });
+    toast(f.length ? f.length + ' filter' + (f.length > 1 ? 's' : '') + ' applied' : 'Showing all survey data');
+    goBack();
+  }
+
+  function resetFilters() {
+    document.querySelectorAll('#laf-filter [data-chips]').forEach(function(row) {
+      var chips = row.querySelectorAll('.f-chip');
+      var name = row.getAttribute('data-group');
+      chips.forEach(function(c, i) {
+        c.classList.toggle('on', name === 'Metrics' ? true : name === 'Period' ? c.textContent === 'This year' : i === 0);
+      });
+    });
+    document.querySelectorAll('#laf-filter select').forEach(function(s) { s.selectedIndex = 0; });
+    updateFilterResult();
+  }
+
+  /* State list: live search + zone chips */
+  function filterStates() {
+    var q = (document.getElementById('state-search') || {}).value || '';
+    q = q.trim().toLowerCase();
+    var zoneChip = document.querySelector('#state-zone-chips .f-chip.on');
+    var zone = zoneChip ? zoneChip.getAttribute('data-zone') : 'ALL';
+    var shown = 0;
+    document.querySelectorAll('#state-list .state-row').forEach(function(r) {
+      var ok = (zone === 'ALL' || r.getAttribute('data-zone') === zone) &&
+               (!q || r.getAttribute('data-name').indexOf(q) !== -1);
+      r.hidden = !ok;
+      if (ok) shown++;
+    });
+    document.getElementById('state-empty').hidden = shown > 0;
+    document.getElementById('state-count').textContent = shown + ' state' + (shown === 1 ? '' : 's');
+  }
+
+  function showStates(zone) {
+    document.querySelectorAll('#state-zone-chips .f-chip').forEach(function(c) {
+      c.classList.toggle('on', c.getAttribute('data-zone') === zone);
+    });
+    var s = document.getElementById('state-search');
+    if (s) s.value = '';
+    filterStates();
+    goTo('laf-analytics-state');
+  }
+
+  /* Healthy ANC form: any out-of-range vital blocks the routine pathway */
+  function checkVitals() {
+    var problems = [];
+    document.querySelectorAll('#anc-contact-healthy input[data-normal]').forEach(function(inp) {
+      var range = inp.getAttribute('data-normal').split('-').map(Number);
+      var v = parseFloat(inp.value);
+      var hint = inp.nextElementSibling;
+      var ok = !isNaN(v) && v >= range[0] && v <= range[1];
+      inp.classList.toggle('input-ok', ok);
+      inp.classList.toggle('input-bad', !ok);
+      if (hint && hint.classList.contains('form-hint')) {
+        if (!hint.dataset.okText) hint.dataset.okText = hint.textContent;
+        hint.className = 'form-hint ' + (ok ? 'success' : 'danger');
+        hint.textContent = ok ? hint.dataset.okText : '⚠ Outside normal range (' + range[0] + '–' + range[1] + ')';
+      }
+      if (!ok) problems.push(inp.getAttribute('data-label') + ' ' + (isNaN(v) ? 'missing' : v));
+    });
+    var warn = document.getElementById('vitals-warn');
+    document.getElementById('vitals-ok').hidden = problems.length > 0;
+    warn.hidden = problems.length === 0;
+    document.getElementById('healthy-continue').hidden = problems.length > 0;
+    if (problems.length) document.getElementById('vitals-warn-text').textContent =
+      problems.join(', ') + '. This visit can no longer follow the routine pathway.';
+  }
+
+  function toast(msg) {
+    var t = document.getElementById('app-toast');
+    if (!t) { t = document.createElement('div'); t.id = 'app-toast'; t.className = 'app-toast'; document.body.appendChild(t); }
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._h);
+    t._h = setTimeout(function() { t.classList.remove('show'); }, 1800);
   }
 
   /* ── Expose globally so inline onclick="App.goTo()" works ── */
@@ -247,6 +398,11 @@
     launchModule: launchModule,
     resumeLastModule: resumeLastModule,
     renderNav: renderNav,
+    applyFilters: applyFilters,
+    resetFilters: resetFilters,
+    filterStates: filterStates,
+    showStates: showStates,
+    toast: toast,
     renderBottomNav: renderNav, /* alias for backwards compat */
     init: init,
   };

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EHACare Platform — Interactive Prototype</title>
-<link rel="stylesheet" href="css/app.css?v=9">
+<link rel="stylesheet" href="css/app.css?v=10">
 <meta name="theme-color" content="#0073F3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -288,6 +288,11 @@
     <button class="quick-action" onclick="App.goTo('laf-setup')">
       <div class="qa-icon">+</div>
       <div><div class="qa-label">Start New Community Survey</div><div class="qa-sub">GPS · Ward · Settlement</div></div>
+    </button>
+    <button class="entry-card" onclick="App.goTo('laf-analytics')">
+      <div class="ec-icon">📊</div>
+      <div class="ec-body"><div class="ec-title">Analytics Centre</div><div class="ec-sub">All surveys · Individual survey · Ward · LGA · State · Zone · North/South · Collector</div></div>
+      <div class="ec-arrow">›</div>
     </button>
     <div class="section-header">Pending Settlements (6)</div>
     <div class="card" style="padding:0">
@@ -1017,8 +1022,19 @@
     </button>
     <button class="quick-action" style="background:var(--teal-600);margin-top:0" onclick="App.goTo('anc-patient-list')">
       <div class="qa-icon">📋</div>
-      <div><div class="qa-label">Record ANC Contact</div><div class="qa-sub">Emergency or routine visit</div></div>
+      <div><div class="qa-label">Record ANC Contact</div><div class="qa-sub">Choose a patient from the list</div></div>
     </button>
+    <div class="section-header">Start an ANC Visit — choose pathway</div>
+    <div class="pathway-grid">
+      <button class="pathway healthy" onclick="App.goTo('anc-contact-healthy')">
+        <div class="pw-icon">🟢</div><div class="pw-title">Healthy Routine Visit</div>
+        <div class="pw-sub">Normal vitals · preventive care · schedule next contact</div><div class="pw-go">No referral →</div>
+      </button>
+      <button class="pathway danger" onclick="App.goTo('anc-contact')">
+        <div class="pw-icon">🔴</div><div class="pw-title">Danger Sign Assessment</div>
+        <div class="pw-sub">Bleeding · severe headache · high BP · convulsions</div><div class="pw-go">Emergency referral →</div>
+      </button>
+    </div>
     <div class="section-header">High-Risk Patients</div>
     <div class="card" style="padding:0">
       <div class="list-item" onclick="App.goTo('anc-journey')"><div class="li-icon" style="background:var(--red-100)">⚠</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1247</div><div class="li-sub">GA: 30+2 · Pre-eclampsia risk</div></div><div class="li-right">›</div></div>
@@ -1912,6 +1928,10 @@
         <div class="chip neutral" style="padding:6px 12px">Pending sync (1)</div>
       </div>
     </div>
+    <div style="padding:12px 16px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="mini-entry" onclick="App.goTo('laf-analytics-all')">📊 <span>All surveys<br><small>analytics</small></span></button>
+      <button class="mini-entry" onclick="App.goTo('laf-analytics-survey')">🔍 <span>Analyse one<br><small>survey</small></span></button>
+    </div>
     <div class="section-header" style="padding:12px 16px 4px;margin:0">September 2026</div>
     <div class="card" style="margin:0 16px 8px;padding:0">
       <div class="list-item" onclick="App.goTo('laf-review')"><div class="li-icon" style="background:var(--green-50)">📋</div><div class="li-body"><div class="li-title">Sabuwar Kasuwa</div><div class="li-sub">Today 10:34 · Pop: 645 · WRA: 162</div></div><div class="sync-badge synced">✓</div></div>
@@ -2085,10 +2105,15 @@
     <div class="section-header" style="padding:8px 16px 4px;margin:0">All Active Patients</div>
     <div class="card" style="margin:4px 16px;padding:0">
       <div class="list-item" onclick="App.goTo('anc-journey')"><div class="li-icon" style="background:var(--teal-50)">🩺</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1247</div><div class="li-sub">Contact 4 due · 30+2 wks</div></div><div class="li-right">›</div></div>
-      <div class="list-item" onclick="App.goTo('anc-journey')"><div class="li-icon" style="background:var(--teal-50)">🩺</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1248</div><div class="li-sub">Contact 1 due · 11+4 wks</div></div><div class="li-right">›</div></div>
+      <div class="list-item" onclick="App.goTo('anc-contact-healthy')"><div class="li-icon" style="background:var(--green-50)">🩺</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1248</div><div class="li-sub">Contact 2 due today · 20+0 wks</div><div class="risk-badge low" style="margin-top:3px">Low Risk · Routine</div></div><div class="li-right">›</div></div>
       <div class="list-item" onclick="App.goTo('anc-contact-routine')"><div class="li-icon" style="background:var(--teal-50)">🩺</div><div class="li-body"><div class="li-title">ANC-2026-KAT-1203</div><div class="li-sub">Contact 6 due · 36+0 wks</div></div><div class="li-right">›</div></div>
     </div>
-    <button class="btn btn-primary" onclick="App.goTo('anc-register')" style="margin:12px 16px 0">+ Register New Patient</button>
+    <div class="section-header" style="padding:12px 16px 4px;margin:0">Start a Visit</div>
+    <div class="pathway-grid" style="padding:0 16px">
+      <button class="pathway healthy" onclick="App.goTo('anc-contact-healthy')"><div class="pw-icon">🟢</div><div class="pw-title">Healthy Routine Visit</div><div class="pw-go">No referral →</div></button>
+      <button class="pathway danger" onclick="App.goTo('anc-contact')"><div class="pw-icon">🔴</div><div class="pw-title">Danger Sign Assessment</div><div class="pw-go">Emergency referral →</div></button>
+    </div>
+    <button class="btn btn-secondary" onclick="App.goTo('anc-register')" style="margin:12px 16px 16px;width:calc(100% - 32px)">+ Register New Patient</button>
   </div>
   <div class="bottom-nav"></div>
 </div>
@@ -2103,6 +2128,7 @@
     <button onclick="App.goTo('laf-filter')" style="margin-left:auto;background:rgba(255,255,255,.2);border:none;color:white;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer">🔍 Filter</button>
   </div>
   <div class="screen-content">
+    <div class="filter-summary" onclick="App.goTo('laf-filter')"><span class="fs-icon">🔍</span><span class="fs-text">All zones · All collectors · Jan 1 – Sep 22, 2026</span><span class="fs-edit">Edit</span></div>
     <!-- Key performance metrics -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <div class="kpi-card" style="border-left:3px solid var(--green-600)">
@@ -2171,6 +2197,11 @@
         <div class="li-body"><div class="li-title">By Data Collector</div><div class="li-sub">Performance & output per assignee</div></div>
         <div class="li-right">›</div>
       </div>
+      <div class="list-item" onclick="App.goTo('laf-map')">
+        <div class="li-icon" style="background:#ecfeff">🗺</div>
+        <div class="li-body"><div class="li-title">Map View</div><div class="li-sub">GPS-plotted settlements & coverage gaps</div></div>
+        <div class="li-right">›</div>
+      </div>
     </div>
   </div>
   <div class="bottom-nav"></div>
@@ -2183,6 +2214,7 @@
     <button onclick="App.goTo('laf-filter')" style="margin-left:auto;background:rgba(255,255,255,.2);border:none;color:white;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer">Filter ▾</button>
   </div>
   <div class="screen-content">
+    <div class="filter-summary" onclick="App.goTo('laf-filter')"><span class="fs-icon">🔍</span><span class="fs-text">All zones · All collectors · Jan 1 – Sep 22, 2026</span><span class="fs-edit">Edit</span></div>
     <!-- 5 Core Metrics -->
     <div class="section-header">5 Core Population Health Metrics</div>
     <div style="display:flex;flex-direction:column;gap:8px">
@@ -2395,6 +2427,7 @@
     <button onclick="App.goTo('laf-filter')" style="margin-left:auto;background:rgba(255,255,255,.2);border:none;color:white;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer">Filter</button>
   </div>
   <div class="screen-content">
+    <div class="filter-summary" onclick="App.goTo('laf-filter')"><span class="fs-icon">🔍</span><span class="fs-text">All zones · All collectors · Jan 1 – Sep 22, 2026</span><span class="fs-edit">Edit</span></div>
     <div class="section-header">Dala LGA — 18 Wards · Coverage: 67%</div>
     <!-- Coverage bar chart by ward -->
     <div class="card" style="padding:14px">
@@ -2438,42 +2471,43 @@
   <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
   <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">Geopolitical Zones</span></div>
   <div class="screen-content">
+    <div class="filter-summary" onclick="App.goTo('laf-filter')"><span class="fs-icon">🔍</span><span class="fs-text">All zones · All collectors · Jan 1 – Sep 22, 2026</span><span class="fs-edit">Edit</span></div>
     <!-- Zone visual representation -->
     <div class="card" style="padding:14px">
-      <div style="font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:12px">Nigeria — 6 Geopolitical Zones</div>
+      <div style="font-size:12px;font-weight:600;color:var(--gray-700);margin-bottom:12px">Nigeria — 6 Geopolitical Zones <span style="font-weight:400;color:var(--gray-400)">· tap a zone for its states</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
         <!-- Zone tiles -->
-        <div style="background:var(--blue-600);border-radius:8px;padding:10px 8px;text-align:center;cursor:pointer" onclick="App.goTo('laf-analytics-geo')">
+        <div onclick="App.showStates('NW')" class="zone-tile" style="background:var(--blue-600);border-radius:8px;padding:10px 8px;text-align:center;cursor:pointer">
           <div style="font-size:11px;font-weight:800;color:white">NW</div>
           <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">247</div>
           <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
           <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">73% cov.</div>
         </div>
-        <div style="background:var(--green-700);border-radius:8px;padding:10px 8px;text-align:center">
+        <div onclick="App.showStates('NE')" class="zone-tile" style="background:var(--green-700);border-radius:8px;padding:10px 8px;text-align:center">
           <div style="font-size:11px;font-weight:800;color:white">NE</div>
           <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">183</div>
           <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
           <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">61% cov.</div>
         </div>
-        <div style="background:var(--amber-600);border-radius:8px;padding:10px 8px;text-align:center">
+        <div onclick="App.showStates('NC')" class="zone-tile" style="background:var(--amber-600);border-radius:8px;padding:10px 8px;text-align:center">
           <div style="font-size:11px;font-weight:800;color:white">NC</div>
           <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">129</div>
           <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
           <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">48% cov.</div>
         </div>
-        <div style="background:var(--purple-600);border-radius:8px;padding:10px 8px;text-align:center">
+        <div onclick="App.showStates('SW')" class="zone-tile" style="background:var(--purple-600);border-radius:8px;padding:10px 8px;text-align:center">
           <div style="font-size:11px;font-weight:800;color:white">SW</div>
           <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">94</div>
           <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
           <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">35% cov.</div>
         </div>
-        <div style="background:var(--teal-600);border-radius:8px;padding:10px 8px;text-align:center">
+        <div onclick="App.showStates('SE')" class="zone-tile" style="background:var(--teal-600);border-radius:8px;padding:10px 8px;text-align:center">
           <div style="font-size:11px;font-weight:800;color:white">SE</div>
           <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">67</div>
           <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
           <div style="font-size:9px;color:rgba(255,255,255,.9);margin-top:2px;font-weight:600">29% cov.</div>
         </div>
-        <div style="background:var(--red-600);border-radius:8px;padding:10px 8px;text-align:center">
+        <div onclick="App.showStates('SS')" class="zone-tile" style="background:var(--red-600);border-radius:8px;padding:10px 8px;text-align:center">
           <div style="font-size:11px;font-weight:800;color:white">SS</div>
           <div style="font-size:16px;font-weight:800;color:white;margin:2px 0">58</div>
           <div style="font-size:8px;color:rgba(255,255,255,.8)">surveys</div>
@@ -2540,6 +2574,7 @@
   <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
   <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">North vs South</span></div>
   <div class="screen-content">
+    <div class="filter-summary" onclick="App.goTo('laf-filter')"><span class="fs-icon">🔍</span><span class="fs-text">All zones · All collectors · Jan 1 – Sep 22, 2026</span><span class="fs-edit">Edit</span></div>
     <div class="section-header">Binary Regional Comparison</div>
     <!-- Side-by-side comparison -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -2585,36 +2620,82 @@
   <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
   <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">Analytics by State</span></div>
   <div class="screen-content">
-    <div class="form-group"><label class="form-label">Filter by State</label><input class="form-input" placeholder="Search state name…" type="text"></div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px">
-      <div class="chip info" style="cursor:pointer;padding:5px 10px">All States</div>
-      <div class="chip neutral" style="cursor:pointer;padding:5px 10px">North West</div>
-      <div class="chip neutral" style="cursor:pointer;padding:5px 10px">North East</div>
-      <div class="chip neutral" style="cursor:pointer;padding:5px 10px">South West</div>
-    </div>
-    <div class="section-header">State-Level Summary (Top by Unmet FP)</div>
-    <div class="card" style="padding:0">
-      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+    <div class="filter-summary" onclick="App.goTo('laf-filter')"><span class="fs-icon">🔍</span><span class="fs-text">All zones · All collectors · Jan 1 – Sep 22, 2026</span><span class="fs-edit">Edit</span></div>
+    <input id="state-search" class="form-input" placeholder="🔍 Search state name…" type="text" oninput="App.filterStates()">
+    <div id="state-zone-chips" class="chip-row" data-chips="single" data-onchange="filterStates"><button class="f-chip on" data-zone="ALL">All</button><button class="f-chip" data-zone="NW">NW</button><button class="f-chip" data-zone="NE">NE</button><button class="f-chip" data-zone="NC">NC</button><button class="f-chip" data-zone="SW">SW</button><button class="f-chip" data-zone="SE">SE</button><button class="f-chip" data-zone="SS">SS</button></div>
+    <div class="section-header" style="display:flex;justify-content:space-between"><span>States ranked by Unmet FP need</span><span id="state-count" style="color:var(--gray-400);font-weight:500;text-transform:none">17 states</span></div>
+    <div class="card" id="state-list" style="padding:0">
+      <div class="state-row" data-zone="NW" data-name="zamfara">
         <div><div style="font-weight:700;font-size:13px">Zamfara</div><div style="font-size:10px;color:var(--gray-400)">NW · 34 surveys · 48% coverage</div></div>
-        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--red-600)">36.2%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:90%;background:var(--red-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--red-600)">36.2%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
       </div>
-      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+      <div class="state-row" data-zone="NW" data-name="sokoto">
         <div><div style="font-weight:700;font-size:13px">Sokoto</div><div style="font-size:10px;color:var(--gray-400)">NW · 28 surveys · 41% coverage</div></div>
-        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--red-600)">34.8%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:87%;background:var(--red-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--red-600)">34.8%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
       </div>
-      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+      <div class="state-row" data-zone="NW" data-name="kebbi">
         <div><div style="font-weight:700;font-size:13px">Kebbi</div><div style="font-size:10px;color:var(--gray-400)">NW · 22 surveys · 38% coverage</div></div>
-        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--amber-600)">31.4%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:78%;background:var(--amber-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--amber-600)">31.4%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
       </div>
-      <div style="padding:10px 14px;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+      <div class="state-row" data-zone="NE" data-name="yobe">
+        <div><div style="font-weight:700;font-size:13px">Yobe</div><div style="font-size:10px;color:var(--gray-400)">NE · 31 surveys · 44% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:78%;background:var(--amber-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--amber-600)">31.0%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="NE" data-name="borno">
+        <div><div style="font-weight:700;font-size:13px">Borno</div><div style="font-size:10px;color:var(--gray-400)">NE · 46 surveys · 52% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:74%;background:var(--amber-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--amber-600)">29.6%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="NW" data-name="kano">
         <div><div style="font-weight:700;font-size:13px">Kano</div><div style="font-size:10px;color:var(--gray-400)">NW · 247 surveys · 73% coverage</div></div>
-        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--amber-600)">27.4%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:68%;background:var(--amber-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--amber-600)">27.4%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
       </div>
-      <div style="padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+      <div class="state-row" data-zone="NW" data-name="katsina">
         <div><div style="font-weight:700;font-size:13px">Katsina</div><div style="font-size:10px;color:var(--gray-400)">NW · 198 surveys · 69% coverage</div></div>
-        <div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--amber-600)">26.8%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:67%;background:var(--amber-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--amber-600)">26.8%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
       </div>
+      <div class="state-row" data-zone="NE" data-name="bauchi">
+        <div><div style="font-weight:700;font-size:13px">Bauchi</div><div style="font-size:10px;color:var(--gray-400)">NE · 58 surveys · 57% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:65%;background:var(--amber-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--amber-600)">26.1%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="NC" data-name="niger">
+        <div><div style="font-weight:700;font-size:13px">Niger</div><div style="font-size:10px;color:var(--gray-400)">NC · 41 surveys · 46% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:62%;background:var(--amber-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--amber-600)">24.9%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="NC" data-name="plateau">
+        <div><div style="font-weight:700;font-size:13px">Plateau</div><div style="font-size:10px;color:var(--gray-400)">NC · 37 surveys · 51% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:56%;background:var(--amber-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--amber-600)">22.3%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="NC" data-name="fct abuja">
+        <div><div style="font-weight:700;font-size:13px">FCT Abuja</div><div style="font-size:10px;color:var(--gray-400)">NC · 51 surveys · 63% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:47%;background:var(--green-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--green-600)">18.7%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="SW" data-name="oyo">
+        <div><div style="font-weight:700;font-size:13px">Oyo</div><div style="font-size:10px;color:var(--gray-400)">SW · 38 surveys · 36% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:52%;background:var(--amber-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--amber-600)">20.9%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="SW" data-name="lagos">
+        <div><div style="font-weight:700;font-size:13px">Lagos</div><div style="font-size:10px;color:var(--gray-400)">SW · 56 surveys · 41% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:40%;background:var(--green-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--green-600)">16.2%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="SE" data-name="ebonyi">
+        <div><div style="font-weight:700;font-size:13px">Ebonyi</div><div style="font-size:10px;color:var(--gray-400)">SE · 19 surveys · 27% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:50%;background:var(--green-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--green-600)">19.8%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="SE" data-name="enugu">
+        <div><div style="font-weight:700;font-size:13px">Enugu</div><div style="font-size:10px;color:var(--gray-400)">SE · 27 surveys · 31% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:38%;background:var(--green-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--green-600)">15.1%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="SS" data-name="rivers">
+        <div><div style="font-weight:700;font-size:13px">Rivers</div><div style="font-size:10px;color:var(--gray-400)">SS · 24 surveys · 26% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:42%;background:var(--green-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--green-600)">16.9%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div class="state-row" data-zone="SS" data-name="akwa ibom">
+        <div><div style="font-weight:700;font-size:13px">Akwa Ibom</div><div style="font-size:10px;color:var(--gray-400)">SS · 18 surveys · 22% coverage</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div class="mini-bar"><div style="width:38%;background:var(--green-600)"></div></div><div style="text-align:right;min-width:48px"><div style="font-size:15px;font-weight:800;color:var(--green-600)">15.4%</div><div style="font-size:9px;color:var(--gray-400)">Unmet FP</div></div></div>
+      </div>
+      <div id="state-empty" class="empty-note" hidden>No states match this filter.</div>
     </div>
+    <div style="display:flex;gap:12px;font-size:10px;color:var(--gray-500)"><span><b style="color:var(--red-600)">●</b> ≥32% critical</span><span><b style="color:var(--amber-600)">●</b> 20–31% high</span><span><b style="color:var(--green-600)">●</b> &lt;20% moderate</span></div>
   </div>
   <div class="bottom-nav"></div>
 </div>
@@ -2624,6 +2705,7 @@
   <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
   <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">Analytics by LGA</span></div>
   <div class="screen-content">
+    <div class="filter-summary" onclick="App.goTo('laf-filter')"><span class="fs-icon">🔍</span><span class="fs-text">All zones · All collectors · Jan 1 – Sep 22, 2026</span><span class="fs-edit">Edit</span></div>
     <div class="form-group"><label class="form-label">State</label><input class="form-input select-arrow" value="Kano State"></div>
     <div class="section-header">Kano State — 44 LGAs</div>
     <div class="card" style="padding:14px">
@@ -2673,6 +2755,7 @@
   <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
   <div class="top-bar"><button class="back-btn" data-goto="laf-analytics">‹</button><span class="top-bar-title">By Data Collector</span></div>
   <div class="screen-content">
+    <div class="filter-summary" onclick="App.goTo('laf-filter')"><span class="fs-icon">🔍</span><span class="fs-text">All zones · All collectors · Jan 1 – Sep 22, 2026</span><span class="fs-edit">Edit</span></div>
     <div class="kpi-row">
       <div class="kpi-card"><div class="kpi-label">Active Collectors</div><div class="kpi-value">24</div><div class="kpi-sub">Across 6 LGAs</div></div>
       <div class="kpi-card"><div class="kpi-label">Avg Surveys / CHW</div><div class="kpi-value">10.3</div><div class="kpi-sub">This month</div></div>
@@ -2726,77 +2809,44 @@
 <div class="screen" id="laf-filter">
   <div class="status-bar"><span class="status-time">9:41</span><span class="status-icons">●●●  WiFi  🔋</span></div>
   <div class="top-bar light"><button class="back-btn dark-btn">‹</button><span class="top-bar-title" style="color:var(--gray-900)">Smart Filter</span>
-    <button onclick="App.goBack()" style="margin-left:auto;background:var(--green-600);border:none;color:white;padding:5px 14px;border-radius:16px;font-size:12px;font-weight:600;cursor:pointer">Apply</button>
+    <button onclick="App.resetFilters()" style="margin-left:auto;background:none;border:none;color:var(--green-700);font-size:13px;font-weight:600;cursor:pointer">Reset</button>
   </div>
   <div class="screen-content">
-    <div class="alert-banner info"><span class="alert-icon">🔍</span><div><div class="alert-body">Select any combination of filters. Analytics views update automatically.</div></div></div>
+    <div class="alert-banner info"><span class="alert-icon">🔍</span><div><div class="alert-body">Combine any filters below. They apply to every analytics view, and your active filters appear at the top of each screen.</div></div></div>
     <div class="section-header">Geographic Segmentation</div>
-    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:12px">
-      <div class="form-group" style="margin:0"><label class="form-label">Geopolitical Zone</label>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
-          <div class="chip info" style="cursor:pointer;padding:6px 12px">All Zones</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">NW</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">NE</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">NC</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">SW</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">SE</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">SS</div>
-        </div>
-      </div>
-      <div class="form-group" style="margin:0"><label class="form-label">Region</label>
-        <div style="display:flex;gap:8px;margin-top:6px">
-          <div class="radio-option selected" style="flex:1"><div class="radio-dot"></div><span class="radio-label">All</span></div>
-          <div class="radio-option" style="flex:1"><div class="radio-dot"></div><span class="radio-label">North</span></div>
-          <div class="radio-option" style="flex:1"><div class="radio-dot"></div><span class="radio-label">South</span></div>
-        </div>
-      </div>
-      <div class="form-group" style="margin:0"><label class="form-label">State</label><input class="form-input" placeholder="All states" type="text"></div>
-      <div class="form-group" style="margin:0"><label class="form-label">LGA</label><input class="form-input select-arrow" value="All LGAs"></div>
-      <div class="form-group" style="margin:0"><label class="form-label">Ward</label><input class="form-input select-arrow" value="All Wards"></div>
+    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:14px">
+      <div><label class="form-label">Region</label><div class="chip-row" data-chips="single" data-group="Region"><button class="f-chip on">All regions</button><button class="f-chip">North</button><button class="f-chip">South</button></div></div>
+      <div><label class="form-label">Geopolitical Zone <span style="font-weight:400;color:var(--gray-400)">(multi-select)</span></label><div class="chip-row" data-chips="multi" data-group="Zone"><button class="f-chip on">All zones</button><button class="f-chip">NW</button><button class="f-chip">NE</button><button class="f-chip">NC</button><button class="f-chip">SW</button><button class="f-chip">SE</button><button class="f-chip">SS</button></div></div>
+      <div class="form-group" style="margin:0"><label class="form-label">State</label>
+        <select class="form-input f-select" data-group="State"><option>All states</option><option>Kano</option><option>Katsina</option><option>Kaduna</option><option>Zamfara</option><option>Sokoto</option><option>Borno</option><option>Lagos</option><option>Rivers</option></select></div>
+      <div class="form-group" style="margin:0"><label class="form-label">LGA</label>
+        <select class="form-input f-select" data-group="LGA"><option>All LGAs</option><option>Kano Municipal</option><option>Dala</option><option>Gwale</option><option>Nassarawa</option><option>Tarauni</option><option>Fagge</option></select></div>
+      <div class="form-group" style="margin:0"><label class="form-label">Ward</label>
+        <select class="form-input f-select" data-group="Ward"><option>All wards</option><option>Dala Ward</option><option>Fagge Ward</option><option>Gwale Ward</option><option>Nassarawa Ward</option><option>Tarauni Ward</option></select></div>
     </div>
     <div class="section-header">Survey Categorisation</div>
-    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:12px">
-      <div class="form-group" style="margin:0"><label class="form-label">Data Collector (Assignee)</label><input class="form-input select-arrow" value="All collectors"></div>
-      <div class="form-group" style="margin:0"><label class="form-label">Survey Status</label>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
-          <div class="chip success" style="cursor:pointer;padding:6px 12px">Submitted</div>
-          <div class="chip warning" style="cursor:pointer;padding:6px 12px">Draft</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Pending Sync</div>
-          <div class="chip danger" style="cursor:pointer;padding:6px 12px">Flagged</div>
-        </div>
-      </div>
-      <div class="form-group" style="margin:0"><label class="form-label">Data Quality</label>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
-          <div class="chip info" style="cursor:pointer;padding:6px 12px">All quality</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">GPS ≥85%</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">Complete only</div>
-          <div class="chip neutral" style="cursor:pointer;padding:6px 12px">No outliers</div>
-        </div>
-      </div>
+    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:14px">
+      <div class="form-group" style="margin:0"><label class="form-label">Data Collector (Assignee)</label>
+        <select class="form-input f-select" data-group="Collector"><option>All collectors</option><option>Amina Mohammed</option><option>Khadija Abdullahi</option><option>Musa Ibrahim</option><option>Fatima Bello</option></select></div>
+      <div><label class="form-label">Survey Status</label><div class="chip-row" data-chips="multi" data-group="Status"><button class="f-chip on">All statuses</button><button class="f-chip">Submitted</button><button class="f-chip">Draft</button><button class="f-chip">Pending sync</button><button class="f-chip">Flagged</button></div></div>
+      <div><label class="form-label">Data Quality</label><div class="chip-row" data-chips="multi" data-group="Quality"><button class="f-chip on">All quality</button><button class="f-chip">GPS ±10m</button><button class="f-chip">Complete only</button><button class="f-chip">No outliers</button></div></div>
+      <div><label class="form-label">Settlement Type</label><div class="chip-row" data-chips="multi" data-group="Settlement"><button class="f-chip on">All types</button><button class="f-chip">Urban</button><button class="f-chip">Peri-urban</button><button class="f-chip">Rural</button><button class="f-chip">Hard-to-reach</button></div></div>
+    </div>
+    <div class="section-header">Health Indicator Thresholds</div>
+    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:14px">
+      <div><label class="form-label">Unmet FP Need</label><div class="chip-row" data-chips="single" data-group="Unmet FP"><button class="f-chip on">Any level</button><button class="f-chip">≥32% critical</button><button class="f-chip">20–31% high</button><button class="f-chip"><20% moderate</button></div></div>
+      <div><label class="form-label">Mortality Reported</label><div class="chip-row" data-chips="multi" data-group="Mortality"><button class="f-chip on">Any</button><button class="f-chip">Maternal death(s)</button><button class="f-chip">Infant death(s)</button><button class="f-chip">None reported</button></div></div>
     </div>
     <div class="section-header">Date Range</div>
-    <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:10px">
-      <div class="form-group" style="margin:0"><label class="form-label">From</label><input class="form-input" type="text" value="Jan 1, 2026"></div>
-      <div class="form-group" style="margin:0"><label class="form-label">To</label><input class="form-input" type="text" value="Sep 22, 2026"></div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <div class="chip info" style="cursor:pointer;padding:5px 10px">This Month</div>
-        <div class="chip neutral" style="cursor:pointer;padding:5px 10px">Last 3 Months</div>
-        <div class="chip neutral" style="cursor:pointer;padding:5px 10px">This Year</div>
-        <div class="chip neutral" style="cursor:pointer;padding:5px 10px">Custom</div>
-      </div>
+    <div class="card" style="padding:12px">
+      <div class="chip-row" data-chips="single" data-group="Period"><button class="f-chip">This month</button><button class="f-chip">Last 3 months</button><button class="f-chip on">This year</button><button class="f-chip">All time</button></div>
     </div>
     <div class="section-header">Metric Focus</div>
     <div class="card" style="padding:12px">
-      <div style="display:flex;flex-wrap:wrap;gap:6px">
-        <div class="chip success" style="cursor:pointer;padding:6px 12px">Population</div>
-        <div class="chip success" style="cursor:pointer;padding:6px 12px">WRA</div>
-        <div class="chip success" style="cursor:pointer;padding:6px 12px">Unmet FP</div>
-        <div class="chip success" style="cursor:pointer;padding:6px 12px">Maternal Deaths</div>
-        <div class="chip success" style="cursor:pointer;padding:6px 12px">Infant Mortality</div>
-      </div>
+      <div class="chip-row" data-chips="multi" data-group="Metrics"><button class="f-chip on">Population</button><button class="f-chip on">WRA</button><button class="f-chip on">Unmet FP</button><button class="f-chip on">Maternal deaths</button><button class="f-chip on">Infant mortality</button></div>
     </div>
-    <button class="btn btn-primary" onclick="App.goBack()">✓ Apply Filters</button>
-    <button class="btn btn-secondary" onclick="App.goBack()">Reset to Defaults</button>
+    <div class="filter-result" id="filter-result">Matching: <b>247 surveys</b> across <b>18 wards</b></div>
+    <button class="btn btn-primary" onclick="App.applyFilters()">✓ Apply Filters</button>
   </div>
 </div>
 
@@ -2817,16 +2867,16 @@
     <!-- Vitals -->
     <div class="section-header">Vitals *</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div class="form-group"><label class="form-label">Systolic BP (mmHg)</label><input class="form-input" type="number" value="116" style="border-color:var(--green-500)"><span class="form-hint success">✓ Normal</span></div>
-      <div class="form-group"><label class="form-label">Diastolic BP (mmHg)</label><input class="form-input" type="number" value="74" style="border-color:var(--green-500)"><span class="form-hint success">✓ Normal</span></div>
+      <div class="form-group"><label class="form-label">Systolic BP (mmHg)</label><input class="form-input" type="number" value="116" data-normal="90-139" data-label="Systolic BP"><span class="form-hint success">✓ Normal</span></div>
+      <div class="form-group"><label class="form-label">Diastolic BP (mmHg)</label><input class="form-input" type="number" value="74" data-normal="60-89" data-label="Diastolic BP"><span class="form-hint success">✓ Normal</span></div>
       <div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" type="number" value="62.4"></div>
-      <div class="form-group"><label class="form-label">MUAC (mm)</label><input class="form-input" type="number" value="248"><span class="form-hint success">✓ ≥210mm</span></div>
+      <div class="form-group"><label class="form-label">MUAC (mm)</label><input class="form-input" type="number" value="248" data-normal="210-400" data-label="MUAC"><span class="form-hint success">✓ ≥210mm</span></div>
     </div>
     <!-- Clinical Findings -->
     <div class="section-header">Clinical Findings</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <div class="form-group"><label class="form-label">Fundal Height (cm)</label><input class="form-input" type="number" value="21"><span class="form-hint success">✓ GA-appropriate</span></div>
-      <div class="form-group"><label class="form-label">Fetal Heart Rate (bpm)</label><input class="form-input" type="number" value="148"><span class="form-hint success">✓ 120–160 bpm</span></div>
+      <div class="form-group"><label class="form-label">Fetal Heart Rate (bpm)</label><input class="form-input" type="number" value="148" data-normal="110-160" data-label="Fetal heart rate"><span class="form-hint success">✓ 110–160 bpm</span></div>
     </div>
     <div class="form-group"><label class="form-label">Urine Protein</label>
       <div style="display:flex;gap:8px;margin-top:4px">
@@ -2835,7 +2885,7 @@
         <div class="radio-option" style="flex:1;padding:8px 12px"><div class="radio-dot"></div><span class="radio-label">1+ / 2+</span></div>
       </div>
     </div>
-    <div class="form-group"><label class="form-label">Haemoglobin (g/dL)</label><input class="form-input" type="number" value="11.8"><span class="form-hint success">✓ ≥11 g/dL — normal</span></div>
+    <div class="form-group"><label class="form-label">Haemoglobin (g/dL)</label><input class="form-input" type="number" value="11.8" data-normal="11-18" data-label="Haemoglobin"><span class="form-hint success">✓ ≥11 g/dL — normal</span></div>
     <!-- Preventive Care -->
     <div class="section-header">Preventive Care — Contact 2</div>
     <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:8px">
@@ -2861,7 +2911,9 @@
         </div>
       </div>
     </div>
-    <button class="btn btn-primary" style="background:var(--teal-600)" onclick="App.goTo('anc-healthy-summary')">Review Contact Summary →</button>
+    <div class="alert-banner success" id="vitals-ok"><span class="alert-icon">✅</span><div><div class="alert-title success">All values within normal range</div><div class="alert-body">Continue with the routine pathway. Try typing a systolic BP of 150 to see the safety check.</div></div></div>
+    <div class="alert-banner danger" id="vitals-warn" hidden><span class="alert-icon">⚠</span><div><div class="alert-title danger">Abnormal value detected</div><div class="alert-body" id="vitals-warn-text">This visit can no longer follow the routine pathway.</div><button class="btn btn-danger" style="margin-top:8px;height:40px;font-size:13px" onclick="App.goTo('anc-contact')">Switch to Danger Sign Assessment →</button></div></div>
+    <button class="btn btn-primary" id="healthy-continue" style="background:var(--teal-600)" onclick="App.goTo('anc-healthy-summary')">Review Contact Summary →</button>
   </div>
   <div class="bottom-nav"></div>
 </div>
@@ -2990,7 +3042,7 @@
 </div><!-- /device-shell -->
 </div><!-- /device-wrapper -->
 
-<script src="js/app.js?v=9"></script>
-<script src="js/edge-states.js?v=9"></script>
+<script src="js/app.js?v=10"></script>
+<script src="js/edge-states.js?v=10"></script>
 </body>
 </html>
