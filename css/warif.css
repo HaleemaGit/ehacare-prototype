@@ -1,0 +1,157 @@
+/* ============================================================
+   WARIF GBV module — components (prefix .war-)
+   ============================================================ */
+
+/* Quick Exit pill (top bar, sensitive screens) */
+.war-qx {
+  flex-shrink: 0; height: 32px; padding: 0 12px; border-radius: var(--r-full);
+  border: 1.5px solid rgba(255,255,255,.7); background: rgba(0,0,0,.18); color: var(--white);
+  font-family: var(--font); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.war-qx:active { background: rgba(0,0,0,.35); }
+
+/* Step label under the step-bar */
+.war-step { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+
+/* Signed-in role context bar */
+.war-role {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: var(--r-sm);
+  background: var(--gray-50); border: 1px solid var(--gray-100); font-size: 11px; color: var(--gray-600); min-width: 0;
+}
+.war-role b { color: var(--gray-900); }
+.war-role span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* Horizontal segmented Yes / No (radio-option children) */
+.war-seg { flex-direction: row; flex-wrap: wrap; }
+.war-seg .radio-option { flex: 1 1 0; min-width: 96px; padding: 10px; }
+
+/* Multi-select chips keep the module accent */
+.module-warif .f-chip.on { background: var(--accent); border-color: var(--accent); }
+
+/* Consent element card */
+.war-consent-item { display: flex; flex-direction: column; gap: 8px; }
+.war-consent-q { font-size: 13px; font-weight: 700; color: var(--gray-900); }
+.war-consent-if { font-size: 11px; color: var(--gray-500); line-height: 1.5; }
+.war-consent-if b { color: var(--gray-700); }
+
+/* Countdown tiles */
+.war-timers { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp3); }
+.war-timer { border-radius: var(--r-md); padding: var(--sp3); text-align: center; border: 2px solid; }
+.war-timer.open   { background: var(--red-50); border-color: var(--red-600); }
+.war-timer.warn   { background: var(--amber-50); border-color: var(--amber-600); }
+.war-timer.closed { background: var(--gray-50); border-color: var(--gray-300); }
+.war-timer-label { font-size: 10px; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: .04em; }
+.war-timer-val { font-size: 26px; font-weight: 800; line-height: 1.1; margin-top: 4px; }
+.war-timer.open .war-timer-val { color: var(--red-700); }
+.war-timer.warn .war-timer-val { color: var(--amber-600); }
+.war-timer.closed .war-timer-val { color: var(--gray-400); }
+.war-timer-sub { font-size: 10px; color: var(--gray-500); margin-top: 2px; }
+
+/* Masked / restricted field */
+.war-mask {
+  display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: var(--r-sm);
+  background: repeating-linear-gradient(135deg, var(--gray-50), var(--gray-50) 8px, var(--gray-100) 8px, var(--gray-100) 16px);
+  border: 1px dashed var(--gray-300); font-size: 12px; color: var(--gray-600);
+}
+.war-mask b { color: var(--gray-800); }
+
+/* Key/value grid in cards */
+.war-kv { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; font-size: 12px; }
+.war-kv > div { min-width: 0; }
+.war-kv .k { color: var(--gray-500); font-size: 11px; }
+.war-kv .v { font-weight: 600; color: var(--gray-900); overflow-wrap: anywhere; }
+
+/* Home priority task rows */
+.war-task { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--gray-100); cursor: pointer; min-height: 56px; -webkit-tap-highlight-color: transparent; }
+.war-task:last-child { border-bottom: none; }
+.war-task:active { background: var(--gray-50); }
+.war-task-ic { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.war-task-ic.red { background: var(--red-100); }
+.war-task-ic.amber { background: var(--amber-50); }
+.war-task-ic.blue { background: var(--blue-50); }
+.war-task-ic.purple { background: var(--accent-light); }
+.war-task-body { flex: 1; min-width: 0; }
+.war-task-t { font-size: 13px; font-weight: 700; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.war-task-s { font-size: 11px; color: var(--gray-500); margin-top: 2px; line-height: 1.4; }
+.war-task-go { font-size: 20px; color: var(--gray-300); flex-shrink: 0; }
+
+/* Case row: keep long rows inside 390px */
+.case-row .cr-id { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.case-row .chip { flex-shrink: 0; }
+.war-row-sub { font-size: 11px; color: var(--gray-500); font-weight: 400; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.war-row-main { flex: 1; min-width: 0; }
+
+/* Chip row that wraps (filters) */
+.war-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Lock screen */
+.war-lock { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 28px 24px 24px; gap: 14px; background: var(--gray-900); color: var(--white); text-align: center; }
+.war-lock-ic { width: 64px; height: 64px; border-radius: 32px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.war-lock-t { font-size: 18px; font-weight: 800; }
+.war-lock-s { font-size: 12px; color: rgba(255,255,255,.7); line-height: 1.5; }
+.war-dots { display: flex; gap: 14px; justify-content: center; margin: 4px 0; }
+.war-dots span { width: 14px; height: 14px; border-radius: 7px; border: 2px solid rgba(255,255,255,.6); }
+.war-dots span.on { background: var(--white); border-color: var(--white); }
+.war-dots.err span { border-color: var(--red-400); }
+.war-keypad { display: grid; grid-template-columns: repeat(3, 64px); gap: 12px 22px; justify-content: center; }
+.war-key { width: 64px; height: 64px; border-radius: 32px; border: none; background: rgba(255,255,255,.1); color: var(--white); font-family: var(--font); font-size: 24px; font-weight: 500; cursor: pointer; }
+.war-key.ghost { background: transparent; font-size: 22px; }
+.war-lock-note { font-size: 11px; color: rgba(255,255,255,.65); line-height: 1.5; background: rgba(255,255,255,.06); border-radius: var(--r-sm); padding: 8px 12px; width: 100%; }
+.war-lock-note.danger { background: rgba(220,38,38,.25); color: #FECACA; border: 1px solid rgba(248,113,113,.5); }
+.war-lock .btn-ghost { color: rgba(255,255,255,.85); }
+
+/* Decoy (quick exit) — deliberately neutral, no module accent */
+.war-decoy-hd { padding: 14px 16px 10px; }
+.war-decoy-hd h1 { font-size: 22px; font-weight: 800; color: var(--gray-900); }
+.war-decoy-hd p { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+.war-tip { display: flex; gap: 12px; align-items: center; padding: 12px; border-radius: var(--r-md); background: var(--gray-50); cursor: pointer; }
+.war-tip-img { width: 56px; height: 56px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+.war-tip-t { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+.war-tip-s { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+
+/* Horizontal bars (dashboard) */
+.war-bars { display: flex; flex-direction: column; gap: 10px; }
+.war-bar-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; font-size: 12px; }
+.war-bar-row .lbl { color: var(--gray-700); min-width: 0; }
+.war-bar-row .pct { font-weight: 700; color: var(--gray-900); }
+.war-bar-track { grid-column: 1 / -1; height: 8px; border-radius: 4px; background: var(--gray-100); overflow: hidden; }
+.war-bar-fill { height: 100%; border-radius: 4px; background: var(--accent); }
+
+/* Simple stat table rows */
+.war-stat { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--gray-100); font-size: 12px; }
+.war-stat:last-child { border-bottom: none; }
+.war-stat span:first-child { color: var(--gray-600); min-width: 0; }
+.war-stat span:last-child { font-weight: 700; color: var(--gray-900); text-align: right; flex-shrink: 0; }
+
+/* Checklist */
+.war-check { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; color: var(--gray-800); padding: 6px 0; line-height: 1.45; }
+.war-check .bx { width: 20px; height: 20px; border-radius: 5px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+.war-check .bx.ok { background: var(--green-600); color: var(--white); }
+.war-check .bx.no { background: var(--red-100); color: var(--red-700); }
+.war-check .bx.off { border: 2px solid var(--gray-300); }
+
+/* Buttons on red danger screens */
+.war-btn-light { background: var(--white); color: var(--red-700); }
+.war-btn-glass { background: rgba(255,255,255,.15); color: var(--white); border: 1px solid rgba(255,255,255,.35); }
+.war-btn-quiet { background: transparent; color: rgba(255,255,255,.85); height: 44px; font-size: 13px; }
+
+/* Audit log rows */
+.war-log { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--gray-100); font-size: 12px; }
+.war-log:last-child { border-bottom: none; }
+.war-log-time { width: 58px; flex-shrink: 0; color: var(--gray-500); font-size: 11px; font-variant-numeric: tabular-nums; }
+.war-log-body { flex: 1; min-width: 0; line-height: 1.45; }
+.war-log-body b { color: var(--gray-900); }
+.war-log-body .why { color: var(--gray-500); font-size: 11px; }
+
+/* Revealed identity block */
+.war-reveal { border: 2px solid var(--accent); border-radius: var(--r-md); padding: 14px; background: var(--accent-light); text-align: center; }
+.war-reveal-name { font-size: 22px; font-weight: 800; color: var(--gray-900); margin: 4px 0; }
+
+/* Tablet: long cards span the full grid width */
+@media (min-width: 700px) {
+  .war-timers, .war-chips { grid-column: 1 / -1; }
+}
+
+/* Allow list titles to wrap on WARIF screens (long "case → facility" rows) */
+[id^="war-"] .li-title { white-space: normal; overflow-wrap: anywhere; }

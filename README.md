@@ -12,12 +12,13 @@ Works on any device · No login required · No app to install · Just open in br
 | Module | What it demos |
 |--------|---------------|
 | 🏥 **EHACare Clinics** | AI-guided & manual clinical encounters |
-| 🌿 **Lafiya Project** | Community survey with GPS, 5 health metrics, map analytics |
-| 🛡 **WARIF** | GBV case intake, safety alerts, case management, referrals |
-| 🚑 **MSF Field Ops** | START triage, mass casualty board, nutrition assessment |
-| 🩺 **MAMAI ANC** | 8-contact ANC programme, danger sign alerts, patient journey |
+| 🌿 **Lafiya Project** | Household-level enumeration by street/compound/EA, 5 health metrics per household, automatic reconciliation & roll-up (household → sub-unit → settlement → ward), supervisor back-checks, cluster-mode fallback, analytics |
+| 🛡 **WARIF** | Secure lock & Quick Exit, returning-survivor lookup, informed consent, safety alert & plan, PEP/EC time window, child protection, hotline intake, care plan, service logging, referral tracking (no-response/declined), identity reveal & audit, follow-up, closure/reopen, erasure, donor reports |
+| 🚑 **MSF Field Ops** | Full START triage (walk → breathing/airway → RR → perfusion → AVPU), tagging, re-triage, MCI lifecycle, SAM/MAM/OTP nutrition, cholera ORS Plans A/B/C, IDSR/ECHO outbreak notification, multi-site patient lookup, device lock/wipe |
+| 🩺 **MAMAI ANC** | Registration (LMP unknown, late booking), Contact 1 labs & PMTCT, 8-contact schedule, every danger-sign tier (emergency / urgent / watch), referral lifecycle, trends, CHU community visits & dropout follow-up, pregnancy outcome |
 | 👥 **Supervisor** | Create team members, view activity, manage access |
-| 📵 **Edge States** | Offline mode, sync failures, GPS errors |
+| 📵 **Edge States** | Offline mode, sync failures, GPS errors, session expiry |
+| 📟 **Tablet layout** | Use the Phone/Tablet switch on desktop, open on a tablet, or add `?device=tablet` to the link |
 | ✉️ **Activation** | New member activation (code → PIN → profile) |
 
 ---

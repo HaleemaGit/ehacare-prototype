@@ -99,6 +99,11 @@
     'sup-add-member':  'sup-add-member',
   };
 
+  /* Module fragments (modules/*.json → js/nav-modules.js) extend the maps above */
+  var EXTRA = window.EHA_NAV || {};
+  Object.keys(EXTRA.groups || {}).forEach(function (k) { NAV_GROUPS[k] = EXTRA.groups[k]; });
+  Object.keys(EXTRA.modules || {}).forEach(function (k) { MODULE_NAV[k] = EXTRA.modules[k]; });
+
   /* ── Core: navigate to a screen ──
      Uses display:none / display:flex so hidden screens are
      COMPLETELY inert — zero click-through on any browser.
@@ -155,6 +160,7 @@
 
   function resumeLastModule() {
     var homes = {eha:'eha-home',lafiya:'laf-home',warif:'war-home',msf:'msf-home',mamai:'anc-home',supervisor:'sup-team'};
+    Object.keys(EXTRA.homes || {}).forEach(function (k) { homes[k] = EXTRA.homes[k]; });
     goTo(homes[activeModule] || 'landing', false);
   }
 

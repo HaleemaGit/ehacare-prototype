@@ -60,6 +60,8 @@ window.setDeviceType = function(type) {
   var screens = shell.querySelectorAll('.screen');
   screens.forEach(function(s) { s.style.transition = 'none'; });
 
+  document.body.classList.toggle('tab', type === 'tablet');
+  window.__ehaDeviceChosen = type;
   if (type === 'tablet') {
     shell.classList.add('tablet');
     if (btnTab)   btnTab.classList.add('active');
@@ -104,3 +106,21 @@ window.checkDangerSigns = function(systolic, diastolic, protein, hb) {
   }
   return alerts;
 };
+
+/* ── Tablet layout selection ──
+   ?device=tablet|phone forces a layout (shareable links); otherwise real
+   devices 700–959 px wide get the tablet layout automatically. */
+(function () {
+  var q = (location.search.match(/[?&]device=(tablet|phone)/) || [])[1];
+  function auto() {
+    if (window.__ehaDeviceChosen) return;
+    var w = window.innerWidth;
+    document.body.classList.toggle('tab', w >= 700 && w < 960);
+  }
+  function init() {
+    if (q) window.setDeviceType(q);
+    else auto();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  window.addEventListener('resize', auto);
+})();

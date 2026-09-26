@@ -1,0 +1,106 @@
+/* ============================================================
+   EHACare — Tablet layout (iPad Air 820 × 1180 and 700–959 px devices)
+   Active when <body class="tab"> — set by js/edge-states.js from the
+   Phone/Tablet switcher, ?device=tablet, or the device width.
+   Material "medium" window class: navigation rail + 2-column content.
+   Shared with the Figma generator (figma-plugin/src/extract.mjs).
+   ============================================================ */
+body.tab { --rail: 88px; --sb: 44px; }
+@media (min-width: 960px) { body.tab { --sb: 50px; } }
+
+/* ── Navigation rail replaces the bottom bar ── */
+body.tab .screen.active:has(> .bottom-nav:not([style*="none"])) {
+  padding-left: var(--rail) !important;
+}
+body.tab .screen.active:has(> .bottom-nav:not([style*="none"])) > .status-bar {
+  margin-left: calc(-1 * var(--rail));
+}
+body.tab .screen.active > .bottom-nav {
+  position: fixed !important;
+  left: 0; top: var(--sb); bottom: 0;
+  width: var(--rail);
+  height: auto !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+  gap: 8px;
+  padding: 20px 0 0 !important;
+  border-top: none !important;
+  border-right: 1px solid var(--gray-100);
+  box-shadow: 2px 0 12px rgba(0,0,0,.04) !important;
+  background: var(--white);
+  z-index: 100;
+}
+/* inside the desktop device shell the rail belongs to the screen, not the window */
+@media (min-width: 960px) {
+  body.tab .screen.active > .bottom-nav { position: absolute !important; }
+}
+/* Figma extraction: rail spans the full (tall) frame */
+body.tab.tab-extract .screen.active > .bottom-nav { position: absolute !important; }
+body.tab .screen.active { position: relative; }
+body.tab .screen.active > .bottom-nav .nav-item {
+  flex: 0 0 auto !important;
+  height: 64px;
+  position: relative;
+}
+body.tab .screen.active > .bottom-nav .nav-dot {
+  position: absolute;
+  left: 0; top: 12px; bottom: 12px;
+  width: 3px; height: auto;
+  border-radius: 0 3px 3px 0;
+  margin: 0;
+}
+
+/* ── Roomier content column ── */
+body.tab .screen-content {
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+}
+body.tab .top-bar { padding-left: 24px; padding-right: 24px; }
+body.tab .home-header { padding-left: 32px !important; padding-right: 32px !important; }
+
+/* ── Two-column content grid ── */
+body.tab .screen-content:not(.no-grid) {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+  align-content: start;
+}
+body.tab .screen-content > * { grid-column: 1 / -1; min-width: 0; }
+body.tab .screen-content > .form-group,
+body.tab .screen-content > .kpi-card,
+body.tab .screen-content > .member-card,
+body.tab .screen-content > .zone-tile,
+body.tab .screen-content > .case-row { grid-column: span 1; }
+
+/* Lists of rows → 2-up card grid */
+body.tab .landing-rows,
+body.tab .quick-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* KPI rows fill the width */
+body.tab .kpi-row {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+  gap: 12px;
+}
+
+/* Buttons: don't stretch to 700px — cap and centre */
+body.tab .screen-content > .btn,
+body.tab .screen-content > .btn-row {
+  justify-self: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* Full-screen alert / error / onboarding layouts stay centred */
+body.tab .error-screen,
+body.tab .danger-fullscreen,
+body.tab .onboarding-screen {
+  padding-left: 96px !important;
+  padding-right: 96px !important;
+}
+body.tab .modal-card { max-width: 420px !important; }
